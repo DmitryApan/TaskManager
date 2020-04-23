@@ -1,0 +1,38 @@
+img {
+    border-radius: 10px 10px 0px 0px;
+    width: 100%;
+}
+
+.card {
+    width: 700px;
+    height: 700px;
+    background-color: gainsboro;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.info {
+    margin: 30px;    
+}
+
+.info > div {
+    display: inline-block;
+    vertical-align: top;    
+}
+
+.info-text {
+    font-size: 45px;
+    width: 500px;
+}
+
+.initials {
+    font-size: 35px;
+    color: white;
+    text-align: center;
+    line-height: 70px; 
+    background-color: red;
+    width: 70px;
+    height: 70px;    
+    border-radius: 50%;  
+    float: right;         
+}
