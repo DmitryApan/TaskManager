@@ -84,6 +84,10 @@
   width: 130px;
 }
 
+.section-card-info-graph {
+  position: relative;
+}
+
 .section-card-info-graph-avatar {
   width: 22px;
   height: 22px;
@@ -92,9 +96,9 @@
 }
 
 .avatar-lay {
-  position: relative;
-  /* right: 50%; */
-  right: -11px;
+  position: absolute;
+  right: 50%;
+  /* right: -11px; */
   
 }
 
