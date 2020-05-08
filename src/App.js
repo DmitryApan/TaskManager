@@ -1,68 +1,54 @@
 import React from 'react';
 
+import {Section} from './Section';
+
 import './App.css';
 
-import {Card} from './Card';
-import {Header} from './Header';
-
 class App extends React.Component {  
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: {}
+    constructor(props) {
+        super(props);
+        this.state = {
+            sections: null      
+        };  
     }
 
-    this.state.value = this.props.value;
-  }
+    async componentDidMount() {
+        const srcData = this.props.srcData;
 
-  render() {
-    const headerInfo = this.state.value.headerInfo;
-    const cards = this.state.value.cards;  
-    
-    return (    
-      <div class="section flex-column">       
+        console.log("App is ready");
 
-          <Header {...headerInfo} />        
-  
-          {
-            cards.map(card => ( <Card {...card} />))
-          }  
+        try {    
+            let response = await fetch(srcData);
+            let cards = await response.json();  
+            let sections = [];   
 
-      </div>
-    );
+            cards.sort(({status: stat1}, {status: stat2}) => {
+                if (stat1 > stat2) return 1;
+                if (stat1 == stat2) return 0;
+                if (stat1 < stat2) return -1;
+            }).forEach(card => {                
+                if (sections[0] && sections[sections.length - 1][0].status == card.status) {
+                    sections[sections.length - 1].push(card);
+                } else {
+                    sections.push([card]);
+                }
+            });
+            
+            console.log(sections);
 
-  }  
+            this.setState({sections});
+        } catch (error) {
+            alert("Ошибка HTTP: " + error);
+        }          
+    }
 
-  componentDidMount() {
+    render() {
+        const sections = this.state.sections;
 
-    const srcData = this.props.srcData;
-
-    console.log("App is ready");
-
-    (async () => {
-
-      let response = await fetch(srcData);
-
-      if (response.ok) { 
-
-        let json = await response.json();
-        this.state.value.headerInfo.text = json[0].description;
-
-        this.state.value.headerInfo.text = json[0].description;
-        this.state.value.cards[0].description = json[1].description;
-        this.state.value.cards[1].description = json[2].description;
-
-        this.setState(this.state);
-
-      } else {
-        alert("Ошибка HTTP: " + response.status);
-      }
-
-    })();    
-
-  }
-
+        return (
+            sections && sections.map(section => ( <Section section={section}/>))                                         
+        );
+    }
 }
 
 export default App;

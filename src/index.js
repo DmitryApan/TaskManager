@@ -1,14 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import {srcData} from './Data';
 
-import {cards, headerInfo} from './Data';
+import './index.css';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App value={{cards, headerInfo}} srcData={'http://app-d6eb8af9-d909-438d-a0b6-7075cc1a5829.cleverapps.io/cards'} />
+    <App srcData={srcData} />
   </React.StrictMode>,
   document.getElementById('root')
 );
