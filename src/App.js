@@ -8,45 +8,45 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            sections: null      
+            statuses: null     
         };  
     }
 
     async componentDidMount() {
         const srcData = this.props.srcData;
+        const stateObj = {
+            statuses: [],
+            dataByStatuses: {}
+        }
 
         console.log("App is ready");
 
         try {    
             let response = await fetch(srcData);
             let cards = await response.json();  
-            let sections = [];   
-
-            cards.sort(({status: stat1}, {status: stat2}) => {
-                if (stat1 > stat2) return 1;
-                if (stat1 == stat2) return 0;
-                if (stat1 < stat2) return -1;
-            }).forEach(card => {                
-                if (sections[0] && sections[sections.length - 1][0].status == card.status) {
-                    sections[sections.length - 1].push(card);
-                } else {
-                    sections.push([card]);
-                }
+                
+            cards.forEach(card => {
+                if (!(card.status in stateObj.dataByStatuses)) {
+                    stateObj.statuses.push(card.status);
+                    stateObj.dataByStatuses[card.status] = [];
+                }                
+                stateObj.dataByStatuses[card.status].push(card);
             });
-            
-            console.log(sections);
 
-            this.setState({sections});
+            console.log(stateObj);
+
+            this.setState(stateObj);
         } catch (error) {
             alert("Ошибка HTTP: " + error);
         }          
     }
 
     render() {
-        const sections = this.state.sections;
+        const statuses = this.state.statuses;
+        const dataCards = this.state.dataByStatuses;
 
         return (
-            sections && sections.map(section => ( <Section section={section}/>))                                         
+            statuses && statuses.map(status => ( <Section cards={dataCards[status]}/>))                                         
         );
     }
 }

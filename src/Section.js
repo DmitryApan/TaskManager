@@ -10,10 +10,10 @@ export class Section extends React.Component {
         
         const headerInfo = {};
 
-        headerInfo.text = this.props.section[0].status;
-        headerInfo.amount = this.props.section.length;
+        headerInfo.text = this.props.cards[0].status;
+        headerInfo.amount = this.props.cards.length;
 
-        const cards = this.props.section;
+        const cards = this.props.cards;
         
         return (
             <div class="section flex-column">
