@@ -23,14 +23,17 @@ class App extends React.Component {
 
         try {    
             let response = await fetch(srcData);
-            let cards = await response.json();  
-                
+            let cards = await response.json(); 
+                            
             cards.forEach(card => {
-                if (!(card.status in stateObj.dataByStatuses)) {
-                    stateObj.statuses.push(card.status);
-                    stateObj.dataByStatuses[card.status] = [];
+                let status = card.status;
+                let datByStat = stateObj.dataByStatuses;
+
+                if (!(datByStat[status])) {
+                    stateObj.statuses.push(status);
+                    datByStat[status] = [];
                 }                
-                stateObj.dataByStatuses[card.status].push(card);
+               datByStat[status].push(card);
             });
 
             console.log(stateObj);
@@ -46,7 +49,7 @@ class App extends React.Component {
         const dataCards = this.state.dataByStatuses;
 
         return (
-            statuses && statuses.map(status => ( <Section cards={dataCards[status]}/>))                                         
+            statuses && statuses.map(status => ( <Section status={status} cards={dataCards[status]}/>)) 
         );
     }
 }

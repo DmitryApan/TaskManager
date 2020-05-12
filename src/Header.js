@@ -8,5 +8,4 @@ export function Header({text, amount}) {
             <div class="section-header-amount flex-center">{amount}</div>
         </div>
     )
-}
-  
+}  

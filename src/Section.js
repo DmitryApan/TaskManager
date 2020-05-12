@@ -7,14 +7,13 @@ import {Header} from './Header';
 export class Section extends React.Component {
     
     render() {
-        
-        const headerInfo = {};
+        const {status, cards} = this.props;
 
-        headerInfo.text = this.props.cards[0].status;
-        headerInfo.amount = this.props.cards.length;
+        let headerInfo = {
+            text: status,
+            amount: cards.length
+        };        
 
-        const cards = this.props.cards;
-        
         return (
             <div class="section flex-column">
                 <Header {...headerInfo} />        

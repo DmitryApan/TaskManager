@@ -19,4 +19,3 @@ export function Card({ imageSrc, description, avatars = []}) {
       </div>
     )
 }
-  
