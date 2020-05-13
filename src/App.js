@@ -25,15 +25,15 @@ class App extends React.Component {
             let response = await fetch(srcData);
             let cards = await response.json(); 
                             
-            cards.forEach(card => {
-                let status = card.status;
-                let datByStat = stateObj.dataByStatuses;
+            cards.forEach((card) => {
+                let {status} = {...card}
+                let dataByStatuses = stateObj.dataByStatuses;
 
-                if (!(datByStat[status])) {
+                if (!(dataByStatuses[status])) {
                     stateObj.statuses.push(status);
-                    datByStat[status] = [];
+                    dataByStatuses[status] = [];
                 }                
-               datByStat[status].push(card);
+               dataByStatuses[status].push(card);
             });
 
             console.log(stateObj);
