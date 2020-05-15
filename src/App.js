@@ -1,12 +1,13 @@
 import React from 'react';
 
 import {Section} from './Section';
+import {CardAddPanel} from './CardAddPanel';
 
 import './App.css';
 
 class App extends React.Component {  
     constructor(props) {
-        super(props);
+        super(props);        
         this.state = {
             statuses: null     
         };  
@@ -36,7 +37,7 @@ class App extends React.Component {
                dataByStatuses[status].push(card);
             });
 
-            console.log(stateObj);
+            //console.log(stateObj);
 
             this.setState(stateObj);
         } catch (error) {
@@ -44,12 +45,52 @@ class App extends React.Component {
         }          
     }
 
-    render() {
-        const statuses = this.state.statuses;
-        const dataCards = this.state.dataByStatuses;
+    handleCreateCard = async(description) => {        
+        const urlCreateCard = this.props.urlCreateCard;
+        const {statuses, dataByStatuses} = this.state;
+        let body = {
+            description
+        }
 
+        try {
+            let response = await fetch (urlCreateCard, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+                body: JSON.stringify(body)            
+            });
+
+            let result = await response.json();                      
+
+            let updateDataByStatuses = this.state.dataByStatuses;
+            updateDataByStatuses[result.status].push(result);
+
+            let updateState = {
+                statuses: ((dataByStatuses[result.status]) ? statuses : statuses.push(result.status)),
+                dataByStatuses: updateDataByStatuses
+            }
+
+            this.setState(updateState);
+
+        } catch (error) {
+            alert("Ошибка HTTP: " + error);
+        }       
+    }
+
+    render() {
+
+        console.log(this.state);
+        const {statuses, dataByStatuses} = this.state;
+        
         return (
-            statuses && statuses.map(status => ( <Section status={status} cards={dataCards[status]}/>)) 
+            <div>
+                <CardAddPanel onCreateCard={this.handleCreateCard} />
+
+                <div>
+                    {statuses && statuses.map(status => ( <Section status={status} cards={dataByStatuses[status]}/>)) }
+                </div>                
+            </div>    
         );
     }
 }
