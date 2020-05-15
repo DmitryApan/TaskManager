@@ -19,7 +19,7 @@ export class Section extends React.Component {
                 <Header {...headerInfo} />        
   
                 {
-                    cards && cards.map(card => ( <Card {...card} />))
+                    cards && cards.map(card => ( <Card key={card._id} {...card} />))
                 }
             </div>
         )
