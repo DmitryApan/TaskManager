@@ -4,17 +4,15 @@ import './App.css';
 export class CardAddPanel extends React.Component {
     constructor(props) {
         super(props);        
-        this.state = {description: ""};
+        this.state = {description: ''};
     }
 
-    handleDescriptionChange = (event) =>  {
-        this.setState({description: event.target.value})
+    handleDescriptionChange = ({target}) =>  {
+        this.setState({description: target.value})
     }
 
     handleCreate = (event) => {
-        this.props.onCreateCard(this.state.description);
-        
-        event.preventDefault();        
+        this.props.onCreateCard(this.state.description);                
     }
 
     render() {

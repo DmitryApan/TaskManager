@@ -2,6 +2,7 @@ import React from 'react';
 
 import {Section} from './Section';
 import {CardAddPanel} from './CardAddPanel';
+import {srcData, urlCreateCard} from './Data';
 
 import './App.css';
 
@@ -14,7 +15,6 @@ class App extends React.Component {
     }
 
     async componentDidMount() {
-        const srcData = this.props.srcData;
         const stateObj = {
             statuses: [],
             dataByStatuses: {}
@@ -35,9 +35,7 @@ class App extends React.Component {
                     dataByStatuses[status] = [];
                 }                
                dataByStatuses[status].push(card);
-            });
-
-            //console.log(stateObj);
+            });            
 
             this.setState(stateObj);
         } catch (error) {
@@ -46,7 +44,6 @@ class App extends React.Component {
     }
 
     handleCreateCard = async(description) => {        
-        const urlCreateCard = this.props.urlCreateCard;
         const {statuses, dataByStatuses} = this.state;
         let body = {
             description
@@ -60,18 +57,22 @@ class App extends React.Component {
                 },
                 body: JSON.stringify(body)            
             });
-
-            let result = await response.json();                      
-
-            let updateDataByStatuses = this.state.dataByStatuses;
-            updateDataByStatuses[result.status].push(result);
-
-            let updateState = {
-                statuses: ((dataByStatuses[result.status]) ? statuses : statuses.push(result.status)),
-                dataByStatuses: updateDataByStatuses
+            let result = await response.json();   
+                               
+            let status = result.status;
+            let updateDataByStatuses = {
+                ...dataByStatuses,
+                [status]: [...dataByStatuses[status], result]
             }
-
-            this.setState(updateState);
+            let updateStatuses = [...statuses];
+            if (!dataByStatuses[status]) {
+                updateStatuses.push(status);
+            }
+            
+            this.setState({
+                statuses: updateStatuses,
+                dataByStatuses: updateDataByStatuses
+            });
 
         } catch (error) {
             alert("Ошибка HTTP: " + error);
@@ -79,8 +80,6 @@ class App extends React.Component {
     }
 
     render() {
-
-        console.log(this.state);
         const {statuses, dataByStatuses} = this.state;
         
         return (
