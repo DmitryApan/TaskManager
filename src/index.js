@@ -3,16 +3,12 @@ import ReactDOM from 'react-dom';
 
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import {srcData, urlCreateCard} from './Data';
 
 import './index.css';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App 
-      srcData={srcData} 
-      urlCreateCard={urlCreateCard} 
-    />
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 );
