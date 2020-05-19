@@ -79,6 +79,37 @@ class App extends React.Component {
         }       
     }
 
+    handleDeleteCard = async({_id, status}) => {
+        const {statuses, dataByStatuses} = this.state;
+
+        try {
+            let response = await fetch (urlCreateCard + '/' + _id, {
+                method: 'DELETE'                                           
+            });           
+            
+            if (!response.ok) return;
+        } catch (error) {
+            alert("Ошибка HTTP: " + error);
+        }        
+
+        let arrayCards = dataByStatuses[status].filter(item => item._id !== _id);
+        let updateDataByStatuses = {
+            ...dataByStatuses,
+            [status]: arrayCards
+        }
+        let updateStatuses = [...statuses];
+
+        if (!arrayCards.length) {
+            delete updateDataByStatuses[status];
+            updateStatuses = updateStatuses.filter(item => item !== status);
+        }
+        
+        this.setState({
+            statuses: updateStatuses,
+            dataByStatuses: updateDataByStatuses
+        });
+    }
+
     render() {
         const {statuses, dataByStatuses} = this.state;
         
@@ -87,7 +118,12 @@ class App extends React.Component {
                 <CardAddPanel onCreateCard={this.handleCreateCard} />
 
                 <div>
-                    {statuses && statuses.map(status => ( <Section status={status} cards={dataByStatuses[status]}/>)) }
+                    {statuses && statuses.map(status => ( 
+                        <Section 
+                            status={status} 
+                            cards={dataByStatuses[status]}
+                            onDeleteCard={this.handleDeleteCard}
+                        />)) }
                 </div>                
             </div>    
         );

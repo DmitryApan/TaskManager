@@ -4,9 +4,17 @@ import {Avatar} from './Avatar';
 
 import './App.css';
 
-export function Card({ imageSrc, description, avatars = []}) {
+export class Card extends React.Component {
+  handleDelete = (event) => {
+    this.props.onDeleteCard({...this.props});
+  }
+
+  render() {
+    const {imageSrc, description, avatars=[]} = this.props;
+
     return (
       <div class="section-card flex-column">
+          <div onClick={this.handleDelete} class="section-card-delete">&#xd7;</div>
           {imageSrc ? <img class="section-card-image" src={imageSrc} alt=""></img> : null}
           <div class="section-card-info flex-row">
               <div class="section-card-info-text">{description}</div>
@@ -18,4 +26,5 @@ export function Card({ imageSrc, description, avatars = []}) {
           </div>
       </div>
     )
+  }    
 }
