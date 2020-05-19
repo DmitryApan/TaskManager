@@ -83,11 +83,13 @@ class App extends React.Component {
         const {statuses, dataByStatuses} = this.state;
 
         try {
-            let response = await fetch (urlCreateCard + '/' + _id, {
+            let response = await fetch (`${urlCreateCard}/${_id}`, {
                 method: 'DELETE'                                           
             });           
             
-            if (!response.ok) return;
+            if (!response.ok) {
+                return;
+            }
         } catch (error) {
             alert("Ошибка HTTP: " + error);
         }        

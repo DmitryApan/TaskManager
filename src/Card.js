@@ -10,7 +10,7 @@ export class Card extends React.Component {
   }
 
   render() {
-    const {imageSrc, description, avatars=[]} = this.props;
+    const {imageSrc, description, avatars = []} = this.props;
 
     return (
       <div class="section-card flex-column">
