@@ -2,7 +2,8 @@ import React from 'react';
 
 import {Section} from './Section';
 import {CardAddPanel} from './CardAddPanel';
-import {srcData, urlCreateCard} from './Data';
+import {urlCardData, urlCardCreate, urlCardSettings} from './Data';
+import {serverRequest} from './NetworkFunction';
 
 import './App.css';
 
@@ -15,99 +16,80 @@ class App extends React.Component {
     }
 
     async componentDidMount() {
-        const stateObj = {
+        const state = {
             statuses: [],
             dataByStatuses: {}
         }
 
-        console.log("App is ready");
+        console.log("App is ready");           
+             
+        state.statuses = await serverRequest({url: urlCardSettings});       
+        let cards = await serverRequest({url: urlCardData});
 
-        try {    
-            let response = await fetch(srcData);
-            let cards = await response.json(); 
-                            
-            cards.forEach((card) => {
-                let {status} = {...card}
-                let dataByStatuses = stateObj.dataByStatuses;
+        cards.forEach((card) => {
+            let {status} = {...card}
+            let {dataByStatuses} = state;
 
-                if (!(dataByStatuses[status])) {
-                    stateObj.statuses.push(status);
-                    dataByStatuses[status] = [];
-                }                
-               dataByStatuses[status].push(card);
-            });            
+            if (!(dataByStatuses[status])) {                
+                dataByStatuses[status] = [];
+            }                
 
-            this.setState(stateObj);
-        } catch (error) {
-            alert("Ошибка HTTP: " + error);
-        }          
+            dataByStatuses[status].push(card);
+        });            
+
+        this.setState(state);        
     }
 
     handleCreateCard = async(description) => {        
-        const {statuses, dataByStatuses} = this.state;
+        const {dataByStatuses} = this.state;
         let body = {
             description
-        }
-
-        try {
-            let response = await fetch (urlCreateCard, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json;charset=utf-8'
-                },
-                body: JSON.stringify(body)            
-            });
-            let result = await response.json();   
-                               
-            let status = result.status;
-            let updateDataByStatuses = {
-                ...dataByStatuses,
-                [status]: [...dataByStatuses[status], result]
-            }
-            let updateStatuses = [...statuses];
-            if (!dataByStatuses[status]) {
-                updateStatuses.push(status);
-            }
-            
-            this.setState({
-                statuses: updateStatuses,
-                dataByStatuses: updateDataByStatuses
-            });
-
-        } catch (error) {
-            alert("Ошибка HTTP: " + error);
+        }        
+          
+        let card = await serverRequest({
+            url: urlCardCreate, 
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(body)
+        })            
+        
+        let {status} = card;        
+        let updateDataByStatuses = {
+            ...dataByStatuses,
+            [status]: [...(dataByStatuses[status] || []), card]
         }       
+        
+        this.setState({            
+            dataByStatuses: updateDataByStatuses
+        });               
     }
 
     handleDeleteCard = async({_id, status}) => {
-        const {statuses, dataByStatuses} = this.state;
+        const {dataByStatuses} = this.state;
 
-        try {
-            let response = await fetch (`${urlCreateCard}/${_id}`, {
-                method: 'DELETE'                                           
-            });           
-            
-            if (!response.ok) {
-                return;
-            }
-        } catch (error) {
-            alert("Ошибка HTTP: " + error);
-        }        
+        let response = await serverRequest({
+            url: `${urlCardCreate}/${_id}`,
+            responseJSON: false,
+            method: 'DELETE'
+        })          
+        
+        if (!response.ok) {
+            return;
+        }
 
         let arrayCards = dataByStatuses[status].filter(item => item._id !== _id);
         let updateDataByStatuses = {
             ...dataByStatuses,
             [status]: arrayCards
         }
-        let updateStatuses = [...statuses];
-
+        
         if (!arrayCards.length) {
-            delete updateDataByStatuses[status];
-            updateStatuses = updateStatuses.filter(item => item !== status);
+            delete updateDataByStatuses[status];            
         }
         
-        this.setState({
-            statuses: updateStatuses,
+        this.setState({            
             dataByStatuses: updateDataByStatuses
         });
     }
@@ -119,11 +101,11 @@ class App extends React.Component {
             <div>
                 <CardAddPanel onCreateCard={this.handleCreateCard} />
 
-                <div>
+                <div class = "flex-row">
                     {statuses && statuses.map(status => ( 
                         <Section 
                             status={status} 
-                            cards={dataByStatuses[status]}
+                            cards={dataByStatuses[status] || []}
                             onDeleteCard={this.handleDeleteCard}
                         />)) }
                 </div>                
