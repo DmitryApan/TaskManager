@@ -7,14 +7,20 @@ import './App.css';
 export class Card extends React.Component {
   handleDelete = (event) => {
     this.props.onDeleteCard({...this.props});
+
+    event.stopPropagation();
+  }
+
+  handleModalInfo = (event) => {
+    this.props.onModalInfo(this.props);
   }
 
   render() {
     const {imageSrc, description, avatars = []} = this.props;
 
     return (
-      <div class="section-card flex-column">
-          <div onClick={this.handleDelete} class="section-card-delete">&#xd7;</div>
+      <div onClick={this.handleModalInfo} class="section-card flex-column">
+          <div onClick={this.handleDelete} class="button-x-small">&#xd7;</div>
           {imageSrc ? <img class="section-card-image" src={imageSrc} alt=""></img> : null}
           <div class="section-card-info flex-row">
               <div class="section-card-info-text">{description}</div>

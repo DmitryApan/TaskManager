@@ -1,9 +1,9 @@
 import React from 'react';
 
+import {ModalCard} from './ModalCard';
 import {Section} from './Section';
 import {CardAddPanel} from './CardAddPanel';
-import {urlCardData, urlCardCreate, urlCardSettings} from './Data';
-import {serverRequest} from './NetworkFunction';
+import {cardCreate, cardDelete, getSettings, getDataCards} from './networkFunctions';
 
 import './App.css';
 
@@ -11,24 +11,29 @@ class App extends React.Component {
     constructor(props) {
         super(props);        
         this.state = {
-            statuses: null     
+            dataCard: {
+                statuses: null
+            },
+            modalWindow: {
+                visible: false                
+            }     
         };  
     }
 
     async componentDidMount() {
-        const state = {
+        let dataCardUpdate = {
             statuses: [],
             dataByStatuses: {}
         }
 
         console.log("App is ready");           
              
-        state.statuses = await serverRequest({url: urlCardSettings});       
-        let cards = await serverRequest({url: urlCardData});
+        dataCardUpdate.statuses = await getSettings();       
+        let cards = await getDataCards();
 
         cards.forEach((card) => {
             let {status} = {...card}
-            let {dataByStatuses} = state;
+            let {dataByStatuses} = dataCardUpdate;
 
             if (!(dataByStatuses[status])) {                
                 dataByStatuses[status] = [];
@@ -37,23 +42,19 @@ class App extends React.Component {
             dataByStatuses[status].push(card);
         });            
 
-        this.setState(state);        
+        this.setState({
+            dataCard: dataCardUpdate,
+            modalWindow: this.state.modalWindow
+        });        
     }
 
     handleCreateCard = async(description) => {        
-        const {dataByStatuses} = this.state;
+        const {statuses, dataByStatuses} = this.state.dataCard;
         let body = {
             description
         }        
           
-        let card = await serverRequest({
-            url: urlCardCreate, 
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8'
-            },
-            body: JSON.stringify(body)
-        })            
+        let card = await cardCreate(body);
         
         let {status} = card;        
         let updateDataByStatuses = {
@@ -61,24 +62,22 @@ class App extends React.Component {
             [status]: [...(dataByStatuses[status] || []), card]
         }       
         
-        this.setState({            
-            dataByStatuses: updateDataByStatuses
+        this.setState({   
+            dataCard: {
+                dataByStatuses: updateDataByStatuses,
+                statuses
+            },
+            modalWindow: this.state.modalWindow
         });               
     }
 
     handleDeleteCard = async({_id, status}) => {
-        const {dataByStatuses} = this.state;
+        const {statuses, dataByStatuses} = this.state.dataCard;
 
-        let response = await serverRequest({
-            url: `${urlCardCreate}/${_id}`,
-            responseJSON: false,
-            method: 'DELETE'
-        })          
-        
-        if (!response.ok) {
+        if (!(await cardDelete(_id))) {
             return;
         }
-
+        
         let arrayCards = dataByStatuses[status].filter(item => item._id !== _id);
         let updateDataByStatuses = {
             ...dataByStatuses,
@@ -89,15 +88,45 @@ class App extends React.Component {
             delete updateDataByStatuses[status];            
         }
         
-        this.setState({            
-            dataByStatuses: updateDataByStatuses
+        this.setState({       
+            dataCard: {
+                dataByStatuses: updateDataByStatuses,
+                statuses
+            },
+            modalWindow: this.state.modalWindow            
         });
     }
 
+    handleModalInfo = (card) => {
+        document.body.style.overflow = "hidden";
+        
+        this.setState({
+            dataCard: this.state.dataCard,
+            modalWindow: {
+                visible: true,
+                card
+            }
+        })        
+    }
+
+    handleCloseModal = () => {
+        document.body.style.overflow = "visible";
+
+        this.setState({
+            dataCard: this.state.dataCard,
+            modalWindow: {
+                visible: false,
+                card: this.state.modalWindow.card
+            }
+        })
+    }
+
     render() {
-        const {statuses, dataByStatuses} = this.state;
+        const {statuses, dataByStatuses} = this.state.dataCard;
+        const {card, visible} = this.state.modalWindow;
         
         return (
+            <>
             <div>
                 <CardAddPanel onCreateCard={this.handleCreateCard} />
 
@@ -107,9 +136,13 @@ class App extends React.Component {
                             status={status} 
                             cards={dataByStatuses[status] || []}
                             onDeleteCard={this.handleDeleteCard}
+                            onModalInfo={this.handleModalInfo}
                         />)) }
                 </div>                
-            </div>    
+            </div> 
+            
+            {visible && <ModalCard onCloseModal={this.handleCloseModal} {...card} />}
+            </>   
         );
     }
 }
