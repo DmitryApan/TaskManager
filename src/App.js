@@ -13,10 +13,7 @@ class App extends React.Component {
         this.state = {
             dataCard: {
                 statuses: null
-            },
-            modalWindow: {
-                visible: false                
-            }     
+            }                 
         };  
     }
 
@@ -24,7 +21,7 @@ class App extends React.Component {
         let dataCardUpdate = {
             statuses: [],
             dataByStatuses: {}
-        }
+        };
 
         console.log("App is ready");           
              
@@ -43,8 +40,7 @@ class App extends React.Component {
         });            
 
         this.setState({
-            dataCard: dataCardUpdate,
-            modalWindow: this.state.modalWindow
+            dataCard: dataCardUpdate,            
         });        
     }
 
@@ -66,8 +62,7 @@ class App extends React.Component {
             dataCard: {
                 dataByStatuses: updateDataByStatuses,
                 statuses
-            },
-            modalWindow: this.state.modalWindow
+            },           
         });               
     }
 
@@ -92,38 +87,41 @@ class App extends React.Component {
             dataCard: {
                 dataByStatuses: updateDataByStatuses,
                 statuses
-            },
-            modalWindow: this.state.modalWindow            
+            },                       
         });
     }
 
-    handleModalInfo = (card) => {
-        document.body.style.overflow = "hidden";
+    handleModalInfo = ({_id}) => {
+        document.body.style.overflow = 'hidden';
         
-        this.setState({
-            dataCard: this.state.dataCard,
-            modalWindow: {
-                visible: true,
-                card
-            }
-        })        
+        this.setState({            
+            idCard: _id
+        });        
     }
 
     handleCloseModal = () => {
-        document.body.style.overflow = "visible";
+        document.body.style.overflow = 'visible';
 
-        this.setState({
-            dataCard: this.state.dataCard,
-            modalWindow: {
-                visible: false,
-                card: this.state.modalWindow.card
+        this.setState({            
+            idCard: null                
+        });
+    }
+
+    findCardById = (id) => {
+        let dataCards = this.state.dataCard.dataByStatuses;
+                
+        for (let key in dataCards) {
+            let card = dataCards[key].find(item => item._id === id);
+
+            if (card) {                
+                return card;
             }
-        })
+        }
     }
 
     render() {
-        const {statuses, dataByStatuses} = this.state.dataCard;
-        const {card, visible} = this.state.modalWindow;
+        const {statuses, dataByStatuses} = this.state.dataCard;  
+        const {idCard} = this.state;      
         
         return (
             <>
@@ -141,7 +139,7 @@ class App extends React.Component {
                 </div>                
             </div> 
             
-            {visible && <ModalCard onCloseModal={this.handleCloseModal} {...card} />}
+            {idCard && <ModalCard onCloseModal={this.handleCloseModal} {...this.findCardById(idCard)} />}
             </>   
         );
     }

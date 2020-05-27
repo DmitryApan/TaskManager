@@ -1,6 +1,6 @@
 import {urlCardData, urlCardCreate, urlCardSettings} from './Data';
 
-async function serverRequest({url, json = true, method = "GET", headers, body}) {    
+async function serverRequest({url, json = true, method = 'GET', headers, body}) {    
     let response = await fetch(url, {
         method,
         headers,
@@ -39,10 +39,12 @@ export function cardCreate(body) {
     });
 }
 
-export async function cardDelete(id) {
-    return (await serverRequest({
+export function cardDelete(id) {
+    return serverRequest({
         url: `${urlCardCreate}/${id}`,
         json: false,
         method: 'DELETE'
-    })).ok;
+    }).then(result => {
+        return result.ok
+    });
 }
