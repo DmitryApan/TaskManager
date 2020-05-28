@@ -72,19 +72,30 @@
   box-shadow: -1px 1px 3px;
 }
 
-.section-card-delete {
-  height: 12px;
-  width: 12px;
+.button-x-small, .button-x-big {
   margin-left: auto;
   background-color: rgba(250, 29, 0, 0.602);
   border-radius: 3px;  
 
-  text-align: center;  
-  line-height: 12px;
+  text-align: center; 
   color: white;
   font-family: monospace;
 
   cursor: pointer;
+}
+
+.button-x-small {
+  height: 12px;
+  width: 12px;
+  
+  line-height: 12px;
+}
+
+.button-x-big {
+  height: 20px;
+  width: 20px;
+  font-size: 20px;
+  line-height: 20px;
 }
 
 .section-card-info {
@@ -130,4 +141,23 @@
 
 .section-card-image {
   border-radius: 3px 3px 0px 0px;
+}
+
+.modal-overlay { 
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-window {
+  width: 400px;
+  padding: 10px;  
+  border-radius: 5px;
+  background-color: #ffffff;
 }
