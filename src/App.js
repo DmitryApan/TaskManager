@@ -13,7 +13,8 @@ class App extends React.Component {
         this.state = {
             dataCard: {
                 statuses: null
-            }                 
+            },
+            idCard: null
         };  
     }
 
@@ -109,14 +110,13 @@ class App extends React.Component {
 
     findCardById = (id) => {
         let dataCards = this.state.dataCard.dataByStatuses;
+        let card = null;
                 
-        for (let key in dataCards) {
-            let card = dataCards[key].find(item => item._id === id);
-
-            if (card) {                
-                return card;
-            }
-        }
+        Object.values(dataCards).find(array => (
+            card = array.find(item => item._id === id)             
+        ));
+        
+        return card;
     }
 
     render() {

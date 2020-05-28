@@ -44,7 +44,7 @@ export function cardDelete(id) {
         url: `${urlCardCreate}/${id}`,
         json: false,
         method: 'DELETE'
-    }).then(result => {
-        return result.ok
+    }).then(({ok}) => {
+        return ok;
     });
 }
