@@ -1,8 +1,16 @@
 import React from 'react';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Redirect,    
+    useParams    
+  } from "react-router-dom";
 
 import {ModalCard} from './ModalCard';
 import {Section} from './Section';
 import {CardAddPanel} from './CardAddPanel';
+import {CardInfo} from './CardInfo';
 import {cardCreate, cardDelete, getSettings, getDataCards} from './networkFunctions';
 
 import './App.css';
@@ -14,7 +22,8 @@ class App extends React.Component {
             dataCard: {
                 statuses: null
             },
-            idCard: null
+            idCard: null,
+            redirect: null           
         };  
     }
 
@@ -41,7 +50,8 @@ class App extends React.Component {
         });            
 
         this.setState({
-            dataCard: dataCardUpdate,            
+            dataCard: dataCardUpdate,
+            redirect: null                       
         });        
     }
 
@@ -64,6 +74,12 @@ class App extends React.Component {
                 dataByStatuses: updateDataByStatuses,
                 statuses
             },           
+        });               
+    }
+
+    handleInfoCard = ({_id}) => {
+        this.setState({
+            redirect: `/${_id}`            
         });               
     }
 
@@ -112,35 +128,68 @@ class App extends React.Component {
         let dataCards = this.state.dataCard.dataByStatuses;
         let card = null;
                 
-        Object.values(dataCards).find(array => (
+        dataCards && Object.values(dataCards).find(array => (
             card = array.find(item => item._id === id)             
         ));
         
         return card;
     }
-
-    render() {
+    
+    MainPage = () => {
         const {statuses, dataByStatuses} = this.state.dataCard;  
-        const {idCard} = this.state;      
-        
+        const {idCard} = this.state;
+
         return (
             <>
-            <div>
-                <CardAddPanel onCreateCard={this.handleCreateCard} />
+            <CardAddPanel onCreateCard={this.handleCreateCard} />
 
-                <div class = "flex-row">
-                    {statuses && statuses.map(status => ( 
-                        <Section 
-                            status={status} 
-                            cards={dataByStatuses[status] || []}
-                            onDeleteCard={this.handleDeleteCard}
-                            onModalInfo={this.handleModalInfo}
-                        />)) }
-                </div>                
-            </div> 
+            <div class = "flex-row">
+                {statuses && statuses.map(status => ( 
+                    <Section 
+                        status={status} 
+                        cards={dataByStatuses[status] || []}
+                        onInfoCard={this.handleInfoCard}
+                        onDeleteCard={this.handleDeleteCard}
+                        onModalInfo={this.handleModalInfo}
+                    />)) }
+            </div>                           
             
-            {idCard && <ModalCard onCloseModal={this.handleCloseModal} {...this.findCardById(idCard)} />}
-            </>   
+            {idCard && 
+            <ModalCard onCloseModal={this.handleCloseModal} {...this.findCardById(idCard)}>
+                { card => (
+                    <CardInfo {...card} />
+                )}
+            </ModalCard>} 
+            </>
+        )
+    }
+
+    CardPage = () => {
+        let {id} = useParams();
+        let card = this.findCardById(id);        
+
+        return (
+            card && 
+                <div>
+                    <CardInfo {...card} />                    
+                </div>                
+        )
+    }
+
+    render() {  
+        const {redirect} = this.state;
+        
+        return (
+            <Router>
+                <Switch>                             
+                    <Route exact path='/'>
+                        {redirect ? <Redirect exact to={redirect}/> : <this.MainPage />}                                      
+                    </Route>
+                    <Route path='/:id'>                       
+                        <this.CardPage />                  
+                    </Route>                    
+                </Switch>
+            </Router>               
         );
     }
 }
