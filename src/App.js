@@ -2,10 +2,9 @@ import React from 'react';
 import {
     BrowserRouter as Router,
     Switch,
-    Route,
-    Redirect,    
+    Route,      
     useParams    
-  } from "react-router-dom";
+  } from 'react-router-dom';
 
 import {ModalCard} from './ModalCard';
 import {Section} from './Section';
@@ -22,8 +21,7 @@ class App extends React.Component {
             dataCard: {
                 statuses: null
             },
-            idCard: null,
-            redirect: null           
+            idCard: null                      
         };  
     }
 
@@ -50,8 +48,7 @@ class App extends React.Component {
         });            
 
         this.setState({
-            dataCard: dataCardUpdate,
-            redirect: null                       
+            dataCard: dataCardUpdate,                                  
         });        
     }
 
@@ -74,12 +71,6 @@ class App extends React.Component {
                 dataByStatuses: updateDataByStatuses,
                 statuses
             },           
-        });               
-    }
-
-    handleInfoCard = ({_id}) => {
-        this.setState({
-            redirect: `/${_id}`            
         });               
     }
 
@@ -147,8 +138,7 @@ class App extends React.Component {
                 {statuses && statuses.map(status => ( 
                     <Section 
                         status={status} 
-                        cards={dataByStatuses[status] || []}
-                        onInfoCard={this.handleInfoCard}
+                        cards={dataByStatuses[status] || []}                        
                         onDeleteCard={this.handleDeleteCard}
                         onModalInfo={this.handleModalInfo}
                     />)) }
@@ -176,14 +166,12 @@ class App extends React.Component {
         )
     }
 
-    render() {  
-        const {redirect} = this.state;
-        
+    render() {       
         return (
             <Router>
                 <Switch>                             
                     <Route exact path='/'>
-                        {redirect ? <Redirect exact to={redirect}/> : <this.MainPage />}                                      
+                        <this.MainPage />                                  
                     </Route>
                     <Route path='/:id'>                       
                         <this.CardPage />                  

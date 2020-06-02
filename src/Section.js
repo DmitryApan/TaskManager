@@ -7,7 +7,7 @@ import {Header} from './Header';
 export class Section extends React.Component {
     
     render() {
-        const {status, cards, onInfoCard, onDeleteCard, onModalInfo} = this.props;
+        const {status, cards, onModalInfo, onDeleteCard} = this.props;
 
         let headerInfo = {
             text: status,
@@ -21,8 +21,7 @@ export class Section extends React.Component {
                 {
                     cards && cards.map(card => ( 
                         <Card 
-                            key={card._id} 
-                            onInfoCard={onInfoCard}
+                            key={card._id}                            
                             onDeleteCard={onDeleteCard} 
                             onModalInfo={onModalInfo}
                             {...card} 

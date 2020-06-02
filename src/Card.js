@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 import {Avatar} from './Avatar';
 
@@ -15,21 +16,15 @@ export class Card extends React.Component {
     this.props.onModalInfo(this.props);
 
     event.stopPropagation();
-  }
-
-  handleInfo = (event) => {
-    this.props.onInfoCard({...this.props});
-
-    event.stopPropagation();
-  }
+  }  
 
   render() {
-    const {imageSrc, description, avatars = []} = this.props;
+    const {_id, imageSrc, description, avatars = []} = this.props;
 
     return (
       <div onClick={this.handleModalInfo} class="section-card flex-column">
-        <div class="flex-row">
-          <div onClick={this.handleInfo} class="button-arrow-small">&#187;</div>
+        <div onClick={event => event.stopPropagation()} class="flex-row">
+          <Link class="button-arrow-small" to={_id}>&#187;</Link>
           <div onClick={this.handleDelete} class="button-x-small">&#xd7;</div>
         </div>
         {imageSrc ? <img class="section-card-image" src={imageSrc} alt=""></img> : null}

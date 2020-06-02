@@ -72,33 +72,41 @@
   box-shadow: -1px 1px 3px;
 }
 
-.button-x-small, .button-x-big, .button-arrow-small, .button-arrow-big {  
+.button-x-small, 
+.button-x-big, 
+.button-arrow-small, 
+.button-arrow-big {  
   border-radius: 3px;  
 
   text-align: center; 
+  text-decoration: none;
   color: white;
   font-family: monospace;
 
   cursor: pointer;
 }
 
-.button-x-small, .button-x-big {
+.button-x-small, 
+.button-x-big {
   margin-left: auto;
   background-color: rgba(250, 29, 0, 0.6);
 }
 
-.button-arrow-small, .button-arrow-big {  
+.button-arrow-small, 
+.button-arrow-big {  
   background-color: rgba(0, 171, 250, 0.904);
 }
 
-.button-x-small, .button-arrow-small {
+.button-x-small, 
+.button-arrow-small {
   height: 12px;
   width: 12px;
   
   line-height: 12px;
 }
 
-.button-x-big, .button-arrow-big {
+.button-x-big, 
+.button-arrow-big {
   height: 20px;
   width: 20px;
   font-size: 20px;
