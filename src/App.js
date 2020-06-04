@@ -125,21 +125,21 @@ class App extends React.Component {
         
         return (
             <>
-            <div>
-                <CardAddPanel onCreateCard={this.handleCreateCard} />
+                <div>
+                    <CardAddPanel onCreateCard={this.handleCreateCard} />
 
-                <div class = "flex-row">
-                    {statuses && statuses.map(status => ( 
-                        <Section 
-                            status={status} 
-                            cards={dataByStatuses[status] || []}
-                            onDeleteCard={this.handleDeleteCard}
-                            onModalInfo={this.handleModalInfo}
-                        />)) }
-                </div>                
-            </div> 
-            
-            {idCard && <ModalCard onCloseModal={this.handleCloseModal} {...this.findCardById(idCard)} />}
+                    <div class = "flex-row">
+                        {statuses && statuses.map(status => ( 
+                            <Section 
+                                status={status} 
+                                cards={dataByStatuses[status] || []}
+                                onDeleteCard={this.handleDeleteCard}
+                                onModalInfo={this.handleModalInfo}
+                            />)) }
+                    </div>                
+                </div> 
+                
+                {idCard && <ModalCard onCloseModal={this.handleCloseModal} {...this.findCardById(idCard)} />}
             </>   
         );
     }
