@@ -1,9 +1,14 @@
 import React from 'react';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,           
+  } from 'react-router-dom';
 
-import {ModalCard} from './ModalCard';
-import {Section} from './Section';
-import {CardAddPanel} from './CardAddPanel';
-import {cardCreate, cardDelete, getSettings, getDataCards} from './networkFunctions';
+import {getSettings, getDataCards} from './networkFunctions';
+
+import {HomePage} from './HomePage';
+import {CardPage} from './CardPage';
 
 import './App.css';
 
@@ -12,9 +17,10 @@ class App extends React.Component {
         super(props);        
         this.state = {
             dataCard: {
-                statuses: null
+                statuses: null,
+                dataByStatuses: null
             },
-            idCard: null
+            idCard: null                      
         };  
     }
 
@@ -41,106 +47,28 @@ class App extends React.Component {
         });            
 
         this.setState({
-            dataCard: dataCardUpdate,            
+            dataCard: dataCardUpdate                                  
         });        
-    }
+    }   
+    
+    updateData = (value) => {
+        this.setState(value);
+    }    
 
-    handleCreateCard = async(description) => {        
-        const {statuses, dataByStatuses} = this.state.dataCard;
-        let body = {
-            description
-        }        
-          
-        let card = await cardCreate(body);
-        
-        let {status} = card;        
-        let updateDataByStatuses = {
-            ...dataByStatuses,
-            [status]: [...(dataByStatuses[status] || []), card]
-        }       
-        
-        this.setState({   
-            dataCard: {
-                dataByStatuses: updateDataByStatuses,
-                statuses
-            },           
-        });               
-    }
-
-    handleDeleteCard = async({_id, status}) => {
-        const {statuses, dataByStatuses} = this.state.dataCard;
-
-        if (!(await cardDelete(_id))) {
-            return;
-        }
-        
-        let arrayCards = dataByStatuses[status].filter(item => item._id !== _id);
-        let updateDataByStatuses = {
-            ...dataByStatuses,
-            [status]: arrayCards
-        }
-        
-        if (!arrayCards.length) {
-            delete updateDataByStatuses[status];            
-        }
-        
-        this.setState({       
-            dataCard: {
-                dataByStatuses: updateDataByStatuses,
-                statuses
-            },                       
-        });
-    }
-
-    handleModalInfo = ({_id}) => {
-        document.body.style.overflow = 'hidden';
-        
-        this.setState({            
-            idCard: _id
-        });        
-    }
-
-    handleCloseModal = () => {
-        document.body.style.overflow = 'visible';
-
-        this.setState({            
-            idCard: null                
-        });
-    }
-
-    findCardById = (id) => {
-        let dataCards = this.state.dataCard.dataByStatuses;
-        let card = null;
-                
-        Object.values(dataCards).find(array => (
-            card = array.find(item => item._id === id)             
-        ));
-        
-        return card;
-    }
-
-    render() {
-        const {statuses, dataByStatuses} = this.state.dataCard;  
-        const {idCard} = this.state;      
+    render() {     
+        const {state, updateData} = this;
         
         return (
-            <>
-                <div>
-                    <CardAddPanel onCreateCard={this.handleCreateCard} />
-
-                    <div class = "flex-row">
-                        {statuses && statuses.map(status => ( 
-                            <Section 
-                                status={status} 
-                                cards={dataByStatuses[status] || []}
-                                onDeleteCard={this.handleDeleteCard}
-                                onModalInfo={this.handleModalInfo}
-                            />)) }
-                    </div>                
-                </div> 
-                
-                {idCard && <ModalCard onCloseModal={this.handleCloseModal} {...this.findCardById(idCard)} />}
-            </>   
+            <Router>
+                <Switch>                             
+                    <Route exact path='/'>
+                        <HomePage {...state} updateData={updateData} />                                  
+                    </Route>
+                    <Route path='/:id' >
+                        <CardPage {...this.state.dataCard} />
+                    </Route>                                                        
+                </Switch>
+            </Router>
         );
     }
 }

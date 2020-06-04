@@ -10,18 +10,14 @@ export class ModalCard extends React.Component {
     }
 
     render() {
-        const {status, description} = this.props;
-
         return (        
             <div onClick={this.handleCloseModal} class="modal-overlay">
                 <div onClick={(event) => event.stopPropagation()} class="modal-window">
-                    <div class="flex-row">
-                        <div>{`Status: ${status}`}</div>
+                    <div class="flex-row">                        
                         <div onClick={this.handleCloseModal} class="button-x-big">&#xd7;</div>                    
                     </div>
-                    <div>                    
-                        <p>{description}</p>
-                    </div>
+                    
+                    {this.props.children(this.props)}
                 </div>            
             </div>        
         )
