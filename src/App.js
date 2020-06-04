@@ -68,7 +68,7 @@ class App extends React.Component {
                         <CardPage {...this.state.dataCard} />
                     </Route>                                                        
                 </Switch>
-            </Router>               
+            </Router>
         );
     }
 }
