@@ -9,6 +9,7 @@ import {getSettings, getDataCards} from './networkFunctions';
 
 import {HomePage} from './HomePage';
 import {CardPage} from './CardPage';
+import {LoginPage} from './LoginPage';
 
 import './App.css';
 
@@ -19,7 +20,7 @@ class App extends React.Component {
             dataCard: {
                 statuses: null,
                 dataByStatuses: null
-            },
+            },            
             idCard: null                      
         };  
     }
@@ -55,6 +56,14 @@ class App extends React.Component {
         this.setState(value);
     }    
 
+    handlerChangeLoginInput = (event) => {
+
+    }
+
+    handlerSubmitLoginForm = (event) => {
+        event.preventDefault();
+    }
+
     render() {     
         const {state, updateData} = this;
         
@@ -63,6 +72,31 @@ class App extends React.Component {
                 <Switch>                             
                     <Route exact path='/'>
                         <HomePage {...state} updateData={updateData} />                                  
+                    </Route>
+                    <Route path='/login'>
+                        <LoginPage {
+                            ...{
+                                buttonText: 'Login',
+                                linkText: 'Logout?',
+                                linkUrl: '/register',
+                                onSubmitLoginForm: this.handlerSubmitLoginForm,
+                                onChangeLoginInput: this.handlerChangeLoginInput
+                            }
+                        } />
+                    </Route>
+                    <Route path='/register'>
+                    <LoginPage {
+                            ...{
+                                buttonText: 'Logout',
+                                linkText: 'Login?',
+                                linkUrl: '/login',
+                                onSubmitLoginForm: this.handlerSubmitLoginForm,
+                                onChangeLoginInput: this.handlerChangeLoginInput
+                            }
+                        } />
+                    </Route>
+                    <Route path='/logout'>
+                        
                     </Route>
                     <Route path='/:id' >
                         <CardPage {...this.state.dataCard} />

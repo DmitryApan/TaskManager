@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 import {ModalCard} from './ModalCard';
 import {CardInfo} from './CardInfo';
@@ -80,14 +81,19 @@ export class HomePage extends React.Component {
             <>
             <CardAddPanel onCreateCard={this.handleCreateCard} />
 
-            <div class = "flex-row">
-                {statuses && statuses.map(status => ( 
-                    <Section 
-                        status={status} 
-                        cards={dataByStatuses[status] || []}                        
-                        onDeleteCard={this.handleDeleteCard}
-                        onModalInfo={this.handleModalInfo}
-                    />)) }
+            <div class="homepage-overlay flex-row">
+                <div class="flex-row">
+                    {statuses && statuses.map(status => ( 
+                        <Section 
+                            status={status} 
+                            cards={dataByStatuses[status] || []}                        
+                            onDeleteCard={this.handleDeleteCard}
+                            onModalInfo={this.handleModalInfo}
+                        />))}
+                </div>
+                <div class="homepage-region-logout flex-column">
+                    <Link class="button-logout" to="/logout" >Logout</Link>
+                </div>
             </div>                           
             
             {idCard && 
