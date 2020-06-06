@@ -92,7 +92,7 @@ export class HomePage extends React.Component {
                         />))}
                 </div>
                 <div class="homepage-region-logout flex-column">
-                    <Link class="button-logout" to="/logout" >Logout</Link>
+                    <Link class="button-logout" to="/logout">Logout</Link>
                 </div>
             </div>                           
             
