@@ -70,30 +70,30 @@ class App extends React.Component {
         return (
             <Router>
                 <Switch>                             
-                    <Route exact path='/'>
+                    <Route exact path="/">
                         <HomePage {...state} updateData={updateData} />                                  
                     </Route>
-                    <Route path='/login'>
+                    <Route path="/login">
                         <LoginPage                                                        
-                            buttonText={'Login'}
-                            linkText={'Logout?'} 
-                            linkUrl={'/register'}
+                            buttonText={"Login"}
+                            linkText={"Logout?"} 
+                            linkUrl={"/register"}
                             onSubmitLoginForm={this.handlerSubmitLoginForm}
                             onChangeLoginInput={this.handlerChangeLoginInput}
                         />
                     </Route>
-                    <Route path='/register'>
+                    <Route path="/register">
                         <LoginPage                            
-                            buttonText={'Logout'}
-                            linkText={'Login'}
-                            linkUrl={'/login'}
+                            buttonText={"Logout"}
+                            linkText={"Login"}
+                            linkUrl={"/login"}
                             onSubmitLoginForm={this.handlerSubmitLoginForm}
                             onChangeLoginInput={this.handlerChangeLoginInput}                            
                         />
                     </Route>
-                    <Route path='/logout'>                        
+                    <Route path="/logout">                        
                     </Route>
-                    <Route path='/:id' >
+                    <Route path="/:id">
                         <CardPage {...this.state.dataCard} />
                     </Route>                                                        
                 </Switch>
