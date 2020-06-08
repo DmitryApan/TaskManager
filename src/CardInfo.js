@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 import './App.css';
 
@@ -60,15 +60,16 @@ export class CardInfo extends React.Component {
                             : description
                         }
                     </div>
+                    {changeDescription && 
                     <div>
-                        {changeDescription && (isEditing 
-                            ? [
+                        {isEditing 
+                            ? <Fragment>
                                 <button onClick={this.handleSaveButton}>Save</button>, 
                                 <button onClick={this.handleCancelButton}>Cancel</button>
-                            ]
+                            </Fragment>
                             : <button onClick={this.handleChangeButton}>Edit</button>
-                        )}
-                    </div>
+                        }
+                    </div>}
                 </div>            
             </div>
         )
