@@ -6,8 +6,7 @@ export class CardInfo extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isEditing: false,
-            oldDescription: props.description,
+            isEditing: false,            
             description: props.description
         }
     }
@@ -27,15 +26,14 @@ export class CardInfo extends React.Component {
         
         await onChangeCard(body, this.props);       
 
-        this.setState({
-            oldDescription: this.state.description,
+        this.setState({            
             isEditing: false
         });
     }
 
     handleCancelButton = (event) => {
         this.setState({
-            description: this.state.oldDescription,
+            description: this.props.description,
             isEditing: false
         });
     }
