@@ -1,4 +1,4 @@
-import {urlCardData, urlCardCreate, urlCardSettings} from './Data';
+import {urlCardData, urlCardCreate, urlCardSettings, urlLogin} from './Data';
 
 async function serverRequest({url, json = true, method = 'GET', headers, body}) {    
     let response = await fetch(url, {
@@ -46,5 +46,16 @@ export function cardDelete(id) {
         method: 'DELETE'
     }).then(({ok}) => {
         return ok;
+    });
+}
+
+export function login(body) {
+    return serverRequest({
+        url: urlLogin,        
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(body)
     });
 }

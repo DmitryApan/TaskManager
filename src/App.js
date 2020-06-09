@@ -2,10 +2,11 @@ import React from 'react';
 import {
     BrowserRouter as Router,
     Switch,
-    Route,           
+    Route,
+    Redirect           
   } from 'react-router-dom';
 
-import {getSettings, getDataCards} from './networkFunctions';
+import {getSettings, getDataCards, login} from './networkFunctions';
 
 import {HomePage} from './HomePage';
 import {CardPage} from './CardPage';
@@ -21,7 +22,7 @@ class App extends React.Component {
                 statuses: null,
                 dataByStatuses: null
             },            
-            idCard: null                      
+            idCard: null                                
         };  
     }
 
@@ -57,15 +58,41 @@ class App extends React.Component {
     }    
 
     handlerChangeLoginInput = (event) => {
+        const value = event.target.value;
+        const name = event.target.name;
 
+        this.setState({
+            messageLoginForm: null,
+            [name]: value
+        });
     }
 
-    handlerSubmitLoginForm = (event) => {
+    handlerSubmitLoginForm = async(event) => {
         event.preventDefault();
+
+        let body = {
+            email: this.state.userEmail,
+            password: this.state.userPassword
+        }
+
+        let response = await login(body);
+
+        if (response.ok) {
+            this.setState({
+                isLogin: true
+            });
+        }
+        else {
+            this.setState({  
+                isLogin: false,              
+                messageLoginForm: 'Wrong password or email!'
+            });
+        }        
     }
 
     render() {     
         const {state, updateData} = this;
+        const {isLogin, messageLoginForm} = this.state;
         
         return (
             <Router>
@@ -74,19 +101,23 @@ class App extends React.Component {
                         <HomePage {...state} updateData={updateData} />                                  
                     </Route>
                     <Route path="/login">
-                        <LoginPage                                                        
-                            buttonText={"Login"}
-                            linkText={"Logout?"} 
-                            linkUrl={"/register"}
-                            onSubmitLoginForm={this.handlerSubmitLoginForm}
-                            onChangeLoginInput={this.handlerChangeLoginInput}
-                        />
+                        { isLogin
+                            ? <Redirect to="/" />
+                            : <LoginPage                                                        
+                                buttonText="Login"
+                                linkText="Logout?" 
+                                linkUrl="/register"
+                                message={messageLoginForm}
+                                onSubmitLoginForm={this.handlerSubmitLoginForm}
+                                onChangeLoginInput={this.handlerChangeLoginInput}
+                            />
+                        }
                     </Route>
                     <Route path="/register">
                         <LoginPage                            
-                            buttonText={"Logout"}
-                            linkText={"Login"}
-                            linkUrl={"/login"}
+                            buttonText="Logout"
+                            linkText="Login"
+                            linkUrl="/login"
                             onSubmitLoginForm={this.handlerSubmitLoginForm}
                             onChangeLoginInput={this.handlerChangeLoginInput}                            
                         />

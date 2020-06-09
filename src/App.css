@@ -219,6 +219,11 @@
   color: rgb(63, 97, 124);
 }
 
+.login-message-region {
+  margin-left: 10px;
+  color: red;
+}
+
 input::placeholder {
   color: rgb(224, 222, 222);
  } 
