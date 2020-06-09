@@ -62,7 +62,7 @@ export class CardInfo extends React.Component {
                     <div>
                         {isEditing 
                             ? <Fragment>
-                                <button onClick={this.handleSaveButton}>Save</button>, 
+                                <button onClick={this.handleSaveButton}>Save</button> 
                                 <button onClick={this.handleCancelButton}>Cancel</button>
                             </Fragment>
                             : <button onClick={this.handleChangeButton}>Edit</button>
