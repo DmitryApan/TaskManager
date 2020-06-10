@@ -48,3 +48,14 @@ export function cardDelete(id) {
         return ok;
     });
 }
+
+export function cardChange(id, body) {
+    return serverRequest({
+        url: `${urlCardCreate}/${id}`,
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(body)                
+    });
+}
