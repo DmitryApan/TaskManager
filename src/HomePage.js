@@ -58,23 +58,39 @@ export class HomePage extends React.Component {
 
     handleChangeCard = async(body, {_id, status}) => {
         const {statuses, dataByStatuses} = this.props.dataCard;
-
+        
         await cardChange(_id, body);
 
-        let arrayChange = dataByStatuses[status].map(item => item._id === _id 
-            ? {...item, description: body.description}
-            : item            
-        );
+        if (body.status === status) {
+            let arrayChange = dataByStatuses[status].map(item => item._id === _id 
+                ? {...item, description: body.description}
+                : item            
+            );
 
-        this.props.updateData({
-            dataCard: {
-                dataByStatuses: {
-                    ...dataByStatuses,
-                    [status]: arrayChange
-                },
-                statuses
-            }
-        });
+            this.props.updateData({
+                dataCard: {
+                    dataByStatuses: {
+                        ...dataByStatuses,
+                        [status]: arrayChange
+                    },
+                    statuses
+                }
+            });
+        }
+        else {
+            let arrayChange = dataByStatuses[status].filter(item => item._id !== _id);
+            /*
+            this.props.updateData({
+                dataCard: {
+                    dataByStatuses: {
+                        ...dataByStatuses,
+                        [status]: arrayChange,
+                        [body.status]: dataByStatuses[body.status].push()
+                    }
+                }
+            })
+            */
+        }       
     }
 
     handleModalInfo = ({_id}) => {
@@ -115,12 +131,13 @@ export class HomePage extends React.Component {
                 <ModalCard 
                     onCloseModal={this.handleCloseModal} 
                     onChangeCard={this.handleChangeCard}
+                    changeDescription={true}
+                    statuses={statuses}
                     {...findCardById(idCard, dataByStatuses)}
                 >
-                    { card => (
-                        <CardInfo 
-                            changeDescription={true}
-                            {...card} 
+                    { (card) => (
+                        <CardInfo
+                            {...card}
                         />
                     )}
                 </ModalCard>} 
