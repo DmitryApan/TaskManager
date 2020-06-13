@@ -56,41 +56,46 @@ export class HomePage extends React.Component {
         });
     }
 
-    handleChangeCard = async(body, {_id, status}) => {
+    handleChangeCard = async(changeCard, card) => {
         const {statuses, dataByStatuses} = this.props.dataCard;
-        
-        await cardChange(_id, body);
+        let {status: changeStatusCard, description: changeDescriptionCard} = changeCard;
+        let {_id: idCard, status: statusCard} = card;      
 
-        if (body.status === status) {
-            let arrayChange = dataByStatuses[status].map(item => item._id === _id 
-                ? {...item, description: body.description}
-                : item            
+        let body = {
+            status: changeStatusCard,
+            description: changeDescriptionCard
+        };        
+        let tempDataByStatuses = {
+            ...dataByStatuses                
+        } 
+        let arrayChange = null;
+
+        await cardChange(idCard, body);
+
+        if (changeStatusCard === statusCard) {
+            arrayChange = dataByStatuses[statusCard].map(item => item._id === idCard 
+                ? {...item, description: changeDescriptionCard}
+                : item
             );
-
-            this.props.updateData({
-                dataCard: {
-                    dataByStatuses: {
-                        ...dataByStatuses,
-                        [status]: arrayChange
-                    },
-                    statuses
-                }
-            });
         }
         else {
-            let arrayChange = dataByStatuses[status].filter(item => item._id !== _id);
-            /*
-            this.props.updateData({
-                dataCard: {
-                    dataByStatuses: {
-                        ...dataByStatuses,
-                        [status]: arrayChange,
-                        [body.status]: dataByStatuses[body.status].push()
-                    }
-                }
-            })
-            */
-        }       
+            arrayChange = dataByStatuses[statusCard].filter(({_id}) => _id !== idCard);
+
+            if (!tempDataByStatuses[changeStatusCard]) {
+                tempDataByStatuses[changeStatusCard] = [];
+            }
+
+            tempDataByStatuses[changeStatusCard].push(changeCard);
+        }
+
+        tempDataByStatuses[statusCard] = arrayChange;
+
+        this.props.updateData({
+            dataCard: {
+                dataByStatuses: tempDataByStatuses,
+                statuses
+            }
+        });      
     }
 
     handleModalInfo = ({_id}) => {
@@ -129,17 +134,17 @@ export class HomePage extends React.Component {
                 
                 {idCard && 
                 <ModalCard 
-                    onCloseModal={this.handleCloseModal} 
-                    onChangeCard={this.handleChangeCard}
-                    changeDescription={true}
-                    statuses={statuses}
-                    {...findCardById(idCard, dataByStatuses)}
+                    onCloseModal={this.handleCloseModal}                    
+                    forChildren={
+                        {
+                            changeDescription: true,
+                            statuses,
+                            card: {...findCardById(idCard, dataByStatuses)},
+                            onChangeCard: this.handleChangeCard
+                        }
+                    }                    
                 >
-                    { (card) => (
-                        <CardInfo
-                            {...card}
-                        />
-                    )}
+                    {props => <CardInfo {...props} />}
                 </ModalCard>} 
             </Fragment>
         )        
