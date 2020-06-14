@@ -77,7 +77,7 @@ class App extends React.Component {
 
         let response = await login(body);
 
-        if (response.ok) {
+        if (response.email) {
             this.setState({
                 isLogin: true
             });
