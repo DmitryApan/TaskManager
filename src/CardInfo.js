@@ -5,38 +5,28 @@ import './App.css';
 import { TextEditor } from './TextEditor';
 
 export class CardInfo extends React.Component {
-    handleChangeDescription = async(description) => {
-        const {onChangeCard, card} = this.props;
+    handleChangeDescription = (description) => {
+        const {onChangeDescription, card} = this.props;
 
-        let changeCard = {
-            ...card,            
-            description
-        }        
-        
-        await onChangeCard(changeCard, card);        
+        onChangeDescription(description, card);        
     }
 
-    handleChangeStatus = async(event) => {
-        const {onChangeCard, card} = this.props;
+    handleChangeStatus = ({value}) => {
+        const {onChangeStatus, card} = this.props;
 
-        let changeCard = {
-            ...card,
-            status: event.value            
-        }        
-        
-        await onChangeCard(changeCard, card);        
+        onChangeStatus(value, card);        
     }
 
     render() {
-        let {changeDescription, statuses} = this.props;  
-        let {status, description} = this.props.card;
+        let {mutableCard, statuses, card} = this.props;  
+        let {status, description} = card;
 
         let statusOptions = statuses && statuses.map(value => ({value, label: value}));
 
         return (
             <div>
                 <div>
-                    {changeDescription                        
+                    {mutableCard                        
                         ? <Fragment> 
                             <Select
                                 defaultValue={{value: status, label: status}}

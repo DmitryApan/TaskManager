@@ -35,8 +35,6 @@ class App extends React.Component {
         dataCardUpdate.statuses = await getSettings();       
         let cards = await getDataCards();
 
-        console.log(cards);       
-
         cards.forEach((card) => {
             let {status} = {...card}
             let {dataByStatuses} = dataCardUpdate;

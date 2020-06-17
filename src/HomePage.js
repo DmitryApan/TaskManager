@@ -12,7 +12,8 @@ export class HomePage extends React.Component {
     handleCreateCard = async(description) => {        
         const {statuses, dataByStatuses} = this.props.dataCard;
         let body = {
-            description
+            description,
+            title: 'Hello'            
         }        
           
         let card = await cardCreate(body);
@@ -56,46 +57,55 @@ export class HomePage extends React.Component {
         });
     }
 
-    handleChangeCard = async(changeCard, card) => {
+    handleChangeDescription = async(description, {_id, status}) => {
         const {statuses, dataByStatuses} = this.props.dataCard;
-        let {status: changeStatusCard, description: changeDescriptionCard} = changeCard;
-        let {_id: idCard, status: statusCard} = card;      
+        
+        await cardChange(_id, {description});
 
-        let body = {
-            status: changeStatusCard,
-            description: changeDescriptionCard
-        };        
-        let tempDataByStatuses = {
-            ...dataByStatuses                
-        } 
-        let arrayChange = null;
-
-        await cardChange(idCard, body);
-
-        if (changeStatusCard === statusCard) {
-            arrayChange = dataByStatuses[statusCard].map(item => item._id === idCard 
-                ? {...item, description: changeDescriptionCard}
-                : item
-            );
-        }
-        else {
-            arrayChange = dataByStatuses[statusCard].filter(({_id}) => _id !== idCard);
-
-            if (!tempDataByStatuses[changeStatusCard]) {
-                tempDataByStatuses[changeStatusCard] = [];
-            }
-
-            tempDataByStatuses[changeStatusCard].push(changeCard);
-        }
-
-        tempDataByStatuses[statusCard] = arrayChange;
+        let arrayChange = dataByStatuses[status].map(item => item._id === _id 
+            ? {...item, description}
+            : item
+        );
 
         this.props.updateData({
             dataCard: {
-                dataByStatuses: tempDataByStatuses,
+                dataByStatuses: {
+                    ...dataByStatuses,
+                    [status]: arrayChange
+                },                
                 statuses
             }
-        });      
+        });       
+    }
+
+    handleChangeStatus = async(newStatus, card) => {
+        let {statuses, dataByStatuses} = this.props.dataCard;
+        let {_id, status} = card;
+
+        await cardChange(_id, {status: newStatus});
+
+        let arrayChange = dataByStatuses[status].filter(item => item._id !== _id);
+        let dataByStatusesNew = {
+            ...dataByStatuses,
+            [status]: arrayChange
+        };
+        let newCard = {
+            ...card,
+            status: newStatus
+        };
+
+        if (!dataByStatusesNew[newStatus]) {
+            dataByStatusesNew[newStatus] = [];
+        }
+
+        dataByStatusesNew[newStatus].push(newCard);
+
+        this.props.updateData({
+            dataCard: {
+                dataByStatuses: dataByStatusesNew,
+                statuses
+            }
+        }); 
     }
 
     handleModalInfo = ({_id}) => {
@@ -121,7 +131,6 @@ export class HomePage extends React.Component {
         return (
             <Fragment>
                 <CardAddPanel onCreateCard={this.handleCreateCard} />
-
                 <div class = "flex-row">
                     {statuses && statuses.map(status => ( 
                         <Section 
@@ -131,21 +140,18 @@ export class HomePage extends React.Component {
                             onModalInfo={this.handleModalInfo}
                         />)) }
                 </div>                           
-                
                 {idCard && 
-                <ModalCard 
-                    onCloseModal={this.handleCloseModal}                    
-                    forChildren={
-                        {
-                            changeDescription: true,
-                            statuses,
-                            card: {...findCardById(idCard, dataByStatuses)},
-                            onChangeCard: this.handleChangeCard
-                        }
-                    }                    
-                >
-                    {props => <CardInfo {...props} />}
-                </ModalCard>} 
+                    <ModalCard 
+                        onCloseModal={this.handleCloseModal}                   
+                    >
+                        {() => <CardInfo 
+                            mutableCard={true}
+                            statuses={statuses}
+                            card={{...findCardById(idCard, dataByStatuses)}}
+                            onChangeStatus={this.handleChangeStatus}
+                            onChangeDescription={this.handleChangeDescription}                            
+                        />}
+                    </ModalCard>} 
             </Fragment>
         )        
     }
