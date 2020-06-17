@@ -11,6 +11,12 @@ export class CardInfo extends React.Component {
         onChangeDescription(description, card);        
     }
 
+    handleChangeTitle = (title) => {
+        const {onChangeTitle, card} = this.props;
+
+        onChangeTitle(title, card);
+    }
+
     handleChangeStatus = ({value}) => {
         const {onChangeStatus, card} = this.props;
 
@@ -18,20 +24,24 @@ export class CardInfo extends React.Component {
     }
 
     render() {
-        let {mutableCard, statuses, card} = this.props;  
-        let {status, description} = card;
+        let {isChanging, statuses, card} = this.props;  
+        let {status, title, description} = card;
 
         let statusOptions = statuses && statuses.map(value => ({value, label: value}));
 
         return (
             <div>
                 <div>
-                    {mutableCard                        
+                    {isChanging                        
                         ? <Fragment> 
                             <Select
                                 defaultValue={{value: status, label: status}}
                                 options={statusOptions}                            
                                 onChange={this.handleChangeStatus}
+                            />
+                            <TextEditor
+                                text={title}
+                                onChangeText={this.handleChangeTitle}
                             />
                             <TextEditor
                                 text={description}
@@ -40,6 +50,7 @@ export class CardInfo extends React.Component {
                         </Fragment>
                         : <div>
                             <p>{`Status: ${status}`}</p>
+                            <p>{`Title: ${title}`}</p>
                             <p>{description}</p>
                         </div>                        
                     }

@@ -9,12 +9,9 @@ import {findCardById} from './appFunctions';
 import {cardCreate, cardDelete, cardChange} from './networkFunctions';
 
 export class HomePage extends React.Component {
-    handleCreateCard = async(description) => {        
+    handleCreateCard = async(title) => {        
         const {statuses, dataByStatuses} = this.props.dataCard;
-        let body = {
-            description,
-            title: 'Hello'            
-        }        
+        let body = {title}        
           
         let card = await cardCreate(body);
         
@@ -22,7 +19,7 @@ export class HomePage extends React.Component {
         let updateDataByStatuses = {
             ...dataByStatuses,
             [status]: [...(dataByStatuses[status] || []), card]
-        }       
+        };       
         
         this.props.updateData({   
             dataCard: {
@@ -57,13 +54,13 @@ export class HomePage extends React.Component {
         });
     }
 
-    handleChangeDescription = async(description, {_id, status}) => {
+    handleChange = (key) => (async(value, {_id, status}) => {
         const {statuses, dataByStatuses} = this.props.dataCard;
-        
-        await cardChange(_id, {description});
 
-        let arrayChange = dataByStatuses[status].map(item => item._id === _id 
-            ? {...item, description}
+        await cardChange(_id, {[key]: value});
+
+        let arrayChange = dataByStatuses[status].map(item => item._id === _id
+            ? {...item, [key]: value}
             : item
         );
 
@@ -72,11 +69,11 @@ export class HomePage extends React.Component {
                 dataByStatuses: {
                     ...dataByStatuses,
                     [status]: arrayChange
-                },                
+                },
                 statuses
             }
-        });       
-    }
+        });
+    })
 
     handleChangeStatus = async(newStatus, card) => {
         let {statuses, dataByStatuses} = this.props.dataCard;
@@ -85,21 +82,16 @@ export class HomePage extends React.Component {
         await cardChange(_id, {status: newStatus});
 
         let arrayChange = dataByStatuses[status].filter(item => item._id !== _id);
-        let dataByStatusesNew = {
-            ...dataByStatuses,
-            [status]: arrayChange
-        };
         let newCard = {
             ...card,
             status: newStatus
         };
-
-        if (!dataByStatusesNew[newStatus]) {
-            dataByStatusesNew[newStatus] = [];
-        }
-
-        dataByStatusesNew[newStatus].push(newCard);
-
+        let dataByStatusesNew = {
+            ...dataByStatuses,
+            [status]: arrayChange,
+            [newStatus]: [...dataByStatuses[newStatus], newCard]
+        };
+        
         this.props.updateData({
             dataCard: {
                 dataByStatuses: dataByStatusesNew,
@@ -145,11 +137,12 @@ export class HomePage extends React.Component {
                         onCloseModal={this.handleCloseModal}                   
                     >
                         {() => <CardInfo 
-                            mutableCard={true}
+                            isChanging={true}
                             statuses={statuses}
-                            card={{...findCardById(idCard, dataByStatuses)}}
+                            card={findCardById(idCard, dataByStatuses)}
                             onChangeStatus={this.handleChangeStatus}
-                            onChangeDescription={this.handleChangeDescription}                            
+                            onChangeTitle={this.handleChange('title')}
+                            onChangeDescription={this.handleChange('description')}                            
                         />}
                     </ModalCard>} 
             </Fragment>
