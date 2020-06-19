@@ -15,9 +15,8 @@ export class ModalCard extends React.Component {
                 <div onClick={(event) => event.stopPropagation()} class="modal-window">
                     <div class="flex-row">                        
                         <div onClick={this.handleCloseModal} class="button-x-big">&#xd7;</div>                    
-                    </div>
-                    
-                    {this.props.children(this.props)}
+                    </div>                    
+                    {this.props.children()}
                 </div>            
             </div>        
         )

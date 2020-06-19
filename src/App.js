@@ -25,23 +25,22 @@ class App extends React.Component {
     }
 
     async componentDidMount() {
-        let dataCardUpdate = {
-            statuses: [],
-            dataByStatuses: {}
-        };
-
         console.log("App is ready");           
              
-        dataCardUpdate.statuses = await getSettings();       
+        let statuses = await getSettings();  
+        let dataCardUpdate = {
+            statuses,
+            dataByStatuses: statuses.reduce((acc, status) => ({
+                ...acc, 
+                [status]: []
+            }), {})
+        };
+
         let cards = await getDataCards();
 
         cards.forEach((card) => {
             let {status} = {...card}
             let {dataByStatuses} = dataCardUpdate;
-
-            if (!(dataByStatuses[status])) {                
-                dataByStatuses[status] = [];
-            }                
 
             dataByStatuses[status].push(card);
         });            

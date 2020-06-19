@@ -9,11 +9,9 @@ import {findCardById} from './appFunctions';
 import {cardCreate, cardDelete, cardChange} from './networkFunctions';
 
 export class HomePage extends React.Component {
-    handleCreateCard = async(description) => {        
+    handleCreateCard = async(title) => {        
         const {statuses, dataByStatuses} = this.props.dataCard;
-        let body = {
-            description
-        }        
+        let body = {title}        
           
         let card = await cardCreate(body);
         
@@ -21,7 +19,7 @@ export class HomePage extends React.Component {
         let updateDataByStatuses = {
             ...dataByStatuses,
             [status]: [...(dataByStatuses[status] || []), card]
-        }       
+        };       
         
         this.props.updateData({   
             dataCard: {
@@ -56,14 +54,14 @@ export class HomePage extends React.Component {
         });
     }
 
-    handleChangeCard = async(body, {_id, status}) => {
+    handleChange = (key) => (async(value, {_id, status}) => {
         const {statuses, dataByStatuses} = this.props.dataCard;
 
-        await cardChange(_id, body);
+        await cardChange(_id, {[key]: value});
 
-        let arrayChange = dataByStatuses[status].map(item => item._id === _id 
-            ? {...item, description: body.description}
-            : item            
+        let arrayChange = dataByStatuses[status].map(item => item._id === _id
+            ? {...item, [key]: value}
+            : item
         );
 
         this.props.updateData({
@@ -75,6 +73,31 @@ export class HomePage extends React.Component {
                 statuses
             }
         });
+    })
+
+    handleChangeStatus = async(newStatus, card) => {
+        let {statuses, dataByStatuses} = this.props.dataCard;
+        let {_id, status} = card;
+
+        await cardChange(_id, {status: newStatus});
+
+        let arrayChange = dataByStatuses[status].filter(item => item._id !== _id);
+        let newCard = {
+            ...card,
+            status: newStatus
+        };
+        let dataByStatusesNew = {
+            ...dataByStatuses,
+            [status]: arrayChange,
+            [newStatus]: [...dataByStatuses[newStatus], newCard]
+        };
+        
+        this.props.updateData({
+            dataCard: {
+                dataByStatuses: dataByStatusesNew,
+                statuses
+            }
+        }); 
     }
 
     handleModalInfo = ({_id}) => {
@@ -100,7 +123,6 @@ export class HomePage extends React.Component {
         return (
             <Fragment>
                 <CardAddPanel onCreateCard={this.handleCreateCard} />
-
                 <div class = "flex-row">
                     {statuses && statuses.map(status => ( 
                         <Section 
@@ -110,20 +132,19 @@ export class HomePage extends React.Component {
                             onModalInfo={this.handleModalInfo}
                         />)) }
                 </div>                           
-                
                 {idCard && 
-                <ModalCard 
-                    onCloseModal={this.handleCloseModal} 
-                    onChangeCard={this.handleChangeCard}
-                    {...findCardById(idCard, dataByStatuses)}
-                >
-                    { card => (
-                        <CardInfo 
-                            changeDescription={true}
-                            {...card} 
-                        />
-                    )}
-                </ModalCard>} 
+                    <ModalCard 
+                        onCloseModal={this.handleCloseModal}                   
+                    >
+                        {() => <CardInfo 
+                            isChanging={true}
+                            statuses={statuses}
+                            card={findCardById(idCard, dataByStatuses)}
+                            onChangeStatus={this.handleChangeStatus}
+                            onChangeTitle={this.handleChange('title')}
+                            onChangeDescription={this.handleChange('description')}                            
+                        />}
+                    </ModalCard>} 
             </Fragment>
         )        
     }
