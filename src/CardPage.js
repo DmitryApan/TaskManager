@@ -1,5 +1,8 @@
 import React from 'react';
-import {useParams} from 'react-router-dom';
+import {
+    useParams,
+    Redirect
+} from 'react-router-dom';
 
 import {CardInfo} from './CardInfo';
 
@@ -10,9 +13,10 @@ export function CardPage({dataByStatuses}) {
     let card = findCardById(id, dataByStatuses);      
 
     return (        
-        card && 
-            <div>
-                <CardInfo {...card} />                   
-            </div>                            
+        card 
+        ? <div>
+            <CardInfo {...card} />                   
+        </div>
+        : <Redirect to="/" />                           
     )    
 }

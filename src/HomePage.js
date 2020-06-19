@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
 
 import {ModalCard} from './ModalCard';
 import {CardInfo} from './CardInfo';
@@ -73,6 +72,14 @@ export class HomePage extends React.Component {
         });
     }
 
+    handleLogout = () => {
+        localStorage.removeItem('email');
+
+        this.props.updateData({            
+            isLogin: false           
+        });
+    }
+
     render() {
         const {idCard} = this.props;   
         const {statuses, dataByStatuses} = this.props.dataCard;               
@@ -92,7 +99,7 @@ export class HomePage extends React.Component {
                         />))}
                 </div>
                 <div class="homepage-region-logout flex-column">
-                    <Link class="button-logout" to="/logout">Logout</Link>
+                    <button onClick={this.handleLogout} class="button-logout">Logout</button>
                 </div>
             </div>                           
             

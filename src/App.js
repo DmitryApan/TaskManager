@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Redirect           
+    Redirect
   } from 'react-router-dom';
 
-import {getSettings, getDataCards, login} from './networkFunctions';
+import {getSettings, getDataCards, login, signUp} from './networkFunctions';
 
 import {HomePage} from './HomePage';
 import {CardPage} from './CardPage';
@@ -27,32 +27,39 @@ class App extends React.Component {
     }
 
     async componentDidMount() {
-        let dataCardUpdate = {
+        let email = localStorage.getItem('email');
+        
+        this.setState({
+            email,
+            isLogin: !!email,
+            dataCard: email ? await this.dataRequest() : {}                               
+        });        
+    }   
+    
+    async dataRequest() {
+        let dataCard = {
             statuses: [],
-            dataByStatuses: {}
+            dataByStatuses: {},
+            email: localStorage.getItem('email')
         };
 
-        console.log("App is ready");           
-             
-        dataCardUpdate.statuses = await getSettings();       
+        dataCard.statuses = await getSettings();       
         let cards = await getDataCards();
 
         cards.forEach((card) => {
             let {status} = {...card}
-            let {dataByStatuses} = dataCardUpdate;
+            let {dataByStatuses} = dataCard;
 
             if (!(dataByStatuses[status])) {                
                 dataByStatuses[status] = [];
             }                
 
             dataByStatuses[status].push(card);
-        });            
+        });
 
-        this.setState({
-            dataCard: dataCardUpdate                                  
-        });        
-    }   
-    
+        return dataCard;
+    }
+
     updateData = (value) => {
         this.setState(value);
     }    
@@ -67,7 +74,7 @@ class App extends React.Component {
         });
     }
 
-    handlerSubmitLoginForm = async(event) => {
+    handlerSubmitForm = (networkFunction) => async(event) => {
         event.preventDefault();
 
         let body = {
@@ -75,19 +82,17 @@ class App extends React.Component {
             password: this.state.userPassword
         }
 
-        let response = await login(body);
+        let response = await networkFunction(body);
 
-        if (response.email) {
-            this.setState({
-                isLogin: true
-            });
-        }
-        else {
-            this.setState({  
-                isLogin: false,              
-                messageLoginForm: 'Wrong password or email!'
-            });
-        }        
+        localStorage.setItem('email', response.email);
+
+        let {email} = response;
+
+        this.setState({
+            isLogin: !!email,
+            messageLoginForm: email ? null : 'Wrong password or email!',
+            dataCard: email ? await this.dataRequest() : {}
+        });
     }
 
     render() {     
@@ -96,37 +101,41 @@ class App extends React.Component {
         
         return (
             <Router>
-                <Switch>                             
-                    <Route exact path="/">
-                        <HomePage {...state} updateData={updateData} />                                  
-                    </Route>
-                    <Route path="/login">
-                        { isLogin
-                            ? <Redirect to="/" />
-                            : <LoginPage                                                        
-                                buttonText="Login"
-                                linkText="Logout?" 
-                                linkUrl="/register"
-                                message={messageLoginForm}
-                                onSubmitLoginForm={this.handlerSubmitLoginForm}
-                                onChangeLoginInput={this.handlerChangeLoginInput}
-                            />
-                        }
-                    </Route>
-                    <Route path="/register">
-                        <LoginPage                            
-                            buttonText="Logout"
-                            linkText="Login"
-                            linkUrl="/login"
-                            onSubmitLoginForm={this.handlerSubmitLoginForm}
-                            onChangeLoginInput={this.handlerChangeLoginInput}                            
-                        />
-                    </Route>
-                    <Route path="/logout">                        
-                    </Route>
-                    <Route path="/:id">
-                        <CardPage {...this.state.dataCard} />
-                    </Route>                                                        
+                <Switch>
+                    {('isLogin' in state) && (isLogin 
+                        ? <Fragment>
+                            <Route exact path="/">
+                                <HomePage {...state} updateData={updateData} />                                  
+                            </Route>
+                            <Route path="/:id">
+                                <CardPage {...this.state.dataCard} />
+                            </Route>                            
+                        </Fragment>
+                        : <Fragment>
+                            <Route exact path="/">
+                                <Redirect to="/login" />
+                            </Route>
+                            <Route path="/login">                            
+                                <LoginPage                                                        
+                                    buttonText="Login"
+                                    linkText="SignUp?" 
+                                    linkUrl="/register"
+                                    message={messageLoginForm}
+                                    onSubmitLoginForm={this.handlerSubmitForm(login)}
+                                    onChangeLoginInput={this.handlerChangeLoginInput}
+                                />                        
+                            </Route>
+                            <Route path="/register">
+                                <LoginPage                            
+                                    buttonText="SignUp"
+                                    linkText="Login"
+                                    linkUrl="/login"
+                                    onSubmitLoginForm={this.handlerSubmitForm(signUp)}
+                                    onChangeLoginInput={this.handlerChangeLoginInput}                            
+                                />
+                            </Route>
+                        </Fragment> 
+                    )}                             
                 </Switch>
             </Router>
         );
