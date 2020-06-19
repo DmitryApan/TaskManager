@@ -4,17 +4,17 @@ import './App.css';
 export class CardAddPanel extends React.Component {
     constructor(props) {
         super(props);        
-        this.state = {description: ''};
+        this.state = {title: ''};
     }
 
-    handleDescriptionChange = ({target}) =>  {
-        this.setState({description: target.value})
+    handleTitleChange = ({target}) =>  {
+        this.setState({title: target.value})
     }
 
     handleCreate = (event) => {
-        this.props.onCreateCard(this.state.description);
+        this.props.onCreateCard(this.state.title);
         
-        this.setState({description: ''})
+        this.setState({title: ''})
     }
 
     handleInputKeyPress = (event) => {
@@ -26,7 +26,7 @@ export class CardAddPanel extends React.Component {
     render() {
         return (
             <div>
-                <input type="text" value={this.state.description} onChange={this.handleDescriptionChange} onKeyPress={this.handleInputKeyPress} />
+                <input type="text" value={this.state.title} onChange={this.handleTitleChange} onKeyPress={this.handleInputKeyPress} />
                 <button onClick={this.handleCreate}>Create</button> 
             </div>           
         );

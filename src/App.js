@@ -37,22 +37,20 @@ class App extends React.Component {
     }   
     
     async dataRequest() {
-        let dataCard = {
-            statuses: [],
-            dataByStatuses: {},
-            email: localStorage.getItem('email')
-        };
-
-        dataCard.statuses = await getSettings();       
+        let statuses = await getSettings();  
         let cards = await getDataCards();
+      
+        let dataCard = {
+            statuses,
+            dataByStatuses: statuses.reduce((acc, status) => ({
+                ...acc, 
+                [status]: []
+            }), {})
+        };        
 
         cards.forEach((card) => {
             let {status} = {...card}
             let {dataByStatuses} = dataCard;
-
-            if (!(dataByStatuses[status])) {                
-                dataByStatuses[status] = [];
-            }                
 
             dataByStatuses[status].push(card);
         });

@@ -16,8 +16,7 @@ export class Section extends React.Component {
 
         return (
             <div class="section flex-column">
-                <Header {...headerInfo} />        
-  
+                <Header {...headerInfo} />                        
                 {
                     cards && cards.map(card => ( 
                         <Card 

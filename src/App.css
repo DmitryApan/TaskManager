@@ -41,6 +41,14 @@
   color: rgb(97, 96, 96);
 }
 
+.section-card-title {
+  padding: 10px;
+
+  font-size: 12px;
+  font-weight: bold;
+  color: rgb(97, 96, 96);
+}
+
 .section-header-amount {
   width: 25px;
   height: 15px;
