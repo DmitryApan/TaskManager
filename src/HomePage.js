@@ -125,6 +125,14 @@ export class HomePage extends React.Component {
         });
     }
 
+    handleLogout = () => {
+        localStorage.removeItem('email');
+
+        this.props.updateData({            
+            isLogin: false           
+        });
+    }
+
     render() {
         const {idCard} = this.props;   
         const {statuses, dataByStatuses} = this.props.dataCard;               
@@ -144,6 +152,9 @@ export class HomePage extends React.Component {
                                 />))}    
                         </DragDropContext>
                     </div>
+                    <div class="homepage-region-logout flex-column">
+                        <button onClick={this.handleLogout} class="button-logout">Logout</button>
+                    </div>
                 </div>                           
                 {idCard && 
                     <ModalCard 
@@ -157,7 +168,7 @@ export class HomePage extends React.Component {
                             onChangeTitle={this.handleChange('title')}
                             onChangeDescription={this.handleChange('description')}                            
                         />}
-                    </ModalCard>} 
+                    </ModalCard>}   
             </Fragment>
         )        
     }

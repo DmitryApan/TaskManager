@@ -1,4 +1,4 @@
-import {urlCardData, urlCardCreate, urlCardSettings} from './Data';
+import {urlCardData, urlCardCreate, urlCardSettings, urlSignUp, urlLogin} from './Data';
 
 async function serverRequest({url, json = true, method = 'GET', headers, body}) {    
     let response = await fetch(url, {
@@ -9,11 +9,11 @@ async function serverRequest({url, json = true, method = 'GET', headers, body}) 
         throw new Error('Response Error!');
     });
 
-    if (!json) {
-        return response;
-    }                    
+    return json ? jsonRequest(response) : response
+}
 
-    let jsonObj = await response.json().catch(error => {
+async function jsonRequest(responseServer) {
+    let jsonObj = await responseServer.json().catch(error => {
         throw new Error('Json Error!');
     });   
 
@@ -46,6 +46,31 @@ export function cardDelete(id) {
         method: 'DELETE'
     }).then(({ok}) => {
         return ok;
+    });
+}
+
+export async function login(body) {
+    let response = await serverRequest({
+        url: urlLogin,        
+        method: 'POST',
+        json: false,
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(body)
+    });
+
+    return response.ok ? await jsonRequest(response) : response
+}
+
+export function signUp(body) {
+    return serverRequest({
+        url: urlSignUp,        
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(body)
     });
 }
 

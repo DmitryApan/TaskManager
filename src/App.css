@@ -15,35 +15,27 @@
 }
 
 .section {
-  padding: 5px;
-  border-radius: 2px;
-  background-color: whitesmoke;
+  margin: 5px;
+  border-radius: 2px;  
   width: 200px;
 }
 
 .section-header {
   align-items: center;
-
   margin: 5px;
   padding: 3px;
-
   border-radius: 3px;
   border-top: 1px solid rgb(233, 120, 120);   
-
   background-color: white;
-
   box-shadow: -1px 1px 3px;
 }
 
 .section-header-name {
   width: 110px;
-
   padding: 10px;
-
   white-space: nowrap;
   overflow: hidden;   
-  text-overflow: ellipsis;    
-
+  text-overflow: ellipsis;
   font-size: 12px;
   font-weight: bold;
   color: rgb(97, 96, 96);
@@ -59,11 +51,9 @@
 
 .section-header-amount {
   width: 25px;
-  height: 15px;    
-
+  height: 15px;
   border-radius: 12px;
   border: 1px solid grey;
-
   font-size: 8px;
   font-weight: bold;
   color: grey;
@@ -72,30 +62,27 @@
 .section-card {
   margin: 5px;
   padding: 3px;
-
   border-radius: 3px;
-
   background-color: white;
-
   box-shadow: -1px 1px 3px;
 }
 
 .button-x-small, 
 .button-x-big, 
 .button-arrow-small, 
-.button-arrow-big {  
+.button-arrow-big,
+.button-logout {  
   border-radius: 3px;  
-
   text-align: center; 
   text-decoration: none;
   color: white;
   font-family: monospace;
-
   cursor: pointer;
 }
 
 .button-x-small, 
-.button-x-big {
+.button-x-big,
+.button-logout {
   margin-left: auto;
   background-color: rgba(250, 29, 0, 0.6);
 }
@@ -109,7 +96,6 @@
 .button-arrow-small {
   height: 12px;
   width: 12px;
-  
   line-height: 12px;
 }
 
@@ -121,10 +107,15 @@
   line-height: 20px;
 }
 
+.button-logout {
+  padding: 8px;
+  font-size: 20px;
+  line-height: 20px; 
+}
+
 .section-card-info {
   justify-content: space-between;
   padding: 10px;
-
   font-size: 12px;
   color: rgb(70, 69, 69);
 }
@@ -146,19 +137,14 @@
 
 .avatar-lay {
   position: absolute;
-  right: 50%;
-  /* right: -11px; */
-  
+  right: 50%;   
 }
 
 .section-card-info-graph-initials {    
   width: 22px;
   height: 22px;
-
   border-radius: 50%;    
-
   background-color: rgb(65, 141, 202);
-
   color: white;
 }
 
@@ -166,7 +152,8 @@
   border-radius: 3px 3px 0px 0px;
 }
 
-.modal-overlay { 
+.modal-overlay,
+.login-overlay { 
   background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
   height: 100%;
@@ -178,9 +165,78 @@
   justify-content: center;
 }
 
+.homepage-overlay {
+  background-color: beige;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+}
+
 .modal-window {
   width: 400px;
   padding: 10px;  
   border-radius: 5px;
   background-color: #ffffff;
+}
+
+.login-overlay {
+  background-color: rgb(241, 238, 238);
+}
+
+.login-window {
+  padding: 20px;  
+  border: 2px solid rgb(206, 205, 205); 
+  border-radius: 8px;
+  background-color: #ffffff;  
+}
+
+.login-textbox-email,
+.login-textbox-password,
+.login-region-submit { 
+  margin: 10px;  
+}
+
+.login-textbox-email,
+.login-textbox-password,
+.login-submit-button {  
+  padding: 12px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.login-textbox-email,
+.login-textbox-password {
+  width: 300px; 
+  border: 1px solid rgb(206, 205, 205);  
+  box-sizing: border-box;
+  font-size: 15px;
+  font-weight: bold;  
+}
+
+.login-submit-button {  
+  width: 100px;
+  border: none;
+  background-color: rgb(100, 145, 182);
+  color: white;  
+}
+
+.login-link {
+  margin-left: 80px;
+  text-decoration: none;
+  font-weight: bold;
+  color: rgb(63, 97, 124);
+}
+
+.login-message-region {
+  margin-left: 10px;
+  color: red;
+}
+
+input::placeholder {
+  color: rgb(224, 222, 222);
+ } 
+
+.homepage-region-logout {
+  margin: 10px;
+  margin-left: auto;  
 }
