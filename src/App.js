@@ -16,22 +16,24 @@ import './App.css';
 
 class App extends React.Component {  
     constructor(props) {
+        let email = localStorage.getItem('email');
+
         super(props);        
         this.state = {
             dataCard: {
                 statuses: null,
                 dataByStatuses: null
             },            
-            idCard: null                                
+            idCard: null,
+            isLogin: !!email,
+            email                                
         };  
     }
 
     async componentDidMount() {
-        let email = localStorage.getItem('email');
-        
+        const {email} = this.state;
+
         this.setState({
-            email,
-            isLogin: !!email,
             dataCard: email ? await this.dataRequest() : {}                               
         });        
     }   
@@ -99,7 +101,7 @@ class App extends React.Component {
         return (
             <Router>
                 <Switch>
-                    {('isLogin' in state) && (isLogin 
+                    {isLogin 
                         ? <Fragment>
                             <Route exact path="/">
                                 <HomePage {...state} updateData={updateData} />                                  
@@ -132,7 +134,7 @@ class App extends React.Component {
                                 />
                             </Route>
                         </Fragment> 
-                    )}                             
+                    }                             
                 </Switch>
             </Router>
         );
