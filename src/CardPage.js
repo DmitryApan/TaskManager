@@ -15,7 +15,7 @@ export function CardPage({dataByStatuses}) {
     return (        
         card 
         ? <div>
-            <CardInfo {...card} />                   
+            <CardInfo card={card} />                   
         </div>
         : <Redirect to="/" />                           
     )    

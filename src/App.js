@@ -62,9 +62,8 @@ class App extends React.Component {
         this.setState(value);
     }    
 
-    handlerChangeLoginInput = (event) => {
-        const value = event.target.value;
-        const name = event.target.name;
+    handlerChangeLoginInput = ({target}) => {
+        const {value, name} = target;
 
         this.setState({
             messageLoginForm: null,
