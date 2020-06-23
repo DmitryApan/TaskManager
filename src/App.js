@@ -14,7 +14,8 @@ import './App.css';
 
 class App extends React.Component {  
     constructor(props) {
-        super(props);        
+        super(props); 
+        
         this.state = {
             dataCard: {
                 statuses: null,
@@ -26,7 +27,7 @@ class App extends React.Component {
 
     async componentDidMount() {
         console.log("App is ready");           
-             
+
         let statuses = await getSettings();  
         let dataCardUpdate = {
             statuses,

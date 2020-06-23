@@ -1,11 +1,12 @@
 import React, { Fragment } from 'react';
+import { DragDropContext} from 'react-beautiful-dnd';
 
 import {ModalCard} from './ModalCard';
 import {CardInfo} from './CardInfo';
 import {Section} from './Section';
 import {CardAddPanel} from './CardAddPanel';
 
-import {findCardById} from './appFunctions';
+import {findCardById, changeStatusCard} from './appFunctions';
 import {cardCreate, cardDelete, cardChange} from './networkFunctions';
 
 export class HomePage extends React.Component {
@@ -76,28 +77,36 @@ export class HomePage extends React.Component {
     })
 
     handleChangeStatus = async(newStatus, card) => {
-        let {statuses, dataByStatuses} = this.props.dataCard;
-        let {_id, status} = card;
+        let {dataCard} = this.props;
+        let {_id} = card;
 
         await cardChange(_id, {status: newStatus});
 
-        let arrayChange = dataByStatuses[status].filter(item => item._id !== _id);
-        let newCard = {
-            ...card,
-            status: newStatus
-        };
-        let dataByStatusesNew = {
-            ...dataByStatuses,
-            [status]: arrayChange,
-            [newStatus]: [...dataByStatuses[newStatus], newCard]
-        };
-        
         this.props.updateData({
-            dataCard: {
-                dataByStatuses: dataByStatusesNew,
-                statuses
-            }
-        }); 
+            dataCard: changeStatusCard(_id, newStatus, dataCard)
+        });
+    }
+
+    onDragEnd = async({draggableId, destination, source}) => {
+        let {dataCard} = this.props;
+        const {droppableId: oldStatus} = source;
+        const {droppableId: newStatus} = destination;
+
+        if (!destination || (newStatus === oldStatus)) {
+            return;
+        }
+
+        let newDataCard = changeStatusCard(draggableId, newStatus, dataCard);
+
+        this.props.updateData({
+            dataCard: newDataCard
+        });
+
+        let response = await cardChange(draggableId, {status: newStatus});
+
+        if (!response) {
+            this.props.updateData({dataCard});
+        }        
     }
 
     handleModalInfo = ({_id}) => {
@@ -123,14 +132,18 @@ export class HomePage extends React.Component {
         return (
             <Fragment>
                 <CardAddPanel onCreateCard={this.handleCreateCard} />
-                <div class = "flex-row">
-                    {statuses && statuses.map(status => ( 
-                        <Section 
-                            status={status} 
-                            cards={dataByStatuses[status] || []}                        
-                            onDeleteCard={this.handleDeleteCard}
-                            onModalInfo={this.handleModalInfo}
-                        />)) }
+                <div class="homepage-overlay flex-row">
+                    <div class="flex-row">
+                        <DragDropContext onDragEnd={this.onDragEnd} onDragStart={this.onDragStart}>
+                            {statuses && statuses.map(status => ( 
+                                <Section 
+                                    status={status} 
+                                    cards={dataByStatuses[status] || []}                        
+                                    onDeleteCard={this.handleDeleteCard}
+                                    onModalInfo={this.handleModalInfo}
+                                />))}    
+                        </DragDropContext>
+                    </div>
                 </div>                           
                 {idCard && 
                     <ModalCard 
