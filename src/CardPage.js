@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-    useParams,
-    Redirect
-} from 'react-router-dom';
+import {useParams, Redirect} from 'react-router-dom';
 
 import {CardInfo} from './CardInfo';
 

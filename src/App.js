@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, {Fragment} from 'react';
 import {
     BrowserRouter as Router,
     Switch,
@@ -16,9 +16,10 @@ import './App.css';
 
 class App extends React.Component {  
     constructor(props) {
+        super(props);   
+        
         let email = localStorage.getItem('email');
 
-        super(props);        
         this.state = {
             dataCard: {
                 statuses: null,
