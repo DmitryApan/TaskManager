@@ -1,8 +1,9 @@
-import React, { Fragment } from 'react';
+import React, {Fragment} from 'react';
 import Select from 'react-select';
 
 import './App.css';
-import { TextEditor } from './TextEditor';
+
+import {TextEditor} from './TextEditor';
 
 export class CardInfo extends React.Component {
     handleChangeDescription = (description) => {

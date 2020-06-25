@@ -1,5 +1,5 @@
-import React, { Fragment } from 'react';
-import { DragDropContext} from 'react-beautiful-dnd';
+import React, {Fragment} from 'react';
+import {DragDropContext} from 'react-beautiful-dnd';
 
 import {ModalCard} from './ModalCard';
 import {CardInfo} from './CardInfo';

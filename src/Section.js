@@ -1,5 +1,5 @@
 import React from 'react';
-import {Droppable, Draggable } from 'react-beautiful-dnd';
+import {Droppable, Draggable} from 'react-beautiful-dnd';
 
 import './App.css';
 
@@ -34,7 +34,6 @@ export class Section extends React.Component {
                                             {...provided.draggableProps}
                                             {...provided.dragHandleProps}>                                            
                                             <Card 
-                                                key={card._id}                            
                                                 onDeleteCard={onDeleteCard} 
                                                 onModalInfo={onModalInfo}
                                                 {...card} 
