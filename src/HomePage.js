@@ -4,22 +4,24 @@ import {DragDropContext} from 'react-beautiful-dnd';
 import {ModalCard} from './ModalCard';
 import {CardInfo} from './CardInfo';
 import {Section} from './Section';
-import {CardAddPanel} from './CardAddPanel';
 
 import {findCardById, changeStatusCard} from './appFunctions';
 import {cardCreate, cardDelete, cardChange} from './networkFunctions';
 
 export class HomePage extends React.Component {
-    handleCreateCard = async(title) => {        
+    handleCreateCard = async(title, description) => {        
         const {statuses, dataByStatuses} = this.props.dataCard;
-        let body = {title}        
+        let body = {
+            title,
+            description
+        }        
           
         let card = await cardCreate(body);
         
-        let {status} = card;        
+        let {status: statusCard} = card;        
         let updateDataByStatuses = {
             ...dataByStatuses,
-            [status]: [...(dataByStatuses[status] || []), card]
+            [statusCard]: [...(dataByStatuses[statusCard] || []), card]
         };       
         
         this.props.updateData({   
@@ -139,7 +141,6 @@ export class HomePage extends React.Component {
 
         return (
             <Fragment>
-                <CardAddPanel onCreateCard={this.handleCreateCard} />
                 <div class="homepage-overlay flex-row">
                     <div class="flex-row">
                         <DragDropContext onDragEnd={this.onDragEnd} onDragStart={this.onDragStart}>
@@ -148,6 +149,7 @@ export class HomePage extends React.Component {
                                     status={status} 
                                     cards={dataByStatuses[status] || []}                        
                                     onDeleteCard={this.handleDeleteCard}
+                                    onCreateCard={this.handleCreateCard}
                                     onModalInfo={this.handleModalInfo}
                                 />))}    
                         </DragDropContext>

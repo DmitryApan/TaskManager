@@ -8,7 +8,7 @@ export function LoginPage({buttonText, linkText, linkUrl, message, onSubmitLogin
             <div class="flex-center login-window" >
                 <form onSubmit={onSubmitLoginForm} class="flex-column">
                     {message && <div class="login-message-region">{message}</div>}
-                    <input onChange={onChangeLoginInput} class="login-textbox-email" type="text" name="userEmail" placeholder="Email or phone number" />
+                    <input onChange={onChangeLoginInput} class="login-textbox-email" type="text" name="userEmail" placeholder="Login" />
                     <input onChange={onChangeLoginInput} class="login-textbox-password" type="password" name="userPassword" placeholder="Password" />
                     <div class="login-region-submit">
                         <button class="login-submit-button" name={buttonText}>{buttonText}</button>
