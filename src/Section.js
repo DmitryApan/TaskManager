@@ -5,20 +5,64 @@ import './App.css';
 
 import {Card} from './Card';
 import {Header} from './Header';
+import {CreatePanel} from './CreatePanel'
 
 export class Section extends React.Component {
-    
-    render() {
-        const {status, cards, onModalInfo, onDeleteCard} = this.props;
+    constructor(props) {
+        super(props);
 
-        let headerInfo = {
-            text: status,
-            amount: cards.length
-        };        
+        this.state = {
+            createPanel: false,
+            title: '',
+            description: ''
+        }
+    }    
+
+    onCreateCard = () => {
+        let {onCreateCard} = this.props;
+        const {title, description} = this.state;
+
+        onCreateCard(title, description);
+
+        this.setState({
+            createPanel: false
+        })
+    }
+
+    onChangeTitleOrDescription = ({target}) => {
+        this.setState({
+            [target.name]: target.value
+        })
+    }
+
+    onCloseCreatePanel = () => {
+        this.setState({
+            createPanel: false
+        })
+    }
+
+    onClickNewCard = () => {
+        this.setState({
+            createPanel: true
+        })
+    }
+
+    render() {
+        let {status, cards, onModalInfo, onDeleteCard} = this.props;
+        const {createPanel} = this.state;
 
         return (
             <div class="section flex-column">
-                <Header {...headerInfo} />  
+                <Header 
+                    text={status}
+                    amount={cards.length}
+                    onClickNewCard={this.onClickNewCard} 
+                />  
+                {createPanel && <CreatePanel 
+                    onCreate={this.onCreateCard}
+                    onChange={this.onChangeTitleOrDescription}
+                    onOutsideClick={this.onCloseCreatePanel}
+                />}
                 <Droppable droppableId={status}>
                     {(provided) => (
                         <div
