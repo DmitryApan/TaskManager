@@ -6,6 +6,7 @@ import './App.css';
 import {Card} from './Card';
 import {Header} from './Header';
 import {CreatePanel} from './CreatePanel'
+import { Panel } from './Panel';
 
 export class Section extends React.Component {
     constructor(props) {
@@ -58,11 +59,18 @@ export class Section extends React.Component {
                     amount={cards.length}
                     onClickNewCard={this.onClickNewCard} 
                 />  
-                {createPanel && <CreatePanel 
-                    onCreate={this.onCreateCard}
-                    onChange={this.onChangeTitleOrDescription}
-                    onOutsideClick={this.onCloseCreatePanel}
-                />}
+                {createPanel && 
+                <Panel 
+                    onClickOutside={this.onCloseCreatePanel}
+                    position="relative"
+                    top="-2px"
+                    left="8px"
+                >
+                    <CreatePanel 
+                        onCreate={this.onCreateCard}
+                        onChange={this.onChangeTitleOrDescription}
+                    />
+                </Panel>}
                 <Droppable droppableId={status}>
                     {(provided) => (
                         <div
