@@ -1,14 +1,39 @@
 import React, {Fragment} from 'react';
 import {DragDropContext} from 'react-beautiful-dnd';
 
-import {ModalCard} from './ModalCard';
+import {Modal} from './Modal';
 import {CardInfo} from './CardInfo';
 import {Section} from './Section';
+import {Avatar} from './Avatar';
+import {Panel} from './Panel';
+import {UserMenu} from './UserMenu';
+import {UserEditor} from './UserEditor';
 
 import {findCardById, changeStatusCard} from './appFunctions';
 import {cardCreate, cardDelete, cardChange} from './networkFunctions';
 
 export class HomePage extends React.Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            userMenu: false,
+            userEditor: false
+        }
+    }
+
+    handleCloseUserMenu = () => {
+        this.setState({
+            userMenu: false
+        })
+    }
+
+    handleOpenUserMenu = () => {
+        this.setState({
+            userMenu: true
+        })
+    }
+
     handleCreateCard = async(title, description) => {        
         const {statuses, dataByStatuses} = this.props.dataCard;
         let body = {
@@ -135,8 +160,22 @@ export class HomePage extends React.Component {
         });
     }
 
+    handleOpenUserEditor = () => {
+        this.setState({
+            userMenu: false,
+            userEditor: true
+        })
+    }
+
+    handleCloseUserEditor = () => {
+        this.setState({
+            userEditor: false
+        })
+    }
+
     render() {
-        const {idCard} = this.props;   
+        const {userMenu, userEditor} = this.state;
+        const {idCard, userInfo, updateData} = this.props;   
         const {statuses, dataByStatuses} = this.props.dataCard;               
 
         return (
@@ -155,13 +194,20 @@ export class HomePage extends React.Component {
                         </DragDropContext>
                     </div>
                     <div class="homepage-region-logout flex-column">
-                        <button onClick={this.handleLogout} class="button-logout">Logout</button>
+                        <div class="flex-center">
+                            {userInfo && userInfo.name}
+                            {userInfo && <Avatar {...userInfo} onClickAvatar={this.handleOpenUserMenu} />}
+                        </div>
+                        {userMenu && <Panel onClickOutside={this.handleCloseUserMenu} top="10px" left="0px">
+                            <UserMenu 
+                                onClickLogOut={this.handleLogout}
+                                onClickPreferences={this.handleOpenUserEditor} 
+                            />
+                        </Panel>}
                     </div>
                 </div>                           
                 {idCard && 
-                    <ModalCard 
-                        onCloseModal={this.handleCloseModal}                   
-                    >
+                    <Modal onCloseModal={this.handleCloseModal}>
                         {() => <CardInfo 
                             isChanging={true}
                             statuses={statuses}
@@ -170,7 +216,11 @@ export class HomePage extends React.Component {
                             onChangeTitle={this.handleChange('title')}
                             onChangeDescription={this.handleChange('description')}                            
                         />}
-                    </ModalCard>}   
+                    </Modal>}
+                {userEditor && 
+                    <Modal onCloseModal={this.handleCloseUserEditor}>
+                        {() => <UserEditor updateData={updateData} {...userInfo} />}
+                    </Modal>}   
             </Fragment>
         )        
     }

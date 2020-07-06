@@ -44,7 +44,7 @@ export class TextEditor extends React.Component {
 
         return (
             <div class="flex-row">
-                <div>
+                <div class="text-editor">
                     {isEditing 
                         ? <textarea onChange={this.handleChangeText}>{text}</textarea>
                         : text
