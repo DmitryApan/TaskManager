@@ -1,11 +1,13 @@
 import React, {Fragment} from 'react';
 
+import styles from './TextEditor.less';
+
 export class TextEditor extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             isEditing: false,
-            text: props.text            
+            text: props.text
         }
     }
 
@@ -45,20 +47,20 @@ export class TextEditor extends React.Component {
         return (
             <div class="flex-row">
                 <div class="text-editor">
-                    {isEditing 
+                    {isEditing
                         ? <textarea onChange={this.handleChangeText}>{text}</textarea>
                         : text
                     }
-                </div>                 
-                <div>
-                    {isEditing 
+                </div>
+                <div className={styles.testClass}>
+                    {isEditing
                         ? <Fragment>
-                            <button onClick={this.handleSaveButton}>Save</button> 
+                            <button onClick={this.handleSaveButton}>Save</button>
                             <button onClick={this.handleCancelButton}>Cancel</button>
                         </Fragment>
                         : <button onClick={this.handleChangeButton}>Edit</button>
                     }
-                </div>                
+                </div>
             </div>
         )
     }

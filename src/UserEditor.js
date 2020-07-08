@@ -1,6 +1,6 @@
 import React from 'react';
 import {Avatar} from './Avatar';
-import {TextEditor} from './TextEditor';
+import {TextEditor} from './components/TextEditor/TextEditor';
 import {userInfo} from './networkFunctions';
 
 export class UserEditor extends React.Component {
@@ -27,7 +27,7 @@ export class UserEditor extends React.Component {
         updateData({
             userInfo: {...response}
         })
-    }  
+    }
 
     render() {
         const {name, avatar, password} = this.state;
