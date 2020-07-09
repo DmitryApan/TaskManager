@@ -31,25 +31,33 @@ export class TextEditor extends React.Component {
     }
 
     handleSaveButton = () => {
-        const {onChangeText} = this.props
-        const {text} = this.state
+        const {onChangeText} = this.props;
+        const {text} = this.state;
 
         onChangeText(text);
 
         this.setState({
             isEditing: false
-        })
+        });
     }
 
     render() {
         const {isEditing, text} = this.state;
+        let {asterisk, placeholder} = this.props;
+        
+        let showText = ((text === '') ? placeholder : text); 
+        showText = asterisk ? showText.replace(/./g, "*") : showText;
 
         return (
             <div class="flex-row">
                 <div class="text-editor">
                     {isEditing
                         ? <textarea onChange={this.handleChangeText}>{text}</textarea>
-                        : text
+                        : (text === "")
+                            ? <div class='text-placeholder'>
+                                {showText}
+                            </div>
+                            : showText
                     }
                 </div>
                 <div className={styles.testClass}>

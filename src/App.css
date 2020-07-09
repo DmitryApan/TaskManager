@@ -46,6 +46,9 @@
   padding-left: 12px;
   padding-right: 5px;
   cursor: pointer;
+  font-family: monospace;
+  font-size: 20px;
+  font-weight: bold;  
 }
 
 .section-header-order {
@@ -247,12 +250,18 @@ input::placeholder {
 .homepage-region-logout {
   margin: 10px;
   margin-left: auto;  
+  align-items: flex-end;
 }
 
 .create-panel-body {
-  padding: 5px;
   font-size: 10px;
   color: grey;
+  border-radius: 3px;
+  border-bottom: 1px solid rgb(233, 120, 120);   
+  box-shadow: -1px 1px 3px;
+  background-color: white;
+  padding: 5px;
+  margin: 0px 5px 5px;
 }
 
 .panel {
@@ -285,6 +294,7 @@ input::placeholder {
 }
 
 .avatar {
+  margin: 10px 0px 10px 10px;
   border: solid 3px white;
   background-color: rgb(0, 171, 250);
   cursor: pointer;
@@ -325,4 +335,9 @@ input::placeholder {
 
 .text-editor {
   word-break: break-word;
+  padding-right: 10px;
+}
+
+.text-placeholder {
+  color: gray;
 }

@@ -18,7 +18,8 @@ export class HomePage extends React.Component {
 
         this.state = {
             userMenu: false,
-            userEditor: false
+            userEditor: false,
+            openCreatePanel: null
         }
     }
 
@@ -173,8 +174,16 @@ export class HomePage extends React.Component {
         })
     }
 
+    handleControlCreatePanel = (status) => {
+        console.log(status);
+
+        this.setState({
+            openCreatePanel: (this.state.openCreatePanel === status) ? null : status
+        })
+    }
+
     render() {
-        const {userMenu, userEditor} = this.state;
+        const {userMenu, userEditor, openCreatePanel} = this.state;
         const {idCard, userInfo, updateData} = this.props;   
         const {statuses, dataByStatuses} = this.props.dataCard;               
 
@@ -183,10 +192,12 @@ export class HomePage extends React.Component {
                 <div class="homepage-overlay flex-row">
                     <div class="flex-row">
                         <DragDropContext onDragEnd={this.onDragEnd} onDragStart={this.onDragStart}>
-                            {statuses && statuses.map(status => ( 
+                            {statuses.map(status => ( 
                                 <Section 
-                                    status={status} 
-                                    cards={dataByStatuses[status] || []}                        
+                                    status={status}
+                                    createPanel={(openCreatePanel === status)} 
+                                    cards={dataByStatuses[status] || []}       
+                                    onControlCreatePanel={this.handleControlCreatePanel}                 
                                     onDeleteCard={this.handleDeleteCard}
                                     onCreateCard={this.handleCreateCard}
                                     onModalInfo={this.handleModalInfo}
@@ -195,10 +206,14 @@ export class HomePage extends React.Component {
                     </div>
                     <div class="homepage-region-logout flex-column">
                         <div class="flex-center">
-                            {userInfo && userInfo.name}
-                            {userInfo && <Avatar {...userInfo} onClickAvatar={this.handleOpenUserMenu} />}
+                            {userInfo.name}
+                            <Avatar 
+                                {...userInfo} 
+                                onClickAvatar={this.handleOpenUserMenu}
+                                key={userInfo.avatar}
+                            />
                         </div>
-                        {userMenu && <Panel onClickOutside={this.handleCloseUserMenu} top="10px" left="0px">
+                        {userMenu && <Panel onClickOutside={this.handleCloseUserMenu}>
                             <UserMenu 
                                 onClickLogOut={this.handleLogout}
                                 onClickPreferences={this.handleOpenUserEditor} 

@@ -22,31 +22,37 @@ export class UserEditor extends React.Component {
         let response = await userInfo({
             email,
             [key]: text
-        })
+        });
 
         updateData({
             userInfo: {...response}
-        })
+        });
     }
 
     render() {
         const {name, avatar, password} = this.state;
-
+        
         return(
             <div class="flex-column">
-                <Avatar name={this.props.name} avatar={this.props.avatar} />
+                <Avatar 
+                    {...this.props}
+                    key={this.props.avatar} 
+                />
                 <p>Name:</p>
                 <TextEditor
+                    placeholder={'Name'}
                     text={name}
                     onChangeText={this.handleChange('name')}
                 />
                 <p>Avatar url:</p>
                 <TextEditor
+                    placeholder={'https://...'}
                     text={avatar}
                     onChangeText={this.handleChange('avatar')}
                 />
                 <p>Password</p>
                 <TextEditor
+                    asterisk                    
                     text={password}
                     onChangeText={this.handleChange('password')}
                 />
