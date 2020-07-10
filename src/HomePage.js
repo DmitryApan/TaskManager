@@ -4,7 +4,7 @@ import {DragDropContext} from 'react-beautiful-dnd';
 import {Modal} from './Modal';
 import {CardInfo} from './CardInfo';
 import {Section} from './Section';
-import {Avatar} from './Avatar';
+import {AreaAvatar} from './AreaAvatar';
 import {Panel} from './Panel';
 import {UserMenu} from './UserMenu';
 import {UserEditor} from './UserEditor';
@@ -175,8 +175,6 @@ export class HomePage extends React.Component {
     }
 
     handleControlCreatePanel = (status) => {
-        console.log(status);
-
         this.setState({
             openCreatePanel: (this.state.openCreatePanel === status) ? null : status
         })
@@ -207,7 +205,7 @@ export class HomePage extends React.Component {
                     <div class="homepage-region-logout flex-column">
                         <div class="flex-center">
                             {userInfo.name}
-                            <Avatar 
+                            <AreaAvatar 
                                 {...userInfo} 
                                 onClickAvatar={this.handleOpenUserMenu}
                                 key={userInfo.avatar}

@@ -47,17 +47,18 @@ export class TextEditor extends React.Component {
         
         let showText = ((text === '') ? placeholder : text); 
         showText = asterisk ? showText.replace(/./g, "*") : showText;
+        showText = (text === '') 
+            ? <div class='text-placeholder'>
+                {showText}
+            </div>
+            : showText;
 
         return (
             <div class="flex-row">
                 <div class="text-editor">
                     {isEditing
                         ? <textarea onChange={this.handleChangeText}>{text}</textarea>
-                        : (text === "")
-                            ? <div class='text-placeholder'>
-                                {showText}
-                            </div>
-                            : showText
+                        : showText
                     }
                 </div>
                 <div className={styles.testClass}>

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Avatar} from './Avatar';
+import {AreaAvatar} from './AreaAvatar';
 import {TextEditor} from './components/TextEditor/TextEditor';
 import {userInfo} from './networkFunctions';
 
@@ -34,19 +34,19 @@ export class UserEditor extends React.Component {
         
         return(
             <div class="flex-column">
-                <Avatar 
+                <AreaAvatar 
                     {...this.props}
                     key={this.props.avatar} 
                 />
                 <p>Name:</p>
                 <TextEditor
-                    placeholder={'Name'}
+                    placeholder="Name"
                     text={name}
                     onChangeText={this.handleChange('name')}
                 />
                 <p>Avatar url:</p>
                 <TextEditor
-                    placeholder={'https://...'}
+                    placeholder="https://..."
                     text={avatar}
                     onChangeText={this.handleChange('avatar')}
                 />
