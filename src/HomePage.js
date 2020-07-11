@@ -208,7 +208,6 @@ export class HomePage extends React.Component {
                             <AreaAvatar 
                                 {...userInfo} 
                                 onClickAvatar={this.handleOpenUserMenu}
-                                key={userInfo.avatar}
                             />
                         </div>
                         {userMenu && <Panel onClickOutside={this.handleCloseUserMenu}>

@@ -34,10 +34,7 @@ export class UserEditor extends React.Component {
         
         return(
             <div class="flex-column">
-                <AreaAvatar 
-                    {...this.props}
-                    key={this.props.avatar} 
-                />
+                <AreaAvatar {...this.props} />
                 <p>Name:</p>
                 <TextEditor
                     placeholder="Name"
