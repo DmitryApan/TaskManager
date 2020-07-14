@@ -8,7 +8,7 @@ export function Avatar({avatar, name}) {
 
     const onErrorLoadImg = useCallback(() => {
         setIsErrorLoadImg(true);
-    });
+    }, [isErrorLoadImg]);
 
     if (avatar && !isErrorLoadImg) {
         return <img class="avatar-image" src={avatar} alt="" onError={onErrorLoadImg} />

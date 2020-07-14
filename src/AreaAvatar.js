@@ -10,7 +10,7 @@ export function AreaAvatar(props) {
             style={{cursor: onClickAvatar ? 'pointer' : null}}
             class="avatar flex-center flex-column"
         >
-            <Avatar {...props} key={avatar} />
+            <Avatar {...props} />
         </div>
     )
 }
