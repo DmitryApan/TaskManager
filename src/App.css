@@ -71,7 +71,7 @@
 
 .section-cards {
   margin-top: 2px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .section-card {
