@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function Panel({children, onClickOutside, position = 'absolute', top = 0, left = 0}) {
+export function Panel({children, onClickOutside, position = 'relative', top = 0, left = 0}) {
     return (
         <div class="flex-row panel">
             <div class="panel-body" style={{position, top, left}}>

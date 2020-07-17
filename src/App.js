@@ -99,7 +99,8 @@ class App extends React.Component {
 
     render() {     
         const {state, updateData} = this;
-        const {isLogin, messageLoginForm} = this.state;
+        const {isLogin, messageLoginForm, userInfo, dataCard} = state;
+        const {statuses} = dataCard;
         
         return (
             <Router>
@@ -107,7 +108,7 @@ class App extends React.Component {
                     {isLogin 
                         ? <Fragment>
                             <Route exact path="/">
-                                <HomePage {...state} updateData={updateData} />                                  
+                                {(userInfo && statuses) && <HomePage {...state} updateData={updateData} />}                                  
                             </Route>
                             <Route path="/:id">
                                 <CardPage {...this.state.dataCard} />

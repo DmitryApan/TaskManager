@@ -1,20 +1,22 @@
-import React from 'react';
+import React, {useState, useCallback} from 'react';
+import {PlaceholderAvatar} from './PlaceholderAvatar';
 
-import './App.css';
+export function Avatar({avatar, name}) {
+    const [isErrorLoadImg, setIsErrorLoadImg] = useState(false);
 
-export function Avatar({avatar, name, onClickAvatar}) {
-    let initials = name && name.split(`${~name.indexOf(' ') ? ' ' : ''}`, 2).map(n => n[0]).join('').toUpperCase();
+    let initials = name && name.trim().split(' ', 2).map(n => n[0]).join('').toUpperCase();
 
-    return (
-        <div onClick={onClickAvatar} class="avatar flex-center flex-column">
-            {(avatar && <img class="avatar-image" src={avatar} alt=""></img>)
-            || (initials && <div class="avatar-initials flex-center">{initials}</div>)
-            || (
-                <>
-                    <div class="symbol-head" />
-                    <div class="symbol-shoulders" />
-                </>
-            )}
-        </div>
-    )
+    const onErrorLoadImg = useCallback(() => {
+        setIsErrorLoadImg(true);
+    }, [isErrorLoadImg]);
+
+    if (avatar && !isErrorLoadImg) {
+        return <img class="avatar-image" src={avatar} alt="" onError={onErrorLoadImg} />
+    }
+    else if (initials) {
+        return <div class="avatar-initials flex-center">{initials}</div>
+    }
+    else {
+        return <PlaceholderAvatar />
+    }
 }

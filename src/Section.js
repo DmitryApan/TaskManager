@@ -6,28 +6,24 @@ import './App.css';
 import {Card} from './Card';
 import {Header} from './Header';
 import {CreatePanel} from './CreatePanel'
-import { Panel } from './Panel';
 
 export class Section extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            createPanel: false,
             title: '',
             description: ''
         }
     }    
 
     onCreateCard = () => {
-        let {onCreateCard} = this.props;
+        let {onCreateCard, onControlCreatePanel} = this.props;
         const {title, description} = this.state;
 
         onCreateCard(title, description);
 
-        this.setState({
-            createPanel: false
-        })
+        onControlCreatePanel(null);
     }
 
     onChangeTitleOrDescription = ({target}) => {
@@ -36,21 +32,14 @@ export class Section extends React.Component {
         })
     }
 
-    onCloseCreatePanel = () => {
-        this.setState({
-            createPanel: false
-        })
-    }
-
     onClickNewCard = () => {
-        this.setState({
-            createPanel: true
-        })
+        let {onControlCreatePanel, status} = this.props;
+
+        onControlCreatePanel(status);
     }
 
     render() {
-        let {status, cards, onModalInfo, onDeleteCard} = this.props;
-        const {createPanel} = this.state;
+        let {status, cards, onModalInfo, onDeleteCard, createPanel} = this.props;
 
         return (
             <div class="section flex-column">
@@ -59,18 +48,11 @@ export class Section extends React.Component {
                     amount={cards.length}
                     onClickNewCard={this.onClickNewCard} 
                 />  
-                {createPanel && 
-                <Panel 
-                    onClickOutside={this.onCloseCreatePanel}
-                    position="relative"
-                    top="-2px"
-                    left="8px"
-                >
+                {createPanel && (
                     <CreatePanel 
                         onCreate={this.onCreateCard}
                         onChange={this.onChangeTitleOrDescription}
                     />
-                </Panel>}    
                 <Droppable droppableId={status}>
                     {(provided) => (
                         <div class="section-cards" ref={provided.innerRef} >
@@ -78,12 +60,14 @@ export class Section extends React.Component {
                                 <Draggable 
                                     key={card._id}
                                     draggableId={card._id} 
-                                    index={index}>
+                                    index={index}
+                                >
                                     {(provided) => (
                                         <div
                                             ref={provided.innerRef}
                                             {...provided.draggableProps}
-                                            {...provided.dragHandleProps}>                                            
+                                            {...provided.dragHandleProps}
+                                        >                                            
                                             <Card 
                                                 onDeleteCard={onDeleteCard} 
                                                 onModalInfo={onModalInfo}
