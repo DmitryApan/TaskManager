@@ -37,9 +37,6 @@ export function sortCardsByTitle(cards, ascending) {
         if (charA > charB) {
             return 1;
         }
-        if (charA === charB) {
-            return 0;
-        }
         return -1;
     });
 
