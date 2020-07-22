@@ -53,10 +53,9 @@ export class Section extends React.Component {
                         onCreate={this.onCreateCard}
                         onChange={this.onChangeTitleOrDescription}
                     />
-                )}
                 <Droppable droppableId={status}>
                     {(provided) => (
-                        <div ref={provided.innerRef}>
+                        <div class="section-cards" ref={provided.innerRef} >
                             {cards && cards.map((card, index) => (
                                 <Draggable 
                                     key={card._id}
