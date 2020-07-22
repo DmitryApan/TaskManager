@@ -34,11 +34,14 @@ export function sortCardsByTitle(cards, ascending) {
         let charA = a.title.toUpperCase();
         let charB = b.title.toUpperCase();
 
-        if (charA > charB) {
+        if ((ascending && (charA < charB)) 
+        || (!ascending && (charA > charB))) {
             return 1;
         }
-        return -1;
+        else {
+            return -1;
+        }
     });
 
-    return ascending ? cardsSort.reverse() : cardsSort;
+    return cardsSort;
 }

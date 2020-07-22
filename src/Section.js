@@ -6,7 +6,6 @@ import './App.css';
 import {Card} from './Card';
 import {Header} from './Header';
 import {CreatePanel} from './CreatePanel'
-import {Panel} from './Panel';
 import {sortCardsByTitle} from './appFunctions';
 
 export class Section extends React.Component {
