@@ -15,7 +15,7 @@
 }
 
 .section {
-  margin: 5px;
+  padding: 5px;
   border-radius: 2px;  
   width: 200px;
 }
@@ -70,6 +70,11 @@
   border: 1px solid grey;
   font-size: 8px;
   font-weight: bold;
+}
+
+.section-cards {
+  margin-top: 2px;
+  overflow-y: auto;
 }
 
 .section-card {
@@ -181,6 +186,7 @@
 .homepage-overlay {
   background-color: beige;
   width: 100%;
+  height: 100vh;
 }
 
 .modal-window {
