@@ -14,7 +14,6 @@ export class Section extends React.Component {
 
         this.state = {
             sortAscending: false,
-            createPanel: false,
             title: '',
             description: ''
         }
@@ -48,8 +47,8 @@ export class Section extends React.Component {
     }
 
     render() {
-        let {status, cards, onModalInfo, onDeleteCard} = this.props;
-        const {createPanel, sortAscending} = this.state;
+        let {status, cards, onModalInfo, onDeleteCard, createPanel} = this.props;
+        const {sortAscending} = this.state;
 
         return (
             <div class="section flex-column">
