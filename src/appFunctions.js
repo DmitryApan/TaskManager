@@ -28,3 +28,20 @@ export function changeStatusCard(id, newStatus, {statuses, dataByStatuses}) {
         statuses
     });
 }
+
+export function sortCardsByTitle(cards, ascending) {
+    let cardsSort = cards.sort((a, b) => {
+        let charA = a.title.toUpperCase();
+        let charB = b.title.toUpperCase();
+
+        if ((ascending && (charA < charB)) 
+        || (!ascending && (charA > charB))) {
+            return 1;
+        }
+        else {
+            return -1;
+        }
+    });
+
+    return cardsSort;
+}

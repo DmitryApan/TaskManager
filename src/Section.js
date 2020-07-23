@@ -6,12 +6,15 @@ import './App.css';
 import {Card} from './Card';
 import {Header} from './Header';
 import {CreatePanel} from './CreatePanel'
+import {sortCardsByTitle} from './appFunctions';
 
 export class Section extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            sortAscending: false,
+            createPanel: false,
             title: '',
             description: ''
         }
@@ -38,15 +41,24 @@ export class Section extends React.Component {
         onControlCreatePanel(status);
     }
 
+    onClickSort = () => {
+        this.setState({
+            sortAscending: !this.state.sortAscending
+        })
+    }
+
     render() {
-        let {status, cards, onModalInfo, onDeleteCard, createPanel} = this.props;
+        let {status, cards, onModalInfo, onDeleteCard} = this.props;
+        const {createPanel, sortAscending} = this.state;
 
         return (
             <div class="section flex-column">
                 <Header 
                     text={status}
                     amount={cards.length}
+                    sortAscending={sortAscending}
                     onClickNewCard={this.onClickNewCard} 
+                    onClickSort={this.onClickSort}
                 />  
                 {createPanel && (
                     <CreatePanel 
@@ -56,7 +68,7 @@ export class Section extends React.Component {
                 <Droppable droppableId={status}>
                     {(provided) => (
                         <div class="section-cards" ref={provided.innerRef} >
-                            {cards && cards.map((card, index) => (
+                            {cards && sortCardsByTitle(cards, sortAscending).map((card, index) => (
                                 <Draggable 
                                     key={card._id}
                                     draggableId={card._id} 
