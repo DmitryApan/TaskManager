@@ -52,7 +52,7 @@ export class Section extends React.Component {
                     <CreatePanel 
                         onCreate={this.onCreateCard}
                         onChange={this.onChangeTitleOrDescription}
-                    />
+                    />)}
                 <Droppable droppableId={status}>
                     {(provided) => (
                         <div class="section-cards" ref={provided.innerRef} >
