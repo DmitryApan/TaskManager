@@ -1,5 +1,5 @@
 import React from 'react';
-import {AreaAvatar} from './AreaAvatar';
+import {AreaAvatar} from './components/AreaAvatar/AreaAvatar';
 import {TextEditor} from './components/TextEditor/TextEditor';
 import {userInfo} from './networkFunctions';
 

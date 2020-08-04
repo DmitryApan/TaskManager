@@ -142,8 +142,12 @@
   width: 130px;
 }
 
-.section-card-info-graph {
+.section-card-info-owners {
+  height: 30px;
+  width: 30px;
+  margin-top: 10px;
   position: relative;
+  z-index: 0;
 }
 
 .section-card-info-graph-avatar {
@@ -292,41 +296,20 @@ input::placeholder {
   z-index: 1;
 }
 
-.avatar,
-.avatar-image {
-  height: 45px;
-  width: 45px;
-  border-radius: 50%;
-}
-
-.avatar {
-  margin: 10px 0px 10px 10px;
-  border: solid 3px white;
-  background-color: rgb(0, 171, 250);
+.avatar-image,
+.avatar-initials {
+  border: solid 2px white;
+  height: inherit;
+  width: inherit;
+  border-radius: inherit;
 }
 
 .avatar-initials {
   color: white;
-  font-size: 20px;
+  font-size: inherit;
   font-family: monospace;
-  line-height: 20px;  
-}
-
-.symbol-head {
-  height: 15px;
-  width: 15px;
-  border-radius: 50%;
-  border: solid 2px white;
-}
-
-.symbol-shoulders {
-  height: 10px;
-  width: 20px;
-  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
-  border-top: solid 2px white;
-  border-left: solid 2px white;
-  border-right: solid 2px white;
-  margin-top: -2px;
+  line-height: inherit;  
+  background-color: rgb(0,170,250);
 }
 
 .user-menu {
@@ -345,4 +328,17 @@ input::placeholder {
 
 .text-placeholder {
   color: gray;
+}
+
+.card-info-heap-avatar {
+  height: 45px;
+  width: 45px;
+  margin-bottom: 45px;
+  font-size: 20px;
+}
+
+.homepage-region-avatar {
+  height: 50px;
+  width: 50px;
+  margin-left: 10px;
 }

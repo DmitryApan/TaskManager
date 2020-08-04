@@ -1,4 +1,4 @@
-import {urlCardData, urlCardCreate, urlCardSettings, urlSignUp, urlLogin, urlUserInfo} from './Data';
+import {urlCardData, urlCardCreate, urlCardSettings, urlSignUp, urlLogin, urlUserInfo, urlUsersInfo} from './Data';
 
 async function serverRequest({url, json = true, method = 'GET', headers, body}) {    
     let response = await fetch(url, {
@@ -94,4 +94,8 @@ export function userInfo(body) {
         },
         body: JSON.stringify(body)
     })
+}
+
+export function getUsersInfo() {
+    return serverRequest({url: urlUsersInfo});
 }

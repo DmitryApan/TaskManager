@@ -1,7 +1,7 @@
 import React, {useState, useCallback} from 'react';
-import {PlaceholderAvatar} from './PlaceholderAvatar';
+import {PlaceholderAvatar} from './components/PlaceholderAvatar/PlaceholderAvatar';
 
-export function Avatar({avatar, name}) {
+export function Avatar({avatar, name, addUserType}) {
     const [isErrorLoadImg, setIsErrorLoadImg] = useState(false);
 
     let initials = name && name.trim().split(' ', 2).map(n => n[0]).join('').toUpperCase();
@@ -17,6 +17,6 @@ export function Avatar({avatar, name}) {
         return <div class="avatar-initials flex-center">{initials}</div>
     }
     else {
-        return <PlaceholderAvatar />
+        return <PlaceholderAvatar addUserType={addUserType} />
     }
 }

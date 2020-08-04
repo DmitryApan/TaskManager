@@ -6,7 +6,7 @@ import {
     Redirect
   } from 'react-router-dom';
 
-import {getSettings, getDataCards, login, signUp, userInfo} from './networkFunctions';
+import {getSettings, getDataCards, login, signUp, userInfo, getUsersInfo} from './networkFunctions';
 
 import {HomePage} from './HomePage';
 import {CardPage} from './CardPage';
@@ -28,7 +28,8 @@ class App extends React.Component {
             idCard: null,
             isLogin: !!email,
             email,
-            userInfo: null
+            userInfo: null,
+            usersInfo: null
         };  
     }
 
@@ -37,7 +38,8 @@ class App extends React.Component {
 
         this.setState({
             dataCard: email ? await this.dataRequest() : {},
-            userInfo: email ? await userInfo({email}) : null
+            userInfo: email ? await userInfo({email}) : null,
+            usersInfo: email ? await getUsersInfo() : null
         });    
     }   
     

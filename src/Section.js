@@ -1,12 +1,12 @@
 import React from 'react';
 import {Droppable, Draggable} from 'react-beautiful-dnd';
 
-import './App.css';
-
 import {Card} from './Card';
 import {Header} from './Header';
 import {CreatePanel} from './CreatePanel'
 import {sortCardsByTitle} from './appFunctions';
+
+import './App.css';
 
 export class Section extends React.Component {
     constructor(props) {
@@ -43,11 +43,11 @@ export class Section extends React.Component {
     onClickSort = () => {
         this.setState({
             sortAscending: !this.state.sortAscending
-        })
+        });
     }
 
     render() {
-        let {status, cards, onModalInfo, onDeleteCard, createPanel} = this.props;
+        let {status, cards, onModalInfo, onDeleteCard, createPanel, usersInfo} = this.props;
         const {sortAscending} = this.state;
 
         return (
@@ -82,6 +82,7 @@ export class Section extends React.Component {
                                             <Card 
                                                 onDeleteCard={onDeleteCard} 
                                                 onModalInfo={onModalInfo}
+                                                usersInfo={usersInfo}
                                                 {...card} 
                                             />
                                         </div>

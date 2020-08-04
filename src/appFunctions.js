@@ -8,6 +8,10 @@ export function findCardById(id, dataByStatuses) {
     return card || null;
 }
 
+export function findUserById(id, users) {
+    return users.find(item => (item._id === id));
+}
+
 export function changeStatusCard(id, newStatus, {statuses, dataByStatuses}) {
     let card = findCardById(id, dataByStatuses);
     let {_id, status} = card;
