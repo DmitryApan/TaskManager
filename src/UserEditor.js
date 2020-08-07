@@ -1,9 +1,9 @@
 import React from 'react';
-import {AreaAvatar} from './components/AreaAvatar/AreaAvatar';
-import {TextEditor} from './components/TextEditor/TextEditor';
-import {userInfo} from './networkFunctions';
+import AreaAvatar from './components/AreaAvatar/AreaAvatar';
+import TextEditor from './components/TextEditor/TextEditor';
+import {getUserData} from './networkFunctions';
 
-export class UserEditor extends React.Component {
+export default class UserEditor extends React.Component {
     constructor(props) {
         super(props);
 
@@ -19,13 +19,13 @@ export class UserEditor extends React.Component {
     handleChange = (key) => async(text) => {
         let {email, updateData} = this.props;
 
-        let response = await userInfo({
+        let response = await getUserData({
             email,
             [key]: text
         });
 
         updateData({
-            userInfo: {...response}
+            userData: {...response}
         });
     }
 

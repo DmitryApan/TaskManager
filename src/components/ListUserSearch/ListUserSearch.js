@@ -1,13 +1,21 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {Select} from 'antd';
-import {Avatar} from '../../Avatar';
+import Avatar from '../../Avatar';
 
 import 'antd/dist/antd.css';
 import styles from './ListUserSearch.less'
 
-export function ListUserSearch(props) {
-    const {onSelectUser, usersInfo, owners} = props;
+export default function ListUserSearch(props) {
+    const {onSelectUser, usersData, owners} = props;
     const {Option} = Select;
+
+    let usersOptionSelect = usersData.filter((userData) => (
+        !owners.find(ownerId => userData._id === ownerId)
+    ));
+
+    const headerOnBlur = useCallback(() => {
+        onSelectUser(null);
+    })
 
     return(
         <Select
@@ -17,20 +25,22 @@ export function ListUserSearch(props) {
             placeholder="Select a user"
             optionFilterProp="children"
             onChange={onSelectUser}
-            onBlur={() => {onSelectUser(null)}}
+            onBlur={headerOnBlur}
             filterOption={(input, option) =>
-                option.name.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                option.name.toLowerCase().includes(input.toLowerCase())
             }
         >
-            {usersInfo.filter((userInfo) => (
-                !owners.find(ownerId => userInfo._id === ownerId)
-            )).map((item) => (
-                <Option value={item._id} name={item.name || item.email}>
-                    <div className={styles.optionClass}>
-                        <div className={styles.optionAvatarClass}>
+            {usersOptionSelect.map((item) => (
+                <Option 
+                    key={item._id}
+                    value={item._id} 
+                    name={item.name || item.email}                    
+                >
+                    <div className={styles.option}>
+                        <div className={styles.optionAvatar}>
                             <Avatar {...item} />
                         </div>
-                        <div className={styles.optionNameClass}>
+                        <div className={styles.optionName}>
                             {item.name || item.email}
                         </div>
                     </div>

@@ -1,32 +1,30 @@
 import React from 'react';
+import cn from 'classnames';
 
 import styles from './PlaceholderAvatar.less';
 
-export function PlaceholderAvatar(props) {
+export default function PlaceholderAvatar(props) {
     let {addUserType} = props;
 
-    var classNames = require('classnames/bind');
-    var cx = classNames.bind(styles);
-
-    var headClass = cx({
-        borderGrey: addUserType
+    var headClass = cn({
+        [styles.borderGrey]: addUserType
     }, styles.symbolHead);
 
-    var shouldersClass = cx({
-        borderGrey: addUserType
+    var shouldersClass = cn({
+        [styles.borderGrey]: addUserType
     }, styles.symbolShoulders);
 
-    var borderPlaceholder = cx({
-        borderPlaceholderAddUser: addUserType
+    var borderPlaceholderClass = cn({
+        [styles.borderPlaceholderAddUser]: addUserType
     }, styles.borderPlaceholder);
 
     return (
-        <div className={borderPlaceholder}>
+        <div className={borderPlaceholderClass}>
             <div className={headClass} />
             <div className={shouldersClass} />
             {addUserType && 
-                <div className={styles.outerPlusClass}>
-                    <div className={styles.innerPlusClass}>&nbsp;+&nbsp;</div>
+                <div className={styles.outerPlus}>
+                    <div className={styles.innerPlus}>&nbsp;+&nbsp;</div>
                 </div>
             }
         </div>

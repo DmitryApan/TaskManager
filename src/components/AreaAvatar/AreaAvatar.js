@@ -1,16 +1,14 @@
 import React, {useCallback, useState} from 'react';
-import {Avatar} from '../../Avatar';
+import cn from 'classnames';
+import Avatar from '../../Avatar';
 
 import styles from './AreaAvatar.less';
 
-export function AreaAvatar(props) {
+export default function AreaAvatar(props) {
     let {_id, avatar, onClickAvatar, onClickCross, crossOnMouseEnter} = props;
 
-    var classNames = require('classnames/bind');
-    var cx = classNames.bind(styles);
-
-    var avatarClass = cx({
-        cursorPointer: onClickAvatar
+    var avatarClass = cn({
+        [styles.cursorPointer]: onClickAvatar
     }, styles.avatar)
 
     const [isShowCross, setShowCross] = useState(false);
@@ -42,8 +40,8 @@ export function AreaAvatar(props) {
         >
             <Avatar {...props} key={avatar} />
             {crossOnMouseEnter && isShowCross &&
-                <div className={styles.outerCrossClass} onClick={onClickCrossArea}>
-                    <div className={styles.innerCrossClass}>&times;</div>
+                <div className={styles.outerCross} onClick={onClickCrossArea}>
+                    <div className={styles.innerCross}>&times;</div>
                 </div>
             }
         </div>

@@ -1,18 +1,18 @@
 import React, {Fragment} from 'react';
 import {DragDropContext} from 'react-beautiful-dnd';
 
-import {Modal} from './Modal';
-import {CardInfo} from './CardInfo';
-import {Section} from './Section';
-import {AreaAvatar} from './components/AreaAvatar/AreaAvatar';
-import {Panel} from './Panel';
-import {UserMenu} from './UserMenu';
-import {UserEditor} from './UserEditor';
+import Modal from './Modal';
+import CardInfo from './CardInfo';
+import Section from './Section';
+import AreaAvatar from './components/AreaAvatar/AreaAvatar';
+import Panel from './Panel';
+import UserMenu from './UserMenu';
+import UserEditor from './UserEditor';
 
 import {findCardById, changeStatusCard} from './appFunctions';
 import {cardCreate, cardDelete, cardChange} from './networkFunctions';
 
-export class HomePage extends React.Component {
+export default class HomePage extends React.Component {
     constructor(props) {
         super(props)
 
@@ -182,7 +182,7 @@ export class HomePage extends React.Component {
 
     render() {
         const {userMenu, userEditor, openCreatePanel} = this.state;
-        const {idCard, userInfo, usersInfo, updateData} = this.props;   
+        const {idCard, userData, usersData, updateData} = this.props;   
         const {statuses, dataByStatuses} = this.props.dataCard;               
 
         return (
@@ -193,7 +193,7 @@ export class HomePage extends React.Component {
                             {statuses.map(status => ( 
                                 <Section 
                                     status={status}
-                                    usersInfo={usersInfo}
+                                    usersData={usersData}
                                     createPanel={(openCreatePanel === status)} 
                                     cards={dataByStatuses[status] || []}       
                                     onControlCreatePanel={this.handleControlCreatePanel}                 
@@ -206,11 +206,11 @@ export class HomePage extends React.Component {
                     <div class="homepage-region-logout flex-column">
                         <div class="flex-center">
                             <div>
-                                {userInfo.name}
+                                {userData.name}
                             </div>
                             <div class="homepage-region-avatar">
                                 <AreaAvatar 
-                                    {...userInfo} 
+                                    {...userData} 
                                     onClickAvatar={this.handleOpenUserMenu}
                                 />
                             </div>
@@ -228,7 +228,7 @@ export class HomePage extends React.Component {
                         {() => <CardInfo 
                             isChanging={true}
                             statuses={statuses}
-                            usersInfo={usersInfo}
+                            usersData={usersData}
                             card={findCardById(idCard, dataByStatuses)}
                             onChangeStatus={this.handleChangeStatus}
                             onChangeTitle={this.handleChange('title')}
@@ -238,7 +238,7 @@ export class HomePage extends React.Component {
                     </Modal>}
                 {userEditor && 
                     <Modal onCloseModal={this.handleCloseUserEditor}>
-                        {() => <UserEditor updateData={updateData} {...userInfo} />}
+                        {() => <UserEditor updateData={updateData} {...userData} />}
                     </Modal>}   
             </Fragment>
         )        

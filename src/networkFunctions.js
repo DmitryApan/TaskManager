@@ -85,7 +85,7 @@ export function cardChange(id, body) {
     });
 }
 
-export function userInfo(body) {
+export function getUserData(body) {
     return serverRequest({
         url: urlUserInfo,
         method: 'PUT',
@@ -96,6 +96,6 @@ export function userInfo(body) {
     })
 }
 
-export function getUsersInfo() {
+export function getUsersData() {
     return serverRequest({url: urlUsersInfo});
 }

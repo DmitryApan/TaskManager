@@ -6,11 +6,11 @@ import {
     Redirect
   } from 'react-router-dom';
 
-import {getSettings, getDataCards, login, signUp, userInfo, getUsersInfo} from './networkFunctions';
+import {getSettings, getDataCards, login, signUp, getUserData, getUsersData} from './networkFunctions';
 
-import {HomePage} from './HomePage';
-import {CardPage} from './CardPage';
-import {LoginPage} from './LoginPage';
+import HomePage from './HomePage';
+import CardPage from './CardPage';
+import LoginPage from './LoginPage';
 
 import './App.css';
 
@@ -28,8 +28,8 @@ class App extends React.Component {
             idCard: null,
             isLogin: !!email,
             email,
-            userInfo: null,
-            usersInfo: null
+            userData: null,
+            usersData: null
         };  
     }
 
@@ -38,8 +38,8 @@ class App extends React.Component {
 
         this.setState({
             dataCard: email ? await this.dataRequest() : {},
-            userInfo: email ? await userInfo({email}) : null,
-            usersInfo: email ? await getUsersInfo() : null
+            userData: email ? await getUserData({email}) : null,
+            usersData: email ? await getUsersData() : null
         });    
     }   
     
@@ -101,7 +101,7 @@ class App extends React.Component {
 
     render() {     
         const {state, updateData} = this;
-        const {isLogin, messageLoginForm, userInfo, dataCard} = state;
+        const {isLogin, messageLoginForm, userData, dataCard} = state;
         const {statuses} = dataCard;
         
         return (
@@ -110,7 +110,7 @@ class App extends React.Component {
                     {isLogin 
                         ? <Fragment>
                             <Route exact path="/">
-                                {(userInfo && statuses) && <HomePage {...state} updateData={updateData} />}                                  
+                                {(userData && statuses) && <HomePage {...state} updateData={updateData} />}                                  
                             </Route>
                             <Route path="/:id">
                                 <CardPage {...this.state.dataCard} />

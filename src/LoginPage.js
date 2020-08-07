@@ -2,7 +2,7 @@ import React from 'react';
 
 import {Link} from 'react-router-dom';
 
-export function LoginPage({buttonText, linkText, linkUrl, message, onSubmitLoginForm, onChangeLoginInput}) {
+export default function LoginPage({buttonText, linkText, linkUrl, message, onSubmitLoginForm, onChangeLoginInput}) {
     return (
         <div class="login-overlay"> 
             <div class="flex-center login-window" >

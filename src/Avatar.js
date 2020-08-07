@@ -1,7 +1,7 @@
 import React, {useState, useCallback} from 'react';
-import {PlaceholderAvatar} from './components/PlaceholderAvatar/PlaceholderAvatar';
+import PlaceholderAvatar from './components/PlaceholderAvatar/PlaceholderAvatar';
 
-export function Avatar({avatar, name, addUserType}) {
+export default function Avatar({avatar, name, addUserType}) {
     const [isErrorLoadImg, setIsErrorLoadImg] = useState(false);
 
     let initials = name && name.trim().split(' ', 2).map(n => n[0]).join('').toUpperCase();
