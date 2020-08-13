@@ -8,8 +8,9 @@ export default function AreaAvatar(props) {
     let {_id, avatar, onClickAvatar, onClickCross, crossOnMouseEnter} = props;
 
     var avatarClass = cn({
+        [styles.avatar]: true,
         [styles.cursorPointer]: onClickAvatar
-    }, styles.avatar)
+    })
 
     const [isShowCross, setShowCross] = useState(false);
 

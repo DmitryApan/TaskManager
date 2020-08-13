@@ -15,7 +15,7 @@ export default function ListUserSearch(props) {
 
     const headerOnBlur = useCallback(() => {
         onSelectUser(null);
-    })
+    }, [onSelectUser])
 
     return(
         <Select

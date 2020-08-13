@@ -19,13 +19,11 @@ export default class UserEditor extends React.Component {
     handleChange = (key) => async(text) => {
         let {email, updateData} = this.props;
 
-        let response = await getUserData({
-            email,
-            [key]: text
-        });
-
         updateData({
-            userData: {...response}
+            userData: await getUserData({
+                email,
+                [key]: text
+            })
         });
     }
 
