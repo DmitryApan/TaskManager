@@ -2,7 +2,7 @@ import React from 'react';
 
 import './App.css';
 
-export function Header({text, amount, sortAscending, onClickSort, onClickNewCard}) {
+export default function Header({text, amount, sortAscending, onClickSort, onClickNewCard}) {
     return (
         <div class="section-header flex-row">
             <div class="section-header-name">{text}</div>

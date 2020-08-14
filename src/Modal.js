@@ -2,7 +2,7 @@ import React from 'react';
 
 import './App.css';
 
-export class Modal extends React.Component {
+export default class Modal extends React.Component {
     handleCloseModal = (event) => {
         this.props.onCloseModal();
 

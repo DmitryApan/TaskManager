@@ -1,11 +1,11 @@
 import React, {Fragment} from 'react';
 import Select from 'react-select';
+import TextEditor from './components/TextEditor/TextEditor';
+import HeapAvatars from './components/HeapAvatars/HeapAvatars';
 
 import './App.css';
 
-import {TextEditor} from './components/TextEditor/TextEditor';
-
-export class CardInfo extends React.Component {
+export default class CardInfo extends React.Component {
     handleChangeDescription = (description) => {
         const {onChangeDescription, card} = this.props;
 
@@ -24,8 +24,14 @@ export class CardInfo extends React.Component {
         onChangeStatus(value, card);
     }
 
+    handleChangeOwners = (owners) => {
+        const {onChangeOwners, card} = this.props; 
+        
+        onChangeOwners(owners, card);
+    }
+
     render() {
-        let {isChanging, statuses, card} = this.props;
+        let {isChanging, statuses, card, usersData} = this.props;
         let {status, title, description} = card;
 
         let statusOptions = statuses && statuses.map(value => ({value, label: value}));
@@ -35,6 +41,13 @@ export class CardInfo extends React.Component {
                 <div>
                     {isChanging
                         ? <Fragment>
+                            <div class="card-info-heap-avatar">
+                                <HeapAvatars 
+                                    {...card}
+                                    usersData={usersData} 
+                                    onChangeHeap={this.handleChangeOwners}
+                                />
+                            </div>
                             <Select
                                 defaultValue={{value: status, label: status}}
                                 options={statusOptions}

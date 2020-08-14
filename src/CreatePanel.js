@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 
-export function CreatePanel({onCreate, onChange}) {
+export default function CreatePanel({onCreate, onChange}) {
     return (
         <div class="create-panel-body">
             <div>Creating new card...</div>

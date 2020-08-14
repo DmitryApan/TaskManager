@@ -2,7 +2,7 @@ import React, {Fragment} from 'react';
 
 import styles from './TextEditor.less';
 
-export class TextEditor extends React.Component {
+export default class TextEditor extends React.Component {
     constructor(props) {
         super(props);
         this.state = {

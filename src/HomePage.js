@@ -1,18 +1,18 @@
 import React, {Fragment} from 'react';
 import {DragDropContext} from 'react-beautiful-dnd';
 
-import {Modal} from './Modal';
-import {CardInfo} from './CardInfo';
-import {Section} from './Section';
-import {AreaAvatar} from './AreaAvatar';
-import {Panel} from './Panel';
-import {UserMenu} from './UserMenu';
-import {UserEditor} from './UserEditor';
+import Modal from './Modal';
+import CardInfo from './CardInfo';
+import Section from './Section';
+import AreaAvatar from './components/AreaAvatar/AreaAvatar';
+import Panel from './Panel';
+import UserMenu from './UserMenu';
+import UserEditor from './UserEditor';
 
 import {findCardById, changeStatusCard} from './appFunctions';
 import {cardCreate, cardDelete, cardChange} from './networkFunctions';
 
-export class HomePage extends React.Component {
+export default class HomePage extends React.Component {
     constructor(props) {
         super(props)
 
@@ -26,13 +26,13 @@ export class HomePage extends React.Component {
     handleCloseUserMenu = () => {
         this.setState({
             userMenu: false
-        })
+        });
     }
 
     handleOpenUserMenu = () => {
         this.setState({
             userMenu: true
-        })
+        });
     }
 
     handleCreateCard = async(title, description) => {        
@@ -165,24 +165,24 @@ export class HomePage extends React.Component {
         this.setState({
             userMenu: false,
             userEditor: true
-        })
+        });
     }
 
     handleCloseUserEditor = () => {
         this.setState({
             userEditor: false
-        })
+        });
     }
 
     handleControlCreatePanel = (status) => {
         this.setState({
             openCreatePanel: (this.state.openCreatePanel === status) ? null : status
-        })
+        });
     }
 
     render() {
         const {userMenu, userEditor, openCreatePanel} = this.state;
-        const {idCard, userInfo, updateData} = this.props;   
+        const {idCard, userData, usersData, updateData} = this.props;   
         const {statuses, dataByStatuses} = this.props.dataCard;               
 
         return (
@@ -193,6 +193,7 @@ export class HomePage extends React.Component {
                             {statuses.map(status => ( 
                                 <Section 
                                     status={status}
+                                    usersData={usersData}
                                     createPanel={(openCreatePanel === status)} 
                                     cards={dataByStatuses[status] || []}       
                                     onControlCreatePanel={this.handleControlCreatePanel}                 
@@ -204,11 +205,15 @@ export class HomePage extends React.Component {
                     </div>
                     <div class="homepage-region-logout flex-column">
                         <div class="flex-center">
-                            {userInfo.name}
-                            <AreaAvatar 
-                                {...userInfo} 
-                                onClickAvatar={this.handleOpenUserMenu}
-                            />
+                            <div>
+                                {userData.name}
+                            </div>
+                            <div class="homepage-region-avatar">
+                                <AreaAvatar 
+                                    {...userData} 
+                                    onClickAvatar={this.handleOpenUserMenu}
+                                />
+                            </div>
                         </div>
                         {userMenu && <Panel onClickOutside={this.handleCloseUserMenu}>
                             <UserMenu 
@@ -223,15 +228,17 @@ export class HomePage extends React.Component {
                         {() => <CardInfo 
                             isChanging={true}
                             statuses={statuses}
+                            usersData={usersData}
                             card={findCardById(idCard, dataByStatuses)}
                             onChangeStatus={this.handleChangeStatus}
                             onChangeTitle={this.handleChange('title')}
-                            onChangeDescription={this.handleChange('description')}                            
+                            onChangeDescription={this.handleChange('description')} 
+                            onChangeOwners={this.handleChange('owners')}                           
                         />}
                     </Modal>}
                 {userEditor && 
                     <Modal onCloseModal={this.handleCloseUserEditor}>
-                        {() => <UserEditor updateData={updateData} {...userInfo} />}
+                        {() => <UserEditor updateData={updateData} {...userData} />}
                     </Modal>}   
             </Fragment>
         )        

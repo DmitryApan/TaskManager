@@ -6,3 +6,4 @@ export let urlCardSettings = `${base}/settings`;
 export let urlLogin = `${base}/login`;
 export let urlSignUp = `${base}/register`;
 export let urlUserInfo = `${base}/user`;
+export let urlUsersInfo = `${base}/users`;
