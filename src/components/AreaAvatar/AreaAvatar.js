@@ -7,30 +7,30 @@ import styles from './AreaAvatar.less';
 export default function AreaAvatar(props) {
     let {_id, avatar, onClickAvatar, onClickCross, crossOnMouseEnter} = props;
 
-    var avatarClass = cn({
+    let avatarClass = cn({
         [styles.avatar]: true,
         [styles.cursorPointer]: onClickAvatar
-    })
+    });
 
     const [isShowCross, setShowCross] = useState(false);
 
     const onMouseEnterArea = useCallback(() => {
         setShowCross(true);
-    }, [isShowCross]);
+    }, [setShowCross]);
 
     const onMouseLeaveArea = useCallback(() => {
         setShowCross(false);
-    }, [isShowCross]);
+    }, [setShowCross]);
 
     const onClickAvatarArea = useCallback(() => {
         onClickAvatar && onClickAvatar(_id);
-    });
+    }, [onClickAvatar]);
 
     const onClickCrossArea = useCallback((event) => {
         onClickCross(_id);
 
         event.stopPropagation();
-    });
+    }, [onClickCross]);
 
     return (
         <div 

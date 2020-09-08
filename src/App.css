@@ -342,3 +342,8 @@ input::placeholder {
   width: 50px;
   margin-left: 10px;
 }
+
+.user-avatar {
+  height: 200px;
+  width: 200px;
+}

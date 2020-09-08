@@ -1,18 +1,24 @@
 import React from 'react';
 import {useParams, Redirect} from 'react-router-dom';
-
+import {connect} from 'react-redux';
 import CardInfo from './CardInfo';
 import {findCardById} from './appFunctions';
 
-export default function CardPage({dataByStatuses}) { 
+function CardPage(props) { 
     let {id} = useParams();           
-    let card = findCardById(id, dataByStatuses);      
-
+    let card = findCardById(id, props.cards);  
+    
     return (        
-        card 
-        ? <div>
-            <CardInfo card={card} />                   
-        </div>
+        card ? 
+            <div>
+                <CardInfo id={card._id} />                   
+            </div>
         : <Redirect to="/" />                           
     )    
 }
+
+const mapStateToProps = (state) => ({
+    cards: state.cards.data
+});
+
+export default connect(mapStateToProps, null)(CardPage);

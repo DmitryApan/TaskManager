@@ -1,14 +1,14 @@
 import React from 'react';
 import {Droppable, Draggable} from 'react-beautiful-dnd';
-
 import Card from './Card';
 import Header from './Header';
 import CreatePanel from './CreatePanel'
-import {sortCardsByTitle} from './appFunctions';
+import {sortCardsByTitle, findCardsByStatus} from './appFunctions';
+import {connect} from 'react-redux';
 
 import './App.css';
 
-export default class Section extends React.Component {
+class Section extends React.Component {
     constructor(props) {
         super(props);
 
@@ -18,21 +18,6 @@ export default class Section extends React.Component {
             description: ''
         }
     }    
-
-    onCreateCard = () => {
-        let {onCreateCard, onControlCreatePanel} = this.props;
-        const {title, description} = this.state;
-
-        onCreateCard(title, description);
-
-        onControlCreatePanel(null);
-    }
-
-    onChangeTitleOrDescription = ({target}) => {
-        this.setState({
-            [target.name]: target.value
-        })
-    }
 
     onClickNewCard = () => {
         let {onControlCreatePanel, status} = this.props;
@@ -47,27 +32,24 @@ export default class Section extends React.Component {
     }
 
     render() {
-        let {status, cards, onModalInfo, onDeleteCard, createPanel, usersData} = this.props;
+        let {status, cards, onModalInfo, createPanel} = this.props;
+        let cardsByStatus = findCardsByStatus(status, cards);
         const {sortAscending} = this.state;
 
         return (
             <div class="section flex-column">
                 <Header 
-                    text={status}
-                    amount={cards.length}
-                    sortAscending={sortAscending}
-                    onClickNewCard={this.onClickNewCard} 
-                    onClickSort={this.onClickSort}
-                />  
-                {createPanel && (
-                    <CreatePanel 
-                        onCreate={this.onCreateCard}
-                        onChange={this.onChangeTitleOrDescription}
-                    />)}
+                        text={status}
+                        amount={cardsByStatus.length}
+                        sortAscending={sortAscending}
+                        onClickNewCard={this.onClickNewCard} 
+                        onClickSort={this.onClickSort}
+                />
+                {createPanel && <CreatePanel status={status} />}
                 <Droppable droppableId={status}>
                     {(provided) => (
                         <div class="section-cards" ref={provided.innerRef} >
-                            {cards && sortCardsByTitle(cards, sortAscending).map((card, index) => (
+                            {cardsByStatus && sortCardsByTitle(cardsByStatus, sortAscending).map((card, index) => (
                                 <Draggable 
                                     key={card._id}
                                     draggableId={card._id} 
@@ -79,12 +61,7 @@ export default class Section extends React.Component {
                                             {...provided.draggableProps}
                                             {...provided.dragHandleProps}
                                         >                                            
-                                            <Card 
-                                                onDeleteCard={onDeleteCard} 
-                                                onModalInfo={onModalInfo}
-                                                usersData={usersData}
-                                                {...card} 
-                                            />
+                                            <Card onModalInfo={onModalInfo} {...card} />
                                         </div>
                                     )}
                                 </Draggable>
@@ -96,3 +73,9 @@ export default class Section extends React.Component {
         )
     }
 }
+
+const mapStateToProps = state => ({
+    cards: state.cards.data
+});
+
+export default connect(mapStateToProps, null)(Section);

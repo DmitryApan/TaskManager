@@ -1,108 +1,27 @@
 import React, {Fragment} from 'react';
+import {connect} from 'react-redux';
 import {
     BrowserRouter as Router,
     Switch,
     Route,
     Redirect
-  } from 'react-router-dom';
-
-import {getSettings, getDataCards, login, signUp, getUserData, getUsersData} from './networkFunctions';
-
+} from 'react-router-dom';
+import {authorization} from './store/actionsCreators/authorization';
 import HomePage from './HomePage';
 import CardPage from './CardPage';
 import LoginPage from './LoginPage';
-
-import './App.css';
+import LogOut from './LogOut';
+import {bindActionCreators} from 'redux';
 
 class App extends React.Component {  
     constructor(props) {
         super(props);   
         
-        let email = localStorage.getItem('email');
-
-        this.state = {
-            dataCard: {
-                statuses: null,
-                dataByStatuses: null
-            },            
-            idCard: null,
-            isLogin: !!email,
-            email,
-            userData: null,
-            usersData: null
-        };  
-    }
-
-    async componentDidMount() {
-        const {email} = this.state;
-
-        this.setState({
-            dataCard: email ? await this.dataRequest() : {},
-            userData: email ? await getUserData({email}) : null,
-            usersData: email ? await getUsersData() : null
-        });    
-    }   
-    
-    async dataRequest() {
-        let statuses = await getSettings();  
-        let cards = await getDataCards();
-      
-        let dataCard = {
-            statuses,
-            dataByStatuses: statuses.reduce((acc, status) => ({
-                ...acc, 
-                [status]: []
-            }), {})
-        };        
-
-        cards.forEach((card) => {
-            let {status} = {...card}
-            let {dataByStatuses} = dataCard;
-
-            dataByStatuses[status].push(card);
-        });
-
-        return dataCard;
-    }
-
-    updateData = (value) => {
-        this.setState(value);
-    }    
-
-    handlerChangeLoginInput = ({target}) => {
-        const {value, name} = target;
-
-        this.setState({
-            messageLoginForm: null,
-            [name]: value
-        });
-    }
-
-    handlerSubmitForm = (networkFunction) => async(event) => {
-        event.preventDefault();
-
-        let body = {
-            email: this.state.userEmail,
-            password: this.state.userPassword
-        }
-
-        let response = await networkFunction(body);
-
-        localStorage.setItem('email', response.email);
-
-        let {email} = response;
-
-        this.setState({
-            isLogin: !!email,
-            messageLoginForm: email ? null : 'Wrong password or email!',
-            dataCard: email ? await this.dataRequest() : {}
-        });
+        props.authorization();
     }
 
     render() {     
-        const {state, updateData} = this;
-        const {isLogin, messageLoginForm, userData, dataCard} = state;
-        const {statuses} = dataCard;
+        const {isLogin} = this.props;
         
         return (
             <Router>
@@ -110,34 +29,21 @@ class App extends React.Component {
                     {isLogin 
                         ? <Fragment>
                             <Route exact path="/">
-                                {(userData && statuses) && <HomePage {...state} updateData={updateData} />}                                  
+                                <HomePage />                                  
+                            </Route>
+                            <Route path="/logout">
+                                <LogOut />
                             </Route>
                             <Route path="/:id">
-                                <CardPage {...this.state.dataCard} />
-                            </Route>                            
+                                <CardPage />
+                            </Route>
                         </Fragment>
                         : <Fragment>
                             <Route exact path="/">
                                 <Redirect to="/login" />
                             </Route>
-                            <Route path="/login">                            
-                                <LoginPage                                                        
-                                    buttonText="Login"
-                                    linkText="SignUp?" 
-                                    linkUrl="/register"
-                                    message={messageLoginForm}
-                                    onSubmitLoginForm={this.handlerSubmitForm(login)}
-                                    onChangeLoginInput={this.handlerChangeLoginInput}
-                                />                        
-                            </Route>
-                            <Route path="/register">
-                                <LoginPage                            
-                                    buttonText="SignUp"
-                                    linkText="Login"
-                                    linkUrl="/login"
-                                    onSubmitLoginForm={this.handlerSubmitForm(signUp)}
-                                    onChangeLoginInput={this.handlerChangeLoginInput}                            
-                                />
+                            <Route path="/:page">                            
+                                <LoginPage />                        
                             </Route>
                         </Fragment> 
                     }                             
@@ -147,4 +53,12 @@ class App extends React.Component {
     }
 }
 
-export default App;
+const mapDispatchToProps = dispatch => ({
+    authorization: bindActionCreators(authorization, dispatch)
+});
+
+const mapStateToProps = state => ({
+    isLogin: state.authorization.isLogin
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

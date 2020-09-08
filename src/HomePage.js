@@ -1,6 +1,5 @@
 import React, {Fragment} from 'react';
 import {DragDropContext} from 'react-beautiful-dnd';
-
 import Modal from './Modal';
 import CardInfo from './CardInfo';
 import Section from './Section';
@@ -8,15 +7,16 @@ import AreaAvatar from './components/AreaAvatar/AreaAvatar';
 import Panel from './Panel';
 import UserMenu from './UserMenu';
 import UserEditor from './UserEditor';
+import {connect} from 'react-redux';
+import {bindActionCreators} from '../node_modules/redux';
+import {changeCardStatusForDrag} from './store/actionsCreators/cards'
 
-import {findCardById, changeStatusCard} from './appFunctions';
-import {cardCreate, cardDelete, cardChange} from './networkFunctions';
-
-export default class HomePage extends React.Component {
+class HomePage extends React.Component {
     constructor(props) {
         super(props)
 
         this.state = {
+            idCard: null,
             userMenu: false,
             userEditor: false,
             openCreatePanel: null
@@ -35,112 +35,10 @@ export default class HomePage extends React.Component {
         });
     }
 
-    handleCreateCard = async(title, description) => {        
-        const {statuses, dataByStatuses} = this.props.dataCard;
-        let body = {
-            title,
-            description
-        }        
-          
-        let card = await cardCreate(body);
-        
-        let {status: statusCard} = card;        
-        let updateDataByStatuses = {
-            ...dataByStatuses,
-            [statusCard]: [...(dataByStatuses[statusCard] || []), card]
-        };       
-        
-        this.props.updateData({   
-            dataCard: {
-                dataByStatuses: updateDataByStatuses,
-                statuses
-            },           
-        });               
-    }
-
-    handleDeleteCard = async({_id, status}) => {
-        const {statuses, dataByStatuses} = this.props.dataCard;
-
-        if (!(await cardDelete(_id))) {
-            return;
-        }
-        
-        let arrayCards = dataByStatuses[status].filter(item => item._id !== _id);
-        let updateDataByStatuses = {
-            ...dataByStatuses,
-            [status]: arrayCards
-        }
-        
-        if (!arrayCards.length) {
-            delete updateDataByStatuses[status];            
-        }
-        
-        this.props.updateData({       
-            dataCard: {
-                dataByStatuses: updateDataByStatuses,
-                statuses
-            },                       
-        });
-    }
-
-    handleChange = (key) => (async(value, {_id, status}) => {
-        const {statuses, dataByStatuses} = this.props.dataCard;
-
-        await cardChange(_id, {[key]: value});
-
-        let arrayChange = dataByStatuses[status].map(item => item._id === _id
-            ? {...item, [key]: value}
-            : item
-        );
-
-        this.props.updateData({
-            dataCard: {
-                dataByStatuses: {
-                    ...dataByStatuses,
-                    [status]: arrayChange
-                },
-                statuses
-            }
-        });
-    })
-
-    handleChangeStatus = async(newStatus, card) => {
-        let {dataCard} = this.props;
-        let {_id} = card;
-
-        await cardChange(_id, {status: newStatus});
-
-        this.props.updateData({
-            dataCard: changeStatusCard(_id, newStatus, dataCard)
-        });
-    }
-
-    onDragEnd = async({draggableId, destination, source}) => {
-        let {dataCard} = this.props;
-        const {droppableId: oldStatus} = source;
-        const {droppableId: newStatus} = destination;
-
-        if (!destination || (newStatus === oldStatus)) {
-            return;
-        }
-
-        let newDataCard = changeStatusCard(draggableId, newStatus, dataCard);
-
-        this.props.updateData({
-            dataCard: newDataCard
-        });
-
-        let response = await cardChange(draggableId, {status: newStatus});
-
-        if (!response) {
-            this.props.updateData({dataCard});
-        }        
-    }
-
     handleModalInfo = ({_id}) => {
         document.body.style.overflow = 'hidden';
         
-        this.props.updateData({            
+        this.setState({
             idCard: _id
         });        
     }
@@ -148,16 +46,8 @@ export default class HomePage extends React.Component {
     handleCloseModal = () => {
         document.body.style.overflow = 'visible';
 
-        this.props.updateData({            
-            idCard: null                
-        });
-    }
-
-    handleLogout = () => {
-        localStorage.removeItem('email');
-
-        this.props.updateData({            
-            isLogin: false           
+        this.setState({
+            idCard: null
         });
     }
 
@@ -181,66 +71,67 @@ export default class HomePage extends React.Component {
     }
 
     render() {
-        const {userMenu, userEditor, openCreatePanel} = this.state;
-        const {idCard, userData, usersData, updateData} = this.props;   
-        const {statuses, dataByStatuses} = this.props.dataCard;               
+        const {idCard, userMenu, userEditor, openCreatePanel} = this.state;
+        const {userInfo, statuses, changeCardStatusForDrag} = this.props; 
+        const {_id, avatar, name} = userInfo;  
 
         return (
             <Fragment>
                 <div class="homepage-overlay flex-row">
                     <div class="flex-row">
-                        <DragDropContext onDragEnd={this.onDragEnd} onDragStart={this.onDragStart}>
-                            {statuses.map(status => ( 
+                        <DragDropContext onDragEnd={changeCardStatusForDrag}>
+                            {statuses && statuses.map(status => ( 
                                 <Section 
                                     status={status}
-                                    usersData={usersData}
                                     createPanel={(openCreatePanel === status)} 
-                                    cards={dataByStatuses[status] || []}       
                                     onControlCreatePanel={this.handleControlCreatePanel}                 
-                                    onDeleteCard={this.handleDeleteCard}
-                                    onCreateCard={this.handleCreateCard}
                                     onModalInfo={this.handleModalInfo}
-                                />))}    
+                                />
+                            ))}    
                         </DragDropContext>
                     </div>
                     <div class="homepage-region-logout flex-column">
                         <div class="flex-center">
                             <div>
-                                {userData.name}
+                                {name}
                             </div>
                             <div class="homepage-region-avatar">
                                 <AreaAvatar 
-                                    {...userData} 
                                     onClickAvatar={this.handleOpenUserMenu}
+                                    id={_id}
+                                    avatar={avatar}
                                 />
                             </div>
                         </div>
-                        {userMenu && <Panel onClickOutside={this.handleCloseUserMenu}>
-                            <UserMenu 
-                                onClickLogOut={this.handleLogout}
-                                onClickPreferences={this.handleOpenUserEditor} 
-                            />
-                        </Panel>}
+                        {userMenu && 
+                            <Panel onClickOutside={this.handleCloseUserMenu}>
+                                <UserMenu onClickPreferences={this.handleOpenUserEditor} />
+                            </Panel>
+                        }
                     </div>
                 </div>                           
                 {idCard && 
                     <Modal onCloseModal={this.handleCloseModal}>
-                        {() => <CardInfo 
-                            isChanging={true}
-                            statuses={statuses}
-                            usersData={usersData}
-                            card={findCardById(idCard, dataByStatuses)}
-                            onChangeStatus={this.handleChangeStatus}
-                            onChangeTitle={this.handleChange('title')}
-                            onChangeDescription={this.handleChange('description')} 
-                            onChangeOwners={this.handleChange('owners')}                           
-                        />}
-                    </Modal>}
+                        {() => <CardInfo isChanging={true} id={idCard} />}
+                    </Modal>
+                }
                 {userEditor && 
                     <Modal onCloseModal={this.handleCloseUserEditor}>
-                        {() => <UserEditor updateData={updateData} {...userData} />}
-                    </Modal>}   
+                        {() => <UserEditor />}
+                    </Modal>
+                }   
             </Fragment>
         )        
     }
 }
+
+const mapStateToProps = state => ({
+    statuses: state.statuses.data,
+    userInfo: state.userInfo.data
+});
+
+const mapDispatchToProps = dispatch => ({
+    changeCardStatusForDrag: bindActionCreators(changeCardStatusForDrag, dispatch)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

@@ -1,51 +1,56 @@
 import React, {useCallback, useState} from 'react';
-import {findUserById} from '../../appFunctions';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import {findUserById, findCardById} from '../../appFunctions';
+import {deleteCardOwner, addCardOwner} from '../../store/actionsCreators/cards';
 import AreaAvatar from '../AreaAvatar/AreaAvatar';
 import PlaceholderAvatar from '../PlaceholderAvatar/PlaceholderAvatar';
 import ListUserSearch from '../ListUserSearch/ListUserSearch';
 
 import styles from './HeapAvatars.less';
 
-export default function HeapAvatars(props) {
-    let {mutable = true, maxShowPosition = 10, owners, usersData, onChangeHeap} = props;
-
-    let numPosition = owners.length + mutable;                                         
-    let owerflowFlag = numPosition > maxShowPosition;                                     
-    let numShowPosition = owerflowFlag ? maxShowPosition : numPosition;                   
-    let numShowAvatar = owerflowFlag ? numShowPosition : owners.length; 
-
+function HeapAvatars(props) {
     const [isShowUserSearch, setShowUserSearch] = useState(false);
-    const [isShowAllPosition, setShowAllPosition] = useState(!owerflowFlag);
+    const [isShowAllPosition, setShowAllPosition] = useState(false);
 
-    let ownersForShow = owners.slice(0, isShowAllPosition ? owners.length : numShowAvatar);
-    
-    const handleOnClickAddUser = useCallback(() => {
-        setShowUserSearch(true);
-    }, [isShowUserSearch])
+    let {mutable = true, maxShowPosition = 10, id, cards, usersApp, deleteCardOwner, addCardOwner} = props;
+    let {owners} = findCardById(id, cards);
+
+    let numPosition = owners.length + mutable; 
+    let getOwerflowFlag = isShowAllPosition ? false : numPosition > maxShowPosition;
+    let getNumShowPosition = getOwerflowFlag ? maxShowPosition : numPosition;
+    let getNumShowAvatar = getOwerflowFlag ? getNumShowPosition : owners.length;
+
+    let ownersForShow = owners.slice(0, isShowAllPosition ? owners.length : getNumShowAvatar);
 
     const handleMouseEnter = useCallback(() => {
         setShowAllPosition(true);
-    }, [isShowAllPosition])
-
-    const handleOnClickCross = useCallback((id) => {
-        id && onChangeHeap(owners.filter(item => item !== id));
-    }, [owners])    
+    }, [setShowAllPosition]);
 
     const handleMouseLeave = useCallback(() => {
-        owerflowFlag && setShowAllPosition(false);
-    }, [mutable, owerflowFlag, isShowAllPosition])
+        setShowAllPosition(false);
+    }, [setShowAllPosition]);
 
-    const handleSelectUser = useCallback((id) => {
-        id && onChangeHeap([...owners, id]);
+    const handleOnClickAddUser = useCallback(() => {
+        setShowUserSearch(true);
+    }, [setShowUserSearch]);
 
+    const handleOnClickCross = useCallback((idOwner) => {
+        deleteCardOwner(id, idOwner);
+    }, [deleteCardOwner, id]);    
+
+    const handleOnBlurList = useCallback(() => {
         setShowUserSearch(false);
-    }, [owners, isShowUserSearch])
+    }, [setShowUserSearch]);
 
-    let i = 0;
-    const divStyle = useCallback(() => ({
+    const handleSelectUser = useCallback((idOwner) => {
+        addCardOwner(id, idOwner);
+    }, [addCardOwner, id]);
+
+    const getStyleProperties = useCallback((i) => ({
         left: `${i++ * 70}%`,
         zIndex: numPosition - i
-    }))    
+    }), [numPosition]);
 
     return (
         <>
@@ -53,39 +58,57 @@ export default function HeapAvatars(props) {
                 onMouseEnter={mutable && handleMouseEnter} 
                 onMouseLeave={mutable && handleMouseLeave}
             >
-                {ownersForShow.map((item) => {
+                {usersApp && ownersForShow.map((id, i) => {
                     return (
-                        <div style={divStyle()} className={styles.position}>
+                        <div 
+                            style={getStyleProperties(i)} 
+                            className={styles.position}
+                        >
                             <AreaAvatar 
-                                {...findUserById(item, usersData)}
+                                {...findUserById(id, usersApp)}
                                 crossOnMouseEnter={mutable && isShowAllPosition}
                                 onClickCross={handleOnClickCross}
                             />
                         </div>
                     )
                 })}
-                {isShowAllPosition && mutable &&
+                {!getOwerflowFlag && mutable &&
                     <div 
-                        style={divStyle()} 
+                        style={getStyleProperties(owners.length)} 
                         className={styles.position}
                         onClick={handleOnClickAddUser}
                     >
                         <PlaceholderAvatar addUserType={true} />
                     </div>
                 }
-                {!isShowAllPosition &&
-                    <div className={styles.points} style={divStyle()}>...</div>
+                {getOwerflowFlag &&
+                    <div 
+                        className={styles.points} 
+                        style={getStyleProperties(ownersForShow.length)}
+                    >...</div>
                 }
             </div>
             <div className={styles.search}>
                 {isShowUserSearch && 
-                    <ListUserSearch
-                        onSelectUser={handleSelectUser}
-                        usersData={usersData}
-                        owners={owners}
+                    <ListUserSearch  
+                        onBlurList={handleOnBlurList}
+                        onSelectUser={handleSelectUser} 
+                        id={id} 
                     />
                 }
             </div>
         </>
     )
 }
+
+const mapStateToProps = state => ({
+    cards: state.cards.data,
+    usersApp: state.usersApp.data
+})
+
+const mapDispatchToProps = dispatch => ({
+    deleteCardOwner: bindActionCreators(deleteCardOwner, dispatch),
+    addCardOwner: bindActionCreators(addCardOwner, dispatch)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(HeapAvatars);

@@ -1,21 +1,19 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import {Select} from 'antd';
 import Avatar from '../../Avatar';
-
+import {connect} from 'react-redux';
 import 'antd/dist/antd.css';
 import styles from './ListUserSearch.less'
+import {findCardById} from '../../appFunctions';
 
-export default function ListUserSearch(props) {
-    const {onSelectUser, usersData, owners} = props;
+function ListUserSearch(props) {
+    const {onSelectUser, onBlurList, usersApp, cards, id} = props;
+    const {owners} = findCardById(id, cards);
     const {Option} = Select;
 
-    let usersOptionSelect = usersData.filter((userData) => (
-        !owners.find(ownerId => userData._id === ownerId)
+    let usersOptionSelect = usersApp.filter((user) => (
+        !owners.find(idOwner => user._id === idOwner)
     ));
-
-    const headerOnBlur = useCallback(() => {
-        onSelectUser(null);
-    }, [onSelectUser])
 
     return(
         <Select
@@ -25,7 +23,7 @@ export default function ListUserSearch(props) {
             placeholder="Select a user"
             optionFilterProp="children"
             onChange={onSelectUser}
-            onBlur={headerOnBlur}
+            onBlur={onBlurList}
             filterOption={(input, option) =>
                 option.name.toLowerCase().includes(input.toLowerCase())
             }
@@ -49,3 +47,10 @@ export default function ListUserSearch(props) {
         </Select>
     )
 }
+
+const mapStateToProps = state => ({
+    usersApp: state.usersApp.data,
+    cards: state.cards.data
+})
+
+export default connect(mapStateToProps, null)(ListUserSearch);
