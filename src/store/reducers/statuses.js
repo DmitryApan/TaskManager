@@ -1,17 +1,22 @@
 import {STATUSES_REQUEST, STATUSES_RECEIVE} from '../actions/statuses';
 
-export default function(state = null, action) {
+export default function(state = {
+    isFetching: false,
+    data: []
+}, action) {
     switch(action.type) {
         case STATUSES_REQUEST:
-            return Object.assign({}, state, {
+            return {
+                ...state,
                 isFetching: true
-            });
+            };
 
         case STATUSES_RECEIVE:
-            return Object.assign({}, state, {
+            return {
+                ...state,
                 isFetching: false,
                 data: action.statuses
-            });
+            };
 
         default: 
             return state;

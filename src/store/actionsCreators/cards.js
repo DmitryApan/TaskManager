@@ -46,8 +46,6 @@ export function deleteCard(id) {
         backendCardDelete(id).then(({status}) => {
             let cards = getState().cards.data;
 
-            console.log(cards);
-
             let arrayCards = cards[status].filter(card => card._id !== id);
             let updateCards = {
                 ...cards,
@@ -93,28 +91,24 @@ function changeCard(key) {
 
 export function changeCardStatus(id, status) {
     return dispatch => {
-
         dispatch(changeCard('status')(id, status));
     }    
 }
 
 export function changeCardTitle(id, title) {
     return dispatch => {
-
         dispatch(changeCard('title')(id, title));
     }
 }
 
 export function changeCardDescription(id, description) {
     return dispatch => {
-
         dispatch(changeCard('description')(id, description));
     }
 }
 
 export function changeCardOwners(id, owners) {
     return dispatch => {
-
         dispatch(changeCard('owners')(id, owners));
     }
 }

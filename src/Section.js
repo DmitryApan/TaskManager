@@ -78,4 +78,4 @@ const mapStateToProps = state => ({
     cards: state.cards.data
 });
 
-export default connect(mapStateToProps, null)(Section);
+export default connect(mapStateToProps)(Section);

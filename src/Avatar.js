@@ -8,13 +8,15 @@ export default function Avatar({avatar, name, addUserType}) {
 
     const onErrorLoadImg = useCallback(() => {
         setIsErrorLoadImg(true);
-    }, [isErrorLoadImg]);
+    }, [setIsErrorLoadImg]);
 
     if (avatar && !isErrorLoadImg) {
         return <img class="avatar-image" src={avatar} alt="" onError={onErrorLoadImg} />
     }
     else if (initials) {
-        return <div class="avatar-initials flex-center">{initials}</div>
+        return <div id="user-initials" class="avatar-initials flex-center">
+            {initials}
+        </div>
     }
     else {
         return <PlaceholderAvatar addUserType={addUserType} />

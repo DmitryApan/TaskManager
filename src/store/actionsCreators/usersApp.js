@@ -1,4 +1,4 @@
-import {USERS_APP_REQUEST, USERS_APP_RECEIVE} from '../actions/usersApp';
+import {USERS_APP_REQUEST, USERS_APP_RECEIVE, USERS_APP_DATA_CHANGE} from '../actions/usersApp';
 
 export function usersAppRequest() {
     return {
@@ -9,6 +9,13 @@ export function usersAppRequest() {
 export function usersAppReceive(usersApp) {
     return {
         type: USERS_APP_RECEIVE,
+        usersApp
+    }
+}
+
+export function usersAppChange(usersApp) {
+    return {
+        type: USERS_APP_DATA_CHANGE,
         usersApp
     }
 }

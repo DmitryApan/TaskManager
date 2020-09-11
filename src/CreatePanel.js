@@ -1,5 +1,4 @@
 import React, { useState, useCallback } from 'react';
-import {bindActionCreators} from '../node_modules/redux';
 import {connect} from 'react-redux';
 import {addCard} from './store/actionsCreators/cards';
 
@@ -41,8 +40,8 @@ function CreatePanel(props) {
     )
 }
 
-const mapDispatchToProps = dispatch => ({
-    addCard: bindActionCreators(addCard, dispatch)
-});
+const actionCreators = {
+    addCard
+};
 
-export default connect(null, mapDispatchToProps)(CreatePanel);
+export default connect(null, actionCreators)(CreatePanel);

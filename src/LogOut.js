@@ -1,6 +1,5 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
 import {Redirect} from 'react-router-dom';
 import {logOut} from './store/actionsCreators/authorization';
 
@@ -12,8 +11,8 @@ function LogOut(props) {
     )
 }
 
-const mapDispatchToProps = dispatch => ({
-    logOut: bindActionCreators(logOut, dispatch)
-});
+const actionsCreators = {
+    logOut
+};
 
-export default connect(null, mapDispatchToProps)(LogOut);
+export default connect(null, actionsCreators)(LogOut);

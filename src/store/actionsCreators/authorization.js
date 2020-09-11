@@ -78,8 +78,6 @@ export function authorization() {
 function getFunctionSign(sign) {
     return (email, password, error) => {
 
-        console.log(email, password);
-
         return dispatch => {
             dispatch(authorizationRequest());
             dispatch(userInfoRequest());
@@ -103,8 +101,6 @@ function getFunctionSign(sign) {
 
 export function signIn(email, password) {
     return dispatch => {
-        console.log(email, password);
-
         dispatch(getFunctionSign(backendSignIn)(email, password, 'Wrong rassword or email!'));
     }
 }

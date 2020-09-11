@@ -21,4 +21,4 @@ const mapStateToProps = (state) => ({
     cards: state.cards.data
 });
 
-export default connect(mapStateToProps, null)(CardPage);
+export default connect(mapStateToProps)(CardPage);

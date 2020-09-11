@@ -2,7 +2,6 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import HeapAvatars from './components/HeapAvatars/HeapAvatars';
 import {connect} from 'react-redux';
-import {bindActionCreators} from '../node_modules/redux';
 import {deleteCard} from './store/actionsCreators/cards';
 
 import './App.css';
@@ -52,8 +51,8 @@ class Card extends React.Component {
 	}    
 }
 
-const mapDispatchToProps = dispatch => ({
-    deleteCard: bindActionCreators(deleteCard, dispatch)
-});
+const actionCreator = {
+    deleteCard
+};
 
-export default connect(null, mapDispatchToProps)(Card);
+export default connect(null, actionCreator)(Card);

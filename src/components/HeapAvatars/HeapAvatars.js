@@ -1,5 +1,4 @@
 import React, {useCallback, useState} from 'react';
-import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {findUserById, findCardById} from '../../appFunctions';
 import {deleteCardOwner, addCardOwner} from '../../store/actionsCreators/cards';
@@ -106,9 +105,9 @@ const mapStateToProps = state => ({
     usersApp: state.usersApp.data
 })
 
-const mapDispatchToProps = dispatch => ({
-    deleteCardOwner: bindActionCreators(deleteCardOwner, dispatch),
-    addCardOwner: bindActionCreators(addCardOwner, dispatch)
-});
+const actionCreators = {
+    deleteCardOwner,
+    addCardOwner
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(HeapAvatars);
+export default connect(mapStateToProps, actionCreators)(HeapAvatars);

@@ -53,4 +53,4 @@ const mapStateToProps = state => ({
     cards: state.cards.data
 })
 
-export default connect(mapStateToProps, null)(ListUserSearch);
+export default connect(mapStateToProps)(ListUserSearch);

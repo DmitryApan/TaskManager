@@ -11,7 +11,6 @@ import HomePage from './HomePage';
 import CardPage from './CardPage';
 import LoginPage from './LoginPage';
 import LogOut from './LogOut';
-import {bindActionCreators} from 'redux';
 
 class App extends React.Component {  
     constructor(props) {
@@ -53,12 +52,12 @@ class App extends React.Component {
     }
 }
 
-const mapDispatchToProps = dispatch => ({
-    authorization: bindActionCreators(authorization, dispatch)
-});
+const actionCreators = {
+    authorization
+};
 
 const mapStateToProps = state => ({
     isLogin: state.authorization.isLogin
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, actionCreators)(App);

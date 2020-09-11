@@ -3,7 +3,6 @@ import Select from 'react-select';
 import TextEditor from './components/TextEditor/TextEditor';
 import HeapAvatars from './components/HeapAvatars/HeapAvatars';
 import {findCardById} from './appFunctions';
-import {bindActionCreators} from '../node_modules/redux';
 import {connect} from 'react-redux';
 import {changeCardDescription, changeCardStatus, changeCardTitle} from './store/actionsCreators/cards';
 
@@ -61,15 +60,15 @@ class CardInfo extends React.Component {
     }
 }
 
-const mapDispatchToProps = dispatch => ({
-    changeCardStatus: bindActionCreators(changeCardStatus, dispatch),
-    changeCardTitle: bindActionCreators(changeCardTitle, dispatch),
-    changeCardDescription: bindActionCreators(changeCardDescription, dispatch)
-});
+const actionCreators = {
+    changeCardStatus,
+    changeCardTitle,
+    changeCardDescription
+};
 
 const mapStateToProps = state => ({
     cards: state.cards.data,
     statuses: state.statuses.data
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CardInfo);
+export default connect(mapStateToProps, actionCreators)(CardInfo);

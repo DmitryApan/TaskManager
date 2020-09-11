@@ -8,7 +8,6 @@ import Panel from './Panel';
 import UserMenu from './UserMenu';
 import UserEditor from './UserEditor';
 import {connect} from 'react-redux';
-import {bindActionCreators} from '../node_modules/redux';
 import {changeCardStatusForDrag} from './store/actionsCreators/cards'
 
 class HomePage extends React.Component {
@@ -99,6 +98,7 @@ class HomePage extends React.Component {
                                 <AreaAvatar 
                                     onClickAvatar={this.handleOpenUserMenu}
                                     id={_id}
+                                    name={name}
                                     avatar={avatar}
                                 />
                             </div>
@@ -130,8 +130,8 @@ const mapStateToProps = state => ({
     userInfo: state.userInfo.data
 });
 
-const mapDispatchToProps = dispatch => ({
-    changeCardStatusForDrag: bindActionCreators(changeCardStatusForDrag, dispatch)
-});
+const actionsCreators = {
+    changeCardStatusForDrag
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
+export default connect(mapStateToProps, actionsCreators)(HomePage);

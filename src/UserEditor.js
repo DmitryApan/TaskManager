@@ -1,6 +1,5 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
 import {
     changeUserInfoAvatar, 
     changeUserInfoName, 
@@ -21,7 +20,11 @@ class UserEditor extends React.Component {
             <div class="flex-column">
                 <div class="flex-center">
                     <div class="user-avatar">
-                        <AreaAvatar id={_id} avatar={avatar} />
+                        <AreaAvatar 
+                            id={_id} 
+                            name={name}
+                            avatar={avatar} 
+                        />
                     </div>
                 </div>            
                 <p>Name:</p>
@@ -47,14 +50,14 @@ class UserEditor extends React.Component {
     }
 }
 
-const mapDispatchToProps = dispatch => ({
-    changeUserInfoAvatar: bindActionCreators(changeUserInfoAvatar, dispatch),
-    changeUserInfoName: bindActionCreators(changeUserInfoName, dispatch),
-    changeUserInfoPassword: bindActionCreators(changeUserInfoPassword, dispatch)
-});
+const actionsCreators = {
+    changeUserInfoAvatar,
+    changeUserInfoName,
+    changeUserInfoPassword
+};
 
 const mapStateToProps = state => ({
     userInfo: state.userInfo.data
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserEditor);
+export default connect(mapStateToProps, actionsCreators)(UserEditor);

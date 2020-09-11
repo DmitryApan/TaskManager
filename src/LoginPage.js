@@ -1,7 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import {Link, useParams, Redirect} from 'react-router-dom';
 import {signIn, signUp} from './store/actionsCreators/authorization';
-import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
 function LoginPage(props) {
@@ -73,9 +72,9 @@ const mapStateToProps = state => ({
     isFetching: state.authorization.isFetching
 });
 
-const mapDispatchToProps = dispatch => ({
-    signIn: bindActionCreators(signIn, dispatch),
-    signUp: bindActionCreators(signUp, dispatch),
-});
+const actionsCreators = {
+    signIn,
+    signUp
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
+export default connect(mapStateToProps, actionsCreators)(LoginPage);

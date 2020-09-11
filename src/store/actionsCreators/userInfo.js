@@ -1,5 +1,6 @@
 import {USER_INFO_REQUEST, USER_INFO_RECEIVE, USER_INFO_DATA_CHANGE} from '../actions/userInfo';
 import {backendSetUserInfo} from '../../networkFunctions';
+import { usersAppChange } from './usersApp';
 
 export function userInfoRequest() {
     return {
@@ -22,6 +23,12 @@ function getFunctionChangeUserInfoByKey(key) {
                 email: getState().userInfo.data.email,
                 [key]: value
             }).then((userInfo) => {
+                dispatch(usersAppChange([
+                    ...getState().usersApp.data.map(user => {
+                        return user._id === userInfo._id ? userInfo : user;
+                    })
+                ]));
+                
                 dispatch({
                     type: USER_INFO_DATA_CHANGE,
                     userInfo
