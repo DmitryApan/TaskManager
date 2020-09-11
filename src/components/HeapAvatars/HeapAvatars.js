@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import {connect} from 'react-redux';
-import {findUserById, findCardById} from '../../appFunctions';
+import {findUserById, findCardById, findPossiblyOwners} from '../../appFunctions';
 import {deleteCardOwner, addCardOwner} from '../../store/actionsCreators/cards';
 import AreaAvatar from '../AreaAvatar/AreaAvatar';
 import PlaceholderAvatar from '../PlaceholderAvatar/PlaceholderAvatar';
@@ -58,13 +58,16 @@ function HeapAvatars(props) {
                 onMouseLeave={mutable && handleMouseLeave}
             >
                 {usersApp && ownersForShow.map((id, i) => {
+                    let user = findUserById(id, usersApp);
+                    
                     return (
                         <div 
                             style={getStyleProperties(i)} 
                             className={styles.position}
                         >
                             <AreaAvatar 
-                                {...findUserById(id, usersApp)}
+                                key={user._id}
+                                {...user}
                                 crossOnMouseEnter={mutable && isShowAllPosition}
                                 onClickCross={handleOnClickCross}
                             />
@@ -84,7 +87,9 @@ function HeapAvatars(props) {
                     <div 
                         className={styles.points} 
                         style={getStyleProperties(ownersForShow.length)}
-                    >...</div>
+                    >
+                        ...
+                    </div>
                 }
             </div>
             <div className={styles.search}>
@@ -92,7 +97,7 @@ function HeapAvatars(props) {
                     <ListUserSearch  
                         onBlurList={handleOnBlurList}
                         onSelectUser={handleSelectUser} 
-                        id={id} 
+                        usersOptionSelect={findPossiblyOwners(owners, usersApp)}
                     />
                 }
             </div>
@@ -103,7 +108,7 @@ function HeapAvatars(props) {
 const mapStateToProps = state => ({
     cards: state.cards.data,
     usersApp: state.usersApp.data
-})
+});
 
 const actionCreators = {
     deleteCardOwner,

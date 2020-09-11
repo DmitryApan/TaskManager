@@ -1,14 +1,17 @@
-import React, { useState, useCallback } from 'react';
-import {connect} from 'react-redux';
+import React, {useState, useCallback} from 'react';
 import {addCard} from './store/actionsCreators/cards';
+import {useDispatch} from 'react-redux';
 
 import './App.css';
 
-function CreatePanel(props) {
-    const {addCard, status} = props;
+
+export default function CreatePanel(props) {
+    const {status} = props;
 
     const [title, setTitle] = useState();
     const [description, setDescription] = useState();
+
+    const dispatch = useDispatch();
 
     const handleChangeTitle = useCallback(({target}) => {
         setTitle(target.value);
@@ -16,13 +19,13 @@ function CreatePanel(props) {
     const handleChangeDescription = useCallback(({target}) => {
         setDescription(target.value);
     }, [setDescription]);
-    const handleCreateCrad = useCallback(() => {
-        addCard({
+    const handleCreateCard = useCallback(() => {
+        dispatch(addCard({
             title, 
             description,
             status
-        });
-    }, [addCard, status, title, description]);
+        }));
+    }, [addCard, dispatch, status, title, description]);
 
     return (
         <div class="create-panel-body">
@@ -35,13 +38,7 @@ function CreatePanel(props) {
                 <div>Description:</div>
                 <textarea onChange={handleChangeDescription} name="description"></textarea>
             </div>
-            <button onClick={handleCreateCrad} type="submit">Create</button>
+            <button onClick={handleCreateCard} type="submit">Create</button>
         </div>
     )
 }
-
-const actionCreators = {
-    addCard
-};
-
-export default connect(null, actionCreators)(CreatePanel);

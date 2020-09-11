@@ -1,19 +1,12 @@
 import React from 'react';
 import {Select} from 'antd';
 import Avatar from '../../Avatar';
-import {connect} from 'react-redux';
 import 'antd/dist/antd.css';
 import styles from './ListUserSearch.less'
-import {findCardById} from '../../appFunctions';
 
-function ListUserSearch(props) {
-    const {onSelectUser, onBlurList, usersApp, cards, id} = props;
-    const {owners} = findCardById(id, cards);
+export default function ListUserSearch(props) {
+    const {onSelectUser, onBlurList, usersOptionSelect} = props;
     const {Option} = Select;
-
-    let usersOptionSelect = usersApp.filter((user) => (
-        !owners.find(idOwner => user._id === idOwner)
-    ));
 
     return(
         <Select
@@ -47,10 +40,3 @@ function ListUserSearch(props) {
         </Select>
     )
 }
-
-const mapStateToProps = state => ({
-    usersApp: state.usersApp.data,
-    cards: state.cards.data
-})
-
-export default connect(mapStateToProps)(ListUserSearch);

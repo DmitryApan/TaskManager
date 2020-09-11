@@ -2,7 +2,7 @@ import {USERS_APP_REQUEST, USERS_APP_RECEIVE, USERS_APP_DATA_CHANGE} from '../ac
 
 export default function(state = {
     isFetching: false,
-    data: []
+    data: null
 }, action) {
     switch(action.type) {
         case USERS_APP_REQUEST:

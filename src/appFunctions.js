@@ -16,6 +16,12 @@ export function findUserById(id, usersApp) {
     return usersApp.find(item => (item._id === id));
 }
 
+export function findPossiblyOwners(owners, usersApp) {
+    return usersApp.filter((user) => (
+        !owners.find(idOwner => user._id === idOwner)
+    ));
+}
+
 export function sortCardsByTitle(cards, ascending) {
     let cardsSort = cards.sort((a, b) => {
         let charA = a.title.toUpperCase();
