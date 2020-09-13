@@ -6,9 +6,7 @@ import styles from './PlaceholderAvatar.less';
 export default function PlaceholderAvatar(props) {
     let {addUserType} = props;
 
-    var headClass = cn({
-        [styles.borderGrey]: addUserType
-    }, styles.symbolHead);
+    let headClass = cn([styles.symbolHead, addUserType && styles.borderGrey]);
 
     var shouldersClass = cn({
         [styles.borderGrey]: addUserType

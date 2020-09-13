@@ -1,36 +1,25 @@
-export function findCardById(id, dataByStatuses) {
+export function findCardById(id, cards) {
     let card = null;
-            
-    dataByStatuses && Object.values(dataByStatuses).find(array => (
+    
+    cards && Object.values(cards).find(array => (
         card = array.find(item => item._id === id)             
     ));
     
-    return card || null;
+    return card;
 }
 
-export function findUserById(id, users) {
-    return users.find(item => (item._id === id));
+export function findCardsByStatus(status, cards) {
+    return cards[status] || [];
 }
 
-export function changeStatusCard(id, newStatus, {statuses, dataByStatuses}) {
-    let card = findCardById(id, dataByStatuses);
-    let {_id, status} = card;
+export function findUserById(id, usersApp) {
+    return usersApp.find(item => (item._id === id));
+}
 
-    let arrayChange = dataByStatuses[status].filter(item => item._id !== _id);
-    let newCard = {
-        ...card,
-        status: newStatus
-    };
-    let dataByStatusesNew = {
-        ...dataByStatuses,
-        [status]: arrayChange,
-        [newStatus]: [...dataByStatuses[newStatus], newCard]
-    };
-    
-    return ({
-        dataByStatuses: dataByStatusesNew,
-        statuses
-    });
+export function findPossiblyOwners(owners, usersApp) {
+    return usersApp.filter((user) => (
+        !owners.find(idOwner => user._id === idOwner)
+    ));
 }
 
 export function sortCardsByTitle(cards, ascending) {

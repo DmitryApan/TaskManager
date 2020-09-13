@@ -2,38 +2,28 @@ import React, {Fragment} from 'react';
 import Select from 'react-select';
 import TextEditor from './components/TextEditor/TextEditor';
 import HeapAvatars from './components/HeapAvatars/HeapAvatars';
+import {findCardById} from './appFunctions';
+import {connect} from 'react-redux';
+import {changeCardDescription, changeCardStatus, changeCardTitle} from './store/actionsCreators/cards';
 
 import './App.css';
 
-export default class CardInfo extends React.Component {
+class CardInfo extends React.Component {
     handleChangeDescription = (description) => {
-        const {onChangeDescription, card} = this.props;
-
-        onChangeDescription(description, card);
+        this.props.changeCardDescription(this.props.id, description);
     }
 
     handleChangeTitle = (title) => {
-        const {onChangeTitle, card} = this.props;
-
-        onChangeTitle(title, card);
+        this.props.changeCardTitle(this.props.id, title);
     }
 
     handleChangeStatus = ({value}) => {
-        const {onChangeStatus, card} = this.props;
-
-        onChangeStatus(value, card);
-    }
-
-    handleChangeOwners = (owners) => {
-        const {onChangeOwners, card} = this.props; 
-        
-        onChangeOwners(owners, card);
+        this.props.changeCardStatus(this.props.id, value);
     }
 
     render() {
-        let {isChanging, statuses, card, usersData} = this.props;
-        let {status, title, description} = card;
-
+        let {isChanging, id, cards, statuses} = this.props;        
+        let {_id, status, title, description} = findCardById(id, cards);
         let statusOptions = statuses && statuses.map(value => ({value, label: value}));
 
         return (
@@ -42,11 +32,7 @@ export default class CardInfo extends React.Component {
                     {isChanging
                         ? <Fragment>
                             <div class="card-info-heap-avatar">
-                                <HeapAvatars 
-                                    {...card}
-                                    usersData={usersData} 
-                                    onChangeHeap={this.handleChangeOwners}
-                                />
+                                <HeapAvatars id={_id} />
                             </div>
                             <Select
                                 defaultValue={{value: status, label: status}}
@@ -73,3 +59,16 @@ export default class CardInfo extends React.Component {
         )
     }
 }
+
+const actionCreators = {
+    changeCardStatus,
+    changeCardTitle,
+    changeCardDescription
+};
+
+const mapStateToProps = state => ({
+    cards: state.cards.data,
+    statuses: state.statuses.data
+});
+
+export default connect(mapStateToProps, actionCreators)(CardInfo);

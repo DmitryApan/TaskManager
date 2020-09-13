@@ -1,34 +1,34 @@
 import {urlCardData, urlCardCreate, urlCardSettings, urlSignUp, urlLogin, urlUserInfo, urlUsersInfo} from './Data';
 
-async function serverRequest({url, json = true, method = 'GET', headers, body}) {    
-    let response = await fetch(url, {
+function serverRequest({url, method = 'GET', headers, body}) {    
+    return fetch(url, {
         method,
         headers,
         body
     }).catch(error => {
         throw new Error('Response Error!');
     });
-
-    return json ? jsonRequest(response) : response
 }
 
-async function jsonRequest(responseServer) {
-    let jsonObj = await responseServer.json().catch(error => {
+function jsonRequest(response) {
+    return response.json().catch(error => {
         throw new Error('Json Error!');
     });   
-
-    return jsonObj;
 }
 
-export function getSettings() {
-    return serverRequest({url: urlCardSettings});
+export function backendGetStatuses() {
+    return serverRequest({url: urlCardSettings}).then((response) => {
+        return response.ok && jsonRequest(response);
+    });
 }
 
-export function getDataCards() {
-    return serverRequest({url: urlCardData});
+export function backendGetDataCards() {
+    return serverRequest({url: urlCardData}).then((response) => {
+        return response.ok && jsonRequest(response);
+    });
 }
 
-export function cardCreate(body) {
+export function backendCardCreate(body) {
     return serverRequest({
         url: urlCardCreate, 
         method: 'POST',
@@ -36,34 +36,34 @@ export function cardCreate(body) {
             'Content-Type': 'application/json;charset=utf-8'
         },
         body: JSON.stringify(body)
+    }).then((response) => {
+        return response.ok && jsonRequest(response);
     });
 }
 
-export function cardDelete(id) {
+export function backendCardDelete(id) {
     return serverRequest({
         url: `${urlCardCreate}/${id}`,
-        json: false,
         method: 'DELETE'
-    }).then(({ok}) => {
-        return ok;
+    }).then((response) => {
+        return response.ok && jsonRequest(response);
     });
 }
 
-export async function login(body) {
-    let response = await serverRequest({
+export function backendSignIn(body) {
+    return serverRequest({
         url: urlLogin,        
         method: 'POST',
-        json: false,
         headers: {
             'Content-Type': 'application/json;charset=utf-8'
         },
         body: JSON.stringify(body)
+    }).then((response) => {
+        return response.ok && jsonRequest(response);
     });
-
-    return response.ok ? await jsonRequest(response) : response
 }
 
-export function signUp(body) {
+export function backendSignUp(body) {
     return serverRequest({
         url: urlSignUp,        
         method: 'POST',
@@ -71,10 +71,12 @@ export function signUp(body) {
             'Content-Type': 'application/json;charset=utf-8'
         },
         body: JSON.stringify(body)
+    }).then((response) => {
+        return response.ok && jsonRequest(response);
     });
 }
 
-export function cardChange(id, body) {
+export function backendCardChange(id, body) {
     return serverRequest({
         url: `${urlCardCreate}/${id}`,
         method: 'PUT',
@@ -82,10 +84,12 @@ export function cardChange(id, body) {
             'Content-Type': 'application/json;charset=utf-8'
         },
         body: JSON.stringify(body)                
+    }).then((response) => {
+        return response.ok && jsonRequest(response);
     });
 }
 
-export function getUserData(body) {
+export function backendGetUserInfo(body) {
     return serverRequest({
         url: urlUserInfo,
         method: 'PUT',
@@ -93,9 +97,26 @@ export function getUserData(body) {
             'Content-Type': 'application/json;charset=utf-8'
         },
         body: JSON.stringify(body)
-    })
+    }).then((response) => {
+        return response.ok && jsonRequest(response);
+    });
 }
 
-export function getUsersData() {
-    return serverRequest({url: urlUsersInfo});
+export function backendSetUserInfo(body) {
+    return serverRequest({
+        url: urlUserInfo,
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(body)
+    }).then((response) => {
+        return response.ok && jsonRequest(response);
+    });
+}
+
+export function backendGetUsersAppData() {
+    return serverRequest({url: urlUsersInfo}).then((response) => {
+        return response.ok && jsonRequest(response);
+    });
 }

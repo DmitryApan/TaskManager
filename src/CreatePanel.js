@@ -1,19 +1,44 @@
-import React from 'react';
+import React, {useState, useCallback} from 'react';
+import {addCard} from './store/actionsCreators/cards';
+import {useDispatch} from 'react-redux';
+
 import './App.css';
 
-export default function CreatePanel({onCreate, onChange}) {
+
+export default function CreatePanel(props) {
+    const {status} = props;
+
+    const [title, setTitle] = useState();
+    const [description, setDescription] = useState();
+
+    const dispatch = useDispatch();
+
+    const handleChangeTitle = useCallback(({target}) => {
+        setTitle(target.value);
+    }, [setTitle]);
+    const handleChangeDescription = useCallback(({target}) => {
+        setDescription(target.value);
+    }, [setDescription]);
+    const handleCreateCard = useCallback(() => {
+        dispatch(addCard({
+            title, 
+            description,
+            status
+        }));
+    }, [addCard, dispatch, status, title, description]);
+
     return (
         <div class="create-panel-body">
             <div>Creating new card...</div>
             <div>
                 <div>Title:</div>
-                <textarea onChange={onChange} name="title"></textarea>
+                <textarea onChange={handleChangeTitle} name="title"></textarea>
             </div>
             <div>
                 <div>Description:</div>
-                <textarea onChange={onChange} name="description"></textarea>
+                <textarea onChange={handleChangeDescription} name="description"></textarea>
             </div>
-            <button onClick={onCreate} type="submit">Create</button>
+            <button onClick={handleCreateCard} type="submit">Create</button>
         </div>
     )
 }

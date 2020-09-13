@@ -1,12 +1,14 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import HeapAvatars from './components/HeapAvatars/HeapAvatars';
+import {connect} from 'react-redux';
+import {deleteCard} from './store/actionsCreators/cards';
 
 import './App.css';
 
-export default class Card extends React.Component {
+class Card extends React.Component {
 	handleDelete = (event) => {
-		this.props.onDeleteCard({...this.props});  
+		this.props.deleteCard(this.props._id);  
 
 		event.stopPropagation();
 	}
@@ -22,7 +24,7 @@ export default class Card extends React.Component {
 	}
 
 	render() {
-		const {_id, imageSrc, title, description, owners, usersData} = this.props;
+		const {_id, imageSrc, title, description} = this.props;
 
 		return (
 			<div onClick={this.handleModalInfo} class="section-card flex-column">
@@ -31,20 +33,26 @@ export default class Card extends React.Component {
 					<div onClick={this.handleDelete} class="button-x-small">&#xd7;</div>
 				</div>
 				<div class="section-card-title">{title}</div>
-				{imageSrc ? <img class="section-card-image" src={imageSrc} alt=""></img> : null}
+				{imageSrc ? 
+					<img 
+						class="section-card-image" 
+						src={imageSrc} 
+						alt=""
+					/> : null
+				}
 				<div class="section-card-info flex-column">
 					<div class="section-card-info-text">{description}</div>
 					<div class="section-card-info-owners">                
-						<HeapAvatars 
-							key={owners}
-							mutable={false}
-							owners={owners}
-							usersData={usersData}
-							maxShowPosition="5"
-						/>	                                                    
+						<HeapAvatars id={_id} mutable={false} maxShowPosition="5" />	                                                    
 					</div>  
 				</div>
 			</div>
 		)
 	}    
 }
+
+const actionCreator = {
+    deleteCard
+};
+
+export default connect(null, actionCreator)(Card);
