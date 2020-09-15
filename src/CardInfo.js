@@ -2,7 +2,8 @@ import React, {Fragment} from 'react';
 import Select from 'react-select';
 import TextEditor from './components/TextEditor/TextEditor';
 import HeapAvatars from './components/HeapAvatars/HeapAvatars';
-import {findCardById} from './appFunctions';
+import ListChildrenCard from './components/ListChildrenCard/ListChildrenCard';
+import {findCardById, getCardsByArrayId} from './appFunctions';
 import {connect} from 'react-redux';
 import {changeCardDescription, changeCardStatus, changeCardTitle} from './store/actionsCreators/cards';
 
@@ -23,7 +24,7 @@ class CardInfo extends React.Component {
 
     render() {
         let {isChanging, id, cards, statuses} = this.props;        
-        let {_id, status, title, description} = findCardById(id, cards);
+        let {_id, status, title, description, children} = findCardById(id, cards);
         let statusOptions = statuses && statuses.map(value => ({value, label: value}));
 
         return (
@@ -47,6 +48,7 @@ class CardInfo extends React.Component {
                                 text={description}
                                 onChangeText={this.handleChangeDescription}
                             />
+                            <ListChildrenCard childrenCards={getCardsByArrayId(children, cards)} />
                         </Fragment>
                         : <div>
                             <p>{`Status: ${status}`}</p>
