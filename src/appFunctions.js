@@ -38,3 +38,7 @@ export function sortCardsByTitle(cards, ascending) {
 
     return cardsSort;
 }
+
+export function getCardsByArrayId(arrayId, cards) {
+    return arrayId.map(id => findCardById(id, cards));
+}

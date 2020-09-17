@@ -113,6 +113,12 @@ export function changeCardOwners(id, owners) {
     }
 }
 
+export function changeCardChildren(id, children) {
+    return dispatch => {
+        dispatch(changeCard('children')(id, children));
+    }
+}
+
 export function deleteCardOwner(idCard, idOwner) {
     return (dispatch, getState) => {
         const {owners} = findCardById(idCard, getState().cards.data);
