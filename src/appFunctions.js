@@ -42,3 +42,15 @@ export function sortCardsByTitle(cards, ascending) {
 export function getCardsByArrayId(arrayId, cards) {
     return arrayId.map(id => findCardById(id, cards));
 }
+
+export function getParentCardByIdChildren(id, cards) {
+    let card = null;
+
+    Object.values(cards).find(array => (
+        card = array.find(({children}) => (
+            children.find(idChildren => idChildren === id)
+        ))
+    ));
+
+    return card;
+}
