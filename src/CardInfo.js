@@ -27,7 +27,6 @@ class CardInfo extends React.Component {
         let {isChanging, id, cards, statuses} = this.props;        
         let {_id, status, title, description, children} = findCardById(id, cards);
         let parent = getParentCardByIdChildren(_id, cards);
-        console.log(parent);
         let statusOptions = statuses && statuses.map(value => ({value, label: value}));
 
         return (
