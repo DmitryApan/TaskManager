@@ -1,4 +1,5 @@
 import React from 'react';
+import {Tooltip} from 'antd';
 
 export default function ListChildrenCard(props) {
     const {childrenCards} = props;
@@ -7,7 +8,10 @@ export default function ListChildrenCard(props) {
         <>
             {childrenCards.map(card => {
                 return(
-                    <div>{card.title}</div>
+                    <Tooltip title={card.status} placement="right">
+                        <span>{card.title}</span>
+                        <br />
+                    </Tooltip>
                 );
             })}
         </>
