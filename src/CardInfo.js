@@ -1,9 +1,10 @@
 import React, {Fragment} from 'react';
 import Select from 'react-select';
 import TextEditor from './components/TextEditor/TextEditor';
+import {Link} from 'react-router-dom';
 import HeapAvatars from './components/HeapAvatars/HeapAvatars';
 import ListChildrenCard from './components/ListChildrenCard/ListChildrenCard';
-import {findCardById, getCardsByArrayId} from './appFunctions';
+import {findCardById, getCardsByArrayId, getParentCardByIdChildren} from './appFunctions';
 import {connect} from 'react-redux';
 import {changeCardDescription, changeCardStatus, changeCardTitle} from './store/actionsCreators/cards';
 
@@ -25,6 +26,7 @@ class CardInfo extends React.Component {
     render() {
         let {isChanging, id, cards, statuses} = this.props;        
         let {_id, status, title, description, children} = findCardById(id, cards);
+        let parent = getParentCardByIdChildren(_id, cards);
         let statusOptions = statuses && statuses.map(value => ({value, label: value}));
 
         return (
@@ -32,6 +34,7 @@ class CardInfo extends React.Component {
                 <div>
                     {isChanging
                         ? <Fragment>
+                            {parent && <Link to={parent._id}>{parent.title}</Link>}
                             <div class="card-info-heap-avatar">
                                 <HeapAvatars id={_id} />
                             </div>
