@@ -47,7 +47,8 @@ function HeapAvatars(props) {
     }, [addCardOwner, id]);
 
     const getStyleProperties = useCallback((i) => ({
-        left: `${i++ * 70}%`,
+        //left: `${i++ * 70}%`,
+        marginLeft: `${i++ * 70}%`,
         zIndex: numPosition - i
     }), [numPosition]);
 
