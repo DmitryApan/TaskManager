@@ -11,14 +11,12 @@ export default function ListChildrenCard(props) {
             {childrenCards.map(card => {
                 return(
                     <div className={styles.child}>
-                        <div>
-                            <div className={styles.owners}>
-                                <HeapAvatars 
-                                    mutable={false}
-                                    maxShowPosition={3}
-                                    id={card._id}
-                                />
-                            </div>
+                        <div className={styles.owners}>
+                            <HeapAvatars 
+                                mutable={false}
+                                maxShowPosition={3}
+                                id={card._id}
+                            />
                         </div>
                         <div className={styles.title}>
                             {card.title}

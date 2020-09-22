@@ -1,34 +1,38 @@
 .avatar {
     height: inherit;
     width: inherit;
+    position: absolute;
     border-radius: 50%;
-    display: block;
 }
 
 .outerCross {
     display: flex;
     justify-content: center;
     align-items: center;
-    position: absolute;    
-    height: 14px;
-    width: 14px;
+    position: relative;    
+    height: 35%;
+    width: 35%;
     border: 2px solid white;
     border-radius: 50%;
     overflow: hidden;
-    margin: -45px 0 0 30px;
+    margin: -110% 0 0 60%;
     background-color: grey;
     cursor: pointer;
 }
 
-.innerCross {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.verticalCross {
+    background-color: white;
+    height: 20%;
+    width: 80%;
+    transform: rotate(45deg);
+}
+
+.horizontalCross {
     position: absolute;
-    font-weight: bold;
-    font-size: 18px;
-    margin-top: -4px;
-    color: white;
+    background-color: white;
+    height: 80%;
+    width: 20%;
+    transform: rotate(45deg);
 }
 
 .cursorPointer {

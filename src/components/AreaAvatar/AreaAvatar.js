@@ -42,7 +42,8 @@ export default function AreaAvatar(props) {
             <Avatar {...props} key={avatar} />
             {crossOnMouseEnter && isShowCross &&
                 <div className={styles.outerCross} onClick={onClickCrossArea}>
-                    <div className={styles.innerCross}>&times;</div>
+                    <div className={styles.verticalCross} />
+                    <div className={styles.horizontalCross} />
                 </div>
             }
         </div>

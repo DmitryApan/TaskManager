@@ -22,7 +22,8 @@ export default function PlaceholderAvatar(props) {
             <div className={shouldersClass} />
             {addUserType && 
                 <div className={styles.outerPlus}>
-                    <div className={styles.innerPlus}>&nbsp;+&nbsp;</div>
+                    <div className={styles.verticalPlus} />
+                    <div className={styles.horizontPlus} />
                 </div>
             }
         </div>

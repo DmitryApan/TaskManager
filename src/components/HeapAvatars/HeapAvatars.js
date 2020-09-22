@@ -12,7 +12,7 @@ function HeapAvatars(props) {
     const [isShowUserSearch, setShowUserSearch] = useState(false);
     const [isShowAllPosition, setShowAllPosition] = useState(false);
 
-    let {mutable = true, maxShowPosition = 10, id, cards, usersApp, deleteCardOwner, addCardOwner} = props;
+    let {mutable = true, maxShowPosition = 10, id, cards, usersApp, deleteCardOwner, addCardOwner, size = 28} = props;
     let {owners} = findCardById(id, cards);
 
     let numPosition = owners.length + mutable; 
@@ -47,16 +47,18 @@ function HeapAvatars(props) {
     }, [addCardOwner, id]);
 
     const getStyleProperties = useCallback((i) => ({
-        //left: `${i++ * 70}%`,
-        marginLeft: `${i++ * 70}%`,
+        height: `${size}px`,
+        width: `${size}px`,
+        marginLeft: +i ? `${-size * 0.3}px` : '0px',
         zIndex: numPosition - i
     }), [numPosition]);
 
     return (
         <>
-            <div className={styles.heap} 
+            <div className={styles.heap}
                 onMouseEnter={mutable && handleMouseEnter} 
                 onMouseLeave={mutable && handleMouseLeave}
+                style={{fontSize: `${size * 0.4}px`}}
             >
                 {usersApp && ownersForShow.map((id, i) => {
                     let user = findUserById(id, usersApp);
@@ -93,15 +95,15 @@ function HeapAvatars(props) {
                     </div>
                 }
             </div>
-            <div className={styles.search}>
-                {isShowUserSearch && 
+            {isShowUserSearch && 
+                <div className={styles.search}>
                     <ListUserSearch  
                         onBlurList={handleOnBlurList}
                         onSelectUser={handleSelectUser} 
                         usersOptionSelect={findPossiblyOwners(owners, usersApp)}
                     />
-                }
-            </div>
+                </div>
+            }
         </>
     )
 }

@@ -33,7 +33,7 @@ class CardInfo extends React.Component {
                     {isChanging
                         ? <Fragment>
                             <div class="card-info-heap-avatar">
-                                <HeapAvatars id={_id} />
+                                <HeapAvatars size={46} id={_id} />
                             </div>
                             <Select
                                 defaultValue={{value: status, label: status}}

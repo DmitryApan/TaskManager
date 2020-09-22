@@ -143,10 +143,7 @@
 }
 
 .section-card-info-owners {
-  height: 30px;
-  width: 30px;
   margin-top: 10px;
-  position: relative;
   z-index: 0;
 }
 
@@ -298,6 +295,7 @@ input::placeholder {
 
 .avatar-image,
 .avatar-initials {
+  display: flex;
   border: solid 2px white;
   height: inherit;
   width: inherit;
