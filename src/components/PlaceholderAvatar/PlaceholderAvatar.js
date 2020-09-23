@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import cn from 'classnames';
 
 import styles from './PlaceholderAvatar.less';
 
 export default function PlaceholderAvatar(props) {
-    let {addUserType} = props;
+    let {addUserType, size} = props;
 
     let headClass = cn([styles.symbolHead, addUserType && styles.borderGrey]);
 
@@ -16,8 +16,16 @@ export default function PlaceholderAvatar(props) {
         [styles.borderPlaceholderAddUser]: addUserType
     }, styles.borderPlaceholder);
 
+    const getStylePlaceholder = useCallback(() => ({
+        height: `${size}px`, 
+        width: `${size}px`
+    }), [size]);
+
     return (
-        <div className={borderPlaceholderClass}>
+        <div 
+            className={borderPlaceholderClass} 
+            style={getStylePlaceholder()}
+        >
             <div className={headClass} />
             <div className={shouldersClass} />
             {addUserType && 

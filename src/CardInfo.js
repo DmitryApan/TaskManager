@@ -35,11 +35,13 @@ class CardInfo extends React.Component {
                             <div class="card-info-heap-avatar">
                                 <HeapAvatars size={46} id={_id} />
                             </div>
-                            <Select
-                                defaultValue={{value: status, label: status}}
-                                options={statusOptions}
-                                onChange={this.handleChangeStatus}
-                            />
+                            <div class="card-info-select">
+                                <Select
+                                    defaultValue={{value: status, label: status}}
+                                    options={statusOptions}
+                                    onChange={this.handleChangeStatus}
+                                />
+                            </div>
                             <TextEditor
                                 text={title}
                                 onChangeText={this.handleChangeTitle}

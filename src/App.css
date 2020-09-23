@@ -299,7 +299,7 @@ input::placeholder {
   border: solid 2px white;
   height: inherit;
   width: inherit;
-  border-radius: inherit;
+  border-radius: 50%;
 }
 
 .avatar-initials {
@@ -329,10 +329,12 @@ input::placeholder {
 }
 
 .card-info-heap-avatar {
-  height: 45px;
-  width: 45px;
-  margin-bottom: 45px;
-  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.card-info-select {
+  z-index: 5;
+  position: relative;
 }
 
 .homepage-region-avatar {

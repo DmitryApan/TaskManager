@@ -13,6 +13,7 @@ export default function ListChildrenCard(props) {
                     <div className={styles.child}>
                         <div className={styles.owners}>
                             <HeapAvatars 
+                                size={28}
                                 mutable={false}
                                 maxShowPosition={3}
                                 id={card._id}
