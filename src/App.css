@@ -140,6 +140,8 @@
 
 .section-card-info-text {
   width: 130px;
+  overflow: hidden;
+  max-height: 50px;
 }
 
 .section-card-info-owners {
