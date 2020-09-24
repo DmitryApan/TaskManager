@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useMemo} from 'react';
 import cn from 'classnames';
 
 import styles from './PlaceholderAvatar.less';
@@ -16,7 +16,7 @@ export default function PlaceholderAvatar(props) {
         [styles.borderPlaceholderAddUser]: addUserType
     }, styles.borderPlaceholder);
 
-    const getStylePlaceholder = useCallback(() => ({
+    const getStylePlaceholder = useMemo(() => ({
         height: `${size}px`, 
         width: `${size}px`
     }), [size]);
@@ -24,7 +24,7 @@ export default function PlaceholderAvatar(props) {
     return (
         <div 
             className={borderPlaceholderClass} 
-            style={getStylePlaceholder()}
+            style={getStylePlaceholder}
         >
             <div className={headClass} />
             <div className={shouldersClass} />

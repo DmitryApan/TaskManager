@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useState, useCallback, useMemo} from 'react';
 import cn from 'classnames';
 import Avatar from '../../Avatar';
 
@@ -32,13 +32,13 @@ export default function AreaAvatar(props) {
         event.stopPropagation();
     }, [onClickCross]);
 
-    const getStyleAvatar = useCallback(() => ({
+    const getStyleAvatar = useMemo(() => ({
         height: `${size}px`, 
         width: `${size}px`,
         fontSize: `${size * 0.4}px`
     }), [size]);
 
-    const getStyleCross = useCallback(() => ({
+    const getStyleCross = useMemo(() => ({
         height: `${size * 0.35}px`, 
         width: `${size * 0.35}px`,
     }), [size]);
@@ -52,7 +52,7 @@ export default function AreaAvatar(props) {
             <div 
                 onClick={onClickAvatarArea} 
                 className={avatarClass}
-                style={getStyleAvatar()}
+                style={getStyleAvatar}
             >
                 <Avatar {...props} key={avatar} />
             </div>
@@ -60,7 +60,7 @@ export default function AreaAvatar(props) {
                 <div 
                     className={styles.outerCross} 
                     onClick={onClickCrossArea}
-                    style={getStyleCross()}
+                    style={getStyleCross}
                 >
                     <div className={styles.verticalCross} />
                     <div className={styles.horizontalCross} />
