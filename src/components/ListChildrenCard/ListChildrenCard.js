@@ -1,4 +1,5 @@
-import React, { useCallback } from 'react';
+import React, {useCallback} from 'react';
+import HeapAvatars from '../HeapAvatars/HeapAvatars';
 import {Tooltip} from 'antd';
 
 import styles from './ListChildrenCard.less';
@@ -43,6 +44,14 @@ export default function ListChildrenCard(props) {
                             className={styles.square}
                             style={getBackgroundColorByStatus(card.status)}
                         />
+                        <div className={styles.owners}>
+                            <HeapAvatars 
+                                size={28}
+                                mutable={false}
+                                maxShowPosition={3}
+                                id={card._id}
+                            />
+                        </div>
                         <div>
                             <Tooltip 
                                 title={card.status} 

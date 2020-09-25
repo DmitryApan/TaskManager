@@ -24,6 +24,7 @@ class UserEditor extends React.Component {
                             id={_id} 
                             name={name}
                             avatar={avatar} 
+                            size={200}
                         />
                     </div>
                 </div>            

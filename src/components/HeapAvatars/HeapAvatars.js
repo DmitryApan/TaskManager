@@ -12,7 +12,7 @@ function HeapAvatars(props) {
     const [isShowUserSearch, setShowUserSearch] = useState(false);
     const [isShowAllPosition, setShowAllPosition] = useState(false);
 
-    let {mutable = true, maxShowPosition = 10, id, cards, usersApp, deleteCardOwner, addCardOwner} = props;
+    let {mutable = true, maxShowPosition = 10, id, cards, usersApp, deleteCardOwner, addCardOwner, size} = props;
     let {owners} = findCardById(id, cards);
 
     let numPosition = owners.length + mutable; 
@@ -47,13 +47,13 @@ function HeapAvatars(props) {
     }, [addCardOwner, id]);
 
     const getStyleProperties = useCallback((i) => ({
-        left: `${i++ * 70}%`,
+        marginLeft: +i ? `${-size * 0.3}px` : '0px',
         zIndex: numPosition - i
     }), [numPosition]);
 
     return (
         <>
-            <div className={styles.heap} 
+            <div className={styles.heap}
                 onMouseEnter={mutable && handleMouseEnter} 
                 onMouseLeave={mutable && handleMouseLeave}
             >
@@ -61,13 +61,11 @@ function HeapAvatars(props) {
                     let user = findUserById(id, usersApp);
                     
                     return (
-                        <div 
-                            style={getStyleProperties(i)} 
-                            className={styles.position}
-                        >
+                        <div style={getStyleProperties(i)} >
                             <AreaAvatar 
                                 key={user._id}
                                 {...user}
+                                size={size}
                                 crossOnMouseEnter={mutable && isShowAllPosition}
                                 onClickCross={handleOnClickCross}
                             />
@@ -80,27 +78,22 @@ function HeapAvatars(props) {
                         className={styles.position}
                         onClick={handleOnClickAddUser}
                     >
-                        <PlaceholderAvatar addUserType={true} />
+                        <PlaceholderAvatar addUserType={true} size={size} />
                     </div>
                 }
                 {getOwerflowFlag &&
-                    <div 
-                        className={styles.points} 
-                        style={getStyleProperties(ownersForShow.length)}
-                    >
-                        ...
-                    </div>
+                    <div className={styles.points}>...</div>
                 }
             </div>
-            <div className={styles.search}>
-                {isShowUserSearch && 
+            {isShowUserSearch && 
+                <div className={styles.search}>
                     <ListUserSearch  
                         onBlurList={handleOnBlurList}
                         onSelectUser={handleSelectUser} 
                         usersOptionSelect={findPossiblyOwners(owners, usersApp)}
                     />
-                }
-            </div>
+                </div>
+            }
         </>
     )
 }

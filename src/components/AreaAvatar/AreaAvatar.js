@@ -1,11 +1,11 @@
-import React, {useCallback, useState} from 'react';
+import React, {useState, useCallback, useMemo} from 'react';
 import cn from 'classnames';
 import Avatar from '../../Avatar';
 
 import styles from './AreaAvatar.less';
 
 export default function AreaAvatar(props) {
-    let {_id, avatar, onClickAvatar, onClickCross, crossOnMouseEnter} = props;
+    let {_id, avatar, onClickAvatar, onClickCross, crossOnMouseEnter, size} = props;
 
     let avatarClass = cn({
         [styles.avatar]: true,
@@ -32,17 +32,38 @@ export default function AreaAvatar(props) {
         event.stopPropagation();
     }, [onClickCross]);
 
+    const getStyleAvatar = useMemo(() => ({
+        height: `${size}px`, 
+        width: `${size}px`,
+        fontSize: `${size * 0.4}px`
+    }), [size]);
+
+    const getStyleCross = useMemo(() => ({
+        height: `${size * 0.35}px`, 
+        width: `${size * 0.35}px`,
+    }), [size]);
+
     return (
         <div 
-            onClick={onClickAvatarArea} 
+            className={styles.area}
             onMouseEnter={onMouseEnterArea}
             onMouseLeave={onMouseLeaveArea}
-            className={avatarClass}
         >
-            <Avatar {...props} key={avatar} />
+            <div 
+                onClick={onClickAvatarArea} 
+                className={avatarClass}
+                style={getStyleAvatar}
+            >
+                <Avatar {...props} key={avatar} />
+            </div>
             {crossOnMouseEnter && isShowCross &&
-                <div className={styles.outerCross} onClick={onClickCrossArea}>
-                    <div className={styles.innerCross}>&times;</div>
+                <div 
+                    className={styles.outerCross} 
+                    onClick={onClickCrossArea}
+                    style={getStyleCross}
+                >
+                    <div className={styles.verticalCross} />
+                    <div className={styles.horizontalCross} />
                 </div>
             }
         </div>

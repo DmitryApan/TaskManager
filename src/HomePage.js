@@ -97,6 +97,7 @@ class HomePage extends React.Component {
                             <div class="homepage-region-avatar">
                                 <AreaAvatar 
                                     onClickAvatar={this.handleOpenUserMenu}
+                                    size={50}
                                     id={_id}
                                     name={name}
                                     avatar={avatar}

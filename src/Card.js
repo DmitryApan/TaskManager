@@ -43,7 +43,12 @@ class Card extends React.Component {
 				<div class="section-card-info flex-column">
 					<div class="section-card-info-text">{description}</div>
 					<div class="section-card-info-owners">                
-						<HeapAvatars id={_id} mutable={false} maxShowPosition="5" />	                                                    
+						<HeapAvatars 
+							id={_id} 
+							size={28}
+							mutable={false} 
+							maxShowPosition="5" 
+						/>	                                                    
 					</div>  
 				</div>
 			</div>
