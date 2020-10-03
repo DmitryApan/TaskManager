@@ -1,23 +1,21 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import {Droppable, Draggable} from 'react-beautiful-dnd';
+
 import Card from './Card';
 import Header from './Header';
 import CreatePanel from './CreatePanel'
 import {sortCardsByTitle, findCardsByStatus} from './appFunctions';
-import {connect} from 'react-redux';
 
 import './App.css';
 
 class Section extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            sortAscending: false,
-            title: '',
-            description: ''
-        }
-    }    
+    
+    state = {
+        sortAscending: false,
+        title: '',
+        description: ''
+    }
 
     onClickNewCard = () => {
         let {onControlCreatePanel, status} = this.props;

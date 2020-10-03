@@ -1,6 +1,7 @@
 import {createStore, applyMiddleware} from 'redux'
 import {combineReducers} from 'redux';
 import thunkMiddleware from 'redux-thunk';
+
 import authorization from './reducers/authorization';
 import userInfo from './reducers/userInfo';
 import statuses from './reducers/statuses';
@@ -16,7 +17,7 @@ const store = createStore(
         usersApp
     }), 
     applyMiddleware(
-        thunkMiddleware,
+        thunkMiddleware
     )
 );
 

@@ -1,16 +1,19 @@
 import React, {Fragment} from 'react';
+import {connect} from 'react-redux';
 import Select from 'react-select';
-import TextEditor from './components/TextEditor/TextEditor';
 import {Link} from 'react-router-dom';
+
+import TextEditor from './components/TextEditor/TextEditor';
 import HeapAvatars from './components/HeapAvatars/HeapAvatars';
 import ListChildrenCard from './components/ListChildrenCard/ListChildrenCard';
+import SelectorChilds from './components/SelectorChilds/SelectorChilds';
 import {findCardById, getCardsByArrayId, getParentCardByIdChildren} from './appFunctions';
-import {connect} from 'react-redux';
-import {changeCardDescription, changeCardStatus, changeCardTitle} from './store/actionsCreators/cards';
+import {changeCardDescription, changeCardStatus, changeCardTitle, changeCardChildren, addCard} from './store/actionsCreators/cards';
 
 import './App.css';
 
 class CardInfo extends React.Component {
+
     handleChangeDescription = (description) => {
         this.props.changeCardDescription(this.props.id, description);
     }
@@ -23,10 +26,21 @@ class CardInfo extends React.Component {
         this.props.changeCardStatus(this.props.id, value);
     }
 
+    handleAddChilds = (arrayId) => {
+        this.props.changeCardChildren(this.props.id, [
+            ...findCardById(this.props.id, this.props.cards).children,
+            ...arrayId
+        ])
+    }
+
+    handleCreateNewCard = (card) => {
+        this.props.addCard(card);
+    }
+
     render() {
         let {isChanging, id, cards, statuses} = this.props;        
-        let {_id, status, title, description, children} = findCardById(id, cards);
-        let parent = getParentCardByIdChildren(_id, cards);
+        let {status, title, description, children} = findCardById(id, cards);
+        let parent = getParentCardByIdChildren(id, cards);
         let statusOptions = statuses && statuses.map(value => ({value, label: value}));
 
         return (
@@ -36,7 +50,7 @@ class CardInfo extends React.Component {
                         ? <Fragment>
                             {parent && <Link to={parent._id}>{parent.title}</Link>}
                             <div class="card-info-heap-avatar">
-                                <HeapAvatars size={46} id={_id} />
+                                <HeapAvatars size={46} id={id} />
                             </div>
                             <div class="card-info-select">
                                 <Select
@@ -54,6 +68,12 @@ class CardInfo extends React.Component {
                                 onChangeText={this.handleChangeDescription}
                             />
                             <ListChildrenCard childrenCards={getCardsByArrayId(children, cards)} />
+                            <SelectorChilds 
+                                cards={cards} 
+                                idParent={id} 
+                                addChilds={this.handleAddChilds}
+                                createNewCard={this.handleCreateNewCard}
+                            />
                         </Fragment>
                         : <div>
                             <p>{`Status: ${status}`}</p>
@@ -67,15 +87,17 @@ class CardInfo extends React.Component {
     }
 }
 
-const actionCreators = {
-    changeCardStatus,
-    changeCardTitle,
-    changeCardDescription
-};
-
 const mapStateToProps = state => ({
     cards: state.cards.data,
     statuses: state.statuses.data
 });
 
-export default connect(mapStateToProps, actionCreators)(CardInfo);
+const mapDispatchToProps = {
+    changeCardStatus,
+    changeCardTitle,
+    changeCardDescription,
+    changeCardChildren,
+    addCard
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CardInfo);
