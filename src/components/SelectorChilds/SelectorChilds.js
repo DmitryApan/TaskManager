@@ -29,7 +29,9 @@ export default function SelectorChilds(props) {
 
     const handleAddChilds = useCallback(() => {
         addChilds(getCardsByArrayTitle(childs, cards).map((card => card._id)));
-    }, [addChilds, getCardsByArrayTitle, childs, cards]);
+
+        setChilds([]);
+    }, [addChilds, getCardsByArrayTitle, childs, cards, setChilds]);
 
     const filteredOptions = useMemo(() => (
         avalibleChildsToAdd.filter(card => !childs.includes(card.title))
@@ -42,6 +44,7 @@ export default function SelectorChilds(props) {
                 placeholder="Please enter for add childs"
                 onChange={handleChangeSelectedChilds}
                 className={styles.select}
+                value={childs}
                 dropdownRender={menu => (
                     <div>
                         {menu}

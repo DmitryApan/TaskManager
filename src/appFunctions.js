@@ -43,24 +43,15 @@ export function findCardParentByIdChild(idChild, cards) {
 }
 
 export function findAvalibleChildsToAdd(id, cards) {
-    let avalibleChilds = [];
-
-    Object.values(cards).forEach(arrayCards => {
-        avalibleChilds = [
-            ...avalibleChilds, 
-            ...arrayCards.filter((itemFilter) => (
-                (id !== itemFilter._id) && 
-                (!itemFilter.children.includes(id)) &&
-                !arrayCards.find((itemFind) => (
-                    itemFind.children.find(child => (
-                        itemFilter._id === child._id
-                    ))
-                ))
-            ))
-        ];
-    });
-
-    return avalibleChilds;
+    const generalArrayCards = Object.values(cards).reduce((prev, item) => [...prev, ...item]);
+    
+    return generalArrayCards.filter((itemFilter) => (
+        (id !== itemFilter._id) && 
+        (!itemFilter.children.includes(id)) &&
+        !generalArrayCards.find((itemFind) => (
+            itemFind.children.includes(itemFilter._id)
+        ))
+    ));
 }
 
 export function sortCardsByTitle(cards, ascending) {
