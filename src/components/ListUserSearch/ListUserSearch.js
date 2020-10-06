@@ -2,7 +2,8 @@ import React from 'react';
 import {Select} from 'antd';
 import Avatar from '../../Avatar';
 import 'antd/dist/antd.css';
-import styles from './ListUserSearch.less'
+
+import styles from './ListUserSearch.less';
 
 export default function ListUserSearch(props) {
     const {onSelectUser, onBlurList, usersOptionSelect} = props;

@@ -45,13 +45,15 @@ export function findCardParentByIdChild(idChild, cards) {
 export function findAvalibleChildsToAdd(id, cards) {
     const generalArrayCards = Object.values(cards).reduce((prev, item) => [...prev, ...item]);
     
-    return generalArrayCards.filter((itemFilter) => (
-        (id !== itemFilter._id) && 
-        (!itemFilter.children.includes(id)) &&
-        !generalArrayCards.find((itemFind) => (
+    return generalArrayCards.filter((itemFilter) => {
+        if ((id === itemFilter._id) || itemFilter.children.includes(id)) {
+            return false;
+        }
+        
+        return !generalArrayCards.find((itemFind) => (
             itemFind.children.includes(itemFilter._id)
-        ))
-    ));
+        ));      
+    });
 }
 
 export function sortCardsByTitle(cards, ascending) {

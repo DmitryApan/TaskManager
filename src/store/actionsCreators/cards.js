@@ -44,9 +44,12 @@ export function deleteCardFromChilds(id) {
     return (dispatch, getState) => {
         const parent = findCardParentByIdChild(id, getState().cards.data);
 
-        dispatch(changeCardChildren(parent._id, [
-            ...parent.children.filter(item => item !== id)
-        ]));
+        if (parent) {
+
+            const childs = parent.children.filter(item => item !== id);
+
+            dispatch(changeCardChildren(parent._id, childs));
+        }        
     }    
 }
 

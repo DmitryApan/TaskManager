@@ -1,9 +1,9 @@
-import React, {useCallback, useMemo, useState} from 'react'
-import {Select, Divider, Input, Button} from 'antd'
+import React, {useCallback, useMemo, useState} from 'react';
+import {Select, Divider, Input, Button} from 'antd';
 
-import {findAvalibleChildsToAdd, getCardsByArrayTitle} from '../../appFunctions'
+import {findAvalibleChildsToAdd, getCardsByArrayTitle} from '../../appFunctions';
 
-import styles from './SelectorChilds.less'
+import styles from './SelectorChilds.less';
 
 export default function SelectorChilds(props) {
     const {cards, idParent, addChilds, createNewCard} = props;
@@ -12,10 +12,6 @@ export default function SelectorChilds(props) {
     const [title, setTitle] = useState('');
 
     const avalibleChildsToAdd = findAvalibleChildsToAdd(idParent, cards);
-
-    const handleChangeSelectedChilds = useCallback((selectedItems) => {
-        setChilds(selectedItems);
-    }, [setChilds]);
 
     const handleChangeTitleNewCard = useCallback(({target}) => {
         setTitle(target.value);
@@ -42,13 +38,13 @@ export default function SelectorChilds(props) {
             <Select
                 mode="multiple"
                 placeholder="Please enter for add childs"
-                onChange={handleChangeSelectedChilds}
+                onChange={setChilds}
                 className={styles.select}
                 value={childs}
                 dropdownRender={menu => (
                     <div>
                         {menu}
-                        <Divider className={styles.devider} />
+                        <Divider className={styles.divider} />
                         <div className={styles.createCardField}>
                             <Input 
                                 value={title}
