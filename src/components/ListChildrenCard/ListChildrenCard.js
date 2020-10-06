@@ -1,39 +1,17 @@
-import React, {useCallback} from 'react';
-import HeapAvatars from '../HeapAvatars/HeapAvatars';
+import React, { useCallback } from 'react';
 import {Tooltip} from 'antd';
 
-import styles from './ListChildrenCard.less';
+import {getColorByStatus} from '../../appFunctions';
+import HeapAvatars from '../HeapAvatars/HeapAvatars';
 
-const STATUS_OPEN = 'Open';
-const STATUS_IN_PROGRESS = 'In Progress';
-const STATUS_CLOSED = 'Closed';
+import styles from './ListChildrenCard.less';
 
 export default function ListChildrenCard(props) {
     const {childrenCards} = props;
 
-    const getBackgroundColorByStatus = useCallback(status => {
-        switch(status) {
-            case STATUS_OPEN:
-                return {
-                    backgroundColor: 'red'
-                };
-
-            case STATUS_IN_PROGRESS:
-                return {
-                    backgroundColor: 'yellow'
-                };
-            
-            case STATUS_CLOSED: 
-                return {
-                    backgroundColor: 'green'
-                };
-
-            default:
-                return {
-                    backgroundColor: 'grey'
-                };
-        }
-    });
+    const getStyleColorSquare = useCallback((status) => ({
+        backgroundColor: getColorByStatus(status)
+    }), [getColorByStatus])
 
     return(
         <>
@@ -42,7 +20,7 @@ export default function ListChildrenCard(props) {
                     <div className={styles.child}>
                         <div 
                             className={styles.square}
-                            style={getBackgroundColorByStatus(card.status)}
+                            style={getStyleColorSquare(card.status)}
                         />
                         <div className={styles.owners}>
                             <HeapAvatars 
