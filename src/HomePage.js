@@ -71,7 +71,7 @@ class HomePage extends React.Component {
 
     render() {
         const {idCard, userMenu, userEditor, openCreatePanel} = this.state;
-        const {userInfo, statuses, changeCardStatusForDrag} = this.props; 
+        const {userInfo, statuses, cards, changeCardStatusForDrag} = this.props; 
         const {_id, avatar, name} = userInfo;  
 
         return (
@@ -81,6 +81,7 @@ class HomePage extends React.Component {
                         <DragDropContext onDragEnd={changeCardStatusForDrag}>
                             {statuses && statuses.map(status => ( 
                                 <Section 
+                                    cards={cards}
                                     status={status}
                                     createPanel={(openCreatePanel === status)} 
                                     onControlCreatePanel={this.handleControlCreatePanel}                 
@@ -128,11 +129,12 @@ class HomePage extends React.Component {
 
 const mapStateToProps = state => ({
     statuses: state.statuses.data,
-    userInfo: state.userInfo.data
+    userInfo: state.userInfo.data,
+    cards: state.cards.data
 });
 
-const actionsCreators = {
+const mapDispatchToProps = {
     changeCardStatusForDrag
 };
 
-export default connect(mapStateToProps, actionsCreators)(HomePage);
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
