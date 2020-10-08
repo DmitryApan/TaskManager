@@ -18,10 +18,15 @@ export default function ListChildrenCard(props) {
             {childrenCards.map(card => {
                 return(
                     <div className={styles.child}>
-                        <div 
-                            className={styles.square}
-                            style={getStyleColorSquare(card.status)}
-                        />
+                        <Tooltip 
+                            title={card.status} 
+                            placement="right"
+                        >
+                            <div 
+                                className={styles.square}
+                                style={getStyleColorSquare(card.status)}
+                            />
+                        </Tooltip>
                         <div className={styles.owners}>
                             <HeapAvatars 
                                 size={28}
@@ -30,13 +35,8 @@ export default function ListChildrenCard(props) {
                                 id={card._id}
                             />
                         </div>
-                        <div>
-                            <Tooltip 
-                                title={card.status} 
-                                placement="right"
-                            >
-                                <span>{card.title}</span>
-                            </Tooltip>
+                        <div>                           
+                            <span>{card.title}</span>
                         </div>
                     </div>
                 );
