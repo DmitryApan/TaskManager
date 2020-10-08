@@ -25,7 +25,8 @@
   margin: 5px;
   padding: 3px;
   border-radius: 3px;
-  border-top: 1px solid rgb(233, 120, 120);   
+  border-top-width: 1px;
+  border-top-style: solid;   
   background-color: white;
   box-shadow: -1px 1px 3px;
   color: grey;

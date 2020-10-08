@@ -92,3 +92,19 @@ export function getParentCardByIdChildren(id, cards) {
 
     return card;
 }
+
+export function getColorByStatus(status) {
+    switch(status) {
+        case 'Open':
+            return 'red';
+
+        case 'In Progress':
+            return 'yellow';
+        
+        case 'Closed': 
+            return 'green';
+
+        default:
+            return 'grey';
+    }
+}

@@ -2,10 +2,10 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Droppable, Draggable} from 'react-beautiful-dnd';
 
+import {sortCardsByTitle, findCardsByStatus} from './appFunctions';
 import Card from './Card';
 import Header from './Header';
-import CreatePanel from './CreatePanel'
-import {sortCardsByTitle, findCardsByStatus} from './appFunctions';
+import CreatePanel from './CreatePanel';
 
 import './App.css';
 
@@ -41,7 +41,7 @@ class Section extends React.Component {
                         amount={cardsByStatus.length}
                         sortAscending={sortAscending}
                         onClickNewCard={this.onClickNewCard} 
-                        onClickSort={this.onClickSort}
+                        onClickSort={this.onClickSort}                        
                 />
                 {createPanel && <CreatePanel status={status} />}
                 <Droppable droppableId={status}>
@@ -72,8 +72,4 @@ class Section extends React.Component {
     }
 }
 
-const mapStateToProps = state => ({
-    cards: state.cards.data
-});
-
-export default connect(mapStateToProps)(Section);
+export default Section;
