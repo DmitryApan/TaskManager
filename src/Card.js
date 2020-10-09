@@ -14,7 +14,7 @@ class Card extends React.Component {
 	}
 
 	handleModalInfo = (event) => {
-		this.props.onModalInfo(this.props);
+		this.props.onModalInfo(this.props._id);
 
 		event.stopPropagation();
 	}  

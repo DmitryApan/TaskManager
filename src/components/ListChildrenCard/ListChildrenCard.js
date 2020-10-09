@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import {Link} from 'react-router-dom';
 import {Tooltip} from 'antd';
 
 import {getColorByStatus} from '../../appFunctions';
@@ -7,11 +8,15 @@ import HeapAvatars from '../HeapAvatars/HeapAvatars';
 import styles from './ListChildrenCard.less';
 
 export default function ListChildrenCard(props) {
-    const {childrenCards} = props;
+    const {childrenCards, onRedirect} = props;
 
     const getStyleColorSquare = useCallback((status) => ({
         backgroundColor: getColorByStatus(status)
     }), [getColorByStatus])
+
+    const handleOnClickLink = useCallback(({target}) => {
+        onRedirect(target.attributes.getNamedItem('childId').value);
+    }, [onRedirect]);
 
     return(
         <>
@@ -36,7 +41,12 @@ export default function ListChildrenCard(props) {
                             />
                         </div>
                         <div>                           
-                            <span>{card.title}</span>
+                            <Link 
+                                childId={card._id} 
+                                onClick={handleOnClickLink}
+                            >
+                                {card.title}
+                            </Link>
                         </div>
                     </div>
                 );

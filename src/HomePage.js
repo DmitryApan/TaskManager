@@ -1,27 +1,24 @@
 import React, {Fragment} from 'react';
+import {connect} from 'react-redux';
 import {DragDropContext} from 'react-beautiful-dnd';
+
+import {changeCardStatusForDrag, changeCardStatus, changeCardTitle, changeCardDescription} from './store/actionsCreators/cards'
 import Modal from './Modal';
 import CardInfo from './CardInfo';
 import Section from './Section';
-import AreaAvatar from './components/AreaAvatar/AreaAvatar';
 import Panel from './Panel';
 import UserMenu from './UserMenu';
 import UserEditor from './UserEditor';
-import {connect} from 'react-redux';
-import {changeCardStatusForDrag} from './store/actionsCreators/cards'
+import AreaAvatar from './components/AreaAvatar/AreaAvatar';
 
 class HomePage extends React.Component {
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            idCard: null,
-            userMenu: false,
-            userEditor: false,
-            openCreatePanel: null
-        }
+    state = {
+        idCard: null,
+        userMenu: false,
+        userEditor: false,
+        openCreatePanel: null
     }
-
+    
     handleCloseUserMenu = () => {
         this.setState({
             userMenu: false
@@ -34,11 +31,11 @@ class HomePage extends React.Component {
         });
     }
 
-    handleModalInfo = ({_id}) => {
+    handleModalInfo = (id) => {
         document.body.style.overflow = 'hidden';
         
         this.setState({
-            idCard: _id
+            idCard: id
         });        
     }
 
@@ -71,7 +68,15 @@ class HomePage extends React.Component {
 
     render() {
         const {idCard, userMenu, userEditor, openCreatePanel} = this.state;
-        const {userInfo, statuses, cards, changeCardStatusForDrag} = this.props; 
+        const {
+            userInfo, 
+            statuses, 
+            cards, 
+            changeCardStatusForDrag, 
+            changeCardStatus, 
+            changeCardTitle, 
+            changeCardDescription
+        } = this.props; 
         const {_id, avatar, name} = userInfo;  
 
         return (
@@ -114,7 +119,18 @@ class HomePage extends React.Component {
                 </div>                           
                 {idCard && 
                     <Modal onCloseModal={this.handleCloseModal}>
-                        {() => <CardInfo isChanging={true} id={idCard} />}
+                        {() => (
+                            <CardInfo 
+                                isChanging={true} 
+                                id={idCard} 
+                                cards={cards}
+                                statuses={statuses}
+                                onRedirect={this.handleModalInfo}
+                                changeCardStatus={changeCardStatus}
+                                changeCardTitle={changeCardTitle}
+                                changeCardDescription={changeCardDescription}
+                            />
+                        )}
                     </Modal>
                 }
                 {userEditor && 
@@ -134,7 +150,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-    changeCardStatusForDrag
+    changeCardStatusForDrag,
+    changeCardStatus,
+    changeCardTitle,
+    changeCardDescription
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
