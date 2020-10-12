@@ -5,11 +5,13 @@ import {
     AUTHORIZATION_ERROR
 } from '../actions/authorization';
 
-export default function (state = {
+const defaultState = {
     isFetching: false,
     isLogin: false,
     error: ''
-}, action) {
+};
+
+export default function (state = defaultState, action) {
     switch(action.type) {
         case AUTHORIZATION_REQUEST:
             return {

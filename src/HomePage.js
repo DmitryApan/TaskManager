@@ -1,25 +1,22 @@
 import React, {Fragment} from 'react';
+import {connect} from 'react-redux';
 import {DragDropContext} from 'react-beautiful-dnd';
+
+import AreaAvatar from './components/AreaAvatar/AreaAvatar';
 import Modal from './Modal';
 import CardInfo from './CardInfo';
 import Section from './Section';
-import AreaAvatar from './components/AreaAvatar/AreaAvatar';
 import Panel from './Panel';
 import UserMenu from './UserMenu';
 import UserEditor from './UserEditor';
-import {connect} from 'react-redux';
 import {changeCardStatusForDrag} from './store/actionsCreators/cards'
 
 class HomePage extends React.Component {
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            idCard: null,
-            userMenu: false,
-            userEditor: false,
-            openCreatePanel: null
-        }
+    state = {
+        idCard: null,
+        userMenu: false,
+        userEditor: false,
+        openCreatePanel: null
     }
 
     handleCloseUserMenu = () => {

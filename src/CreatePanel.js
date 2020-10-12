@@ -1,9 +1,9 @@
 import React, {useState, useCallback} from 'react';
-import {addCard} from './store/actionsCreators/cards';
 import {useDispatch} from 'react-redux';
 
-import './App.css';
+import {addCard} from './store/actionsCreators/cards';
 
+import './App.css';
 
 export default function CreatePanel(props) {
     const {status} = props;
@@ -16,9 +16,11 @@ export default function CreatePanel(props) {
     const handleChangeTitle = useCallback(({target}) => {
         setTitle(target.value);
     }, [setTitle]);
+
     const handleChangeDescription = useCallback(({target}) => {
         setDescription(target.value);
     }, [setDescription]);
+    
     const handleCreateCard = useCallback(() => {
         dispatch(addCard({
             title, 

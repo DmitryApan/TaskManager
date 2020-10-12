@@ -1,11 +1,21 @@
+export function getFunctionFindCard(key) {
+    return (value, cards) => {
+        let card = null;
+        
+        Object.values(cards).find(array => (
+            card = array.find(item => item[key] === value)
+        ));
+
+        return card;
+    }
+}
+
 export function findCardById(id, cards) {
-    let card = null;
-    
-    cards && Object.values(cards).find(array => (
-        card = array.find(item => item._id === id)             
-    ));
-    
-    return card;
+    return getFunctionFindCard('_id')(id, cards);
+}
+
+export function findCardByTitle(title, cards) {
+    return getFunctionFindCard('title')(title, cards);
 }
 
 export function findCardsByStatus(status, cards) {
@@ -20,6 +30,30 @@ export function findPossiblyOwners(owners, usersApp) {
     return usersApp.filter((user) => (
         !owners.find(idOwner => user._id === idOwner)
     ));
+}
+
+export function findCardParentByIdChild(idChild, cards) {
+    let card = null;
+    
+    Object.values(cards).find(array => (
+        card = array.find(item => item.children.includes(idChild))
+    ));
+
+    return card;
+}
+
+export function findAvalibleChildsToAdd(id, cards) {
+    const generalArrayCards = Object.values(cards).reduce((prev, item) => [...prev, ...item]);
+    
+    return generalArrayCards.filter((card) => {
+        if ((id === card._id) || card.children.includes(id)) {
+            return false;
+        }
+        
+        return !generalArrayCards.find((item) => (
+            item.children.includes(card._id)
+        ));      
+    });
 }
 
 export function sortCardsByTitle(cards, ascending) {
@@ -41,6 +75,10 @@ export function sortCardsByTitle(cards, ascending) {
 
 export function getCardsByArrayId(arrayId, cards) {
     return arrayId.map(id => findCardById(id, cards));
+}
+
+export function getCardsByArrayTitle(arrayTitle, cards) {
+    return arrayTitle.map(title => findCardByTitle(title, cards));
 }
 
 export function getParentCardByIdChildren(id, cards) {
