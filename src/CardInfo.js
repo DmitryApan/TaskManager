@@ -22,6 +22,10 @@ export default class CardInfo extends React.Component {
         this.props.changeCardStatus(this.props.id, value);
     }
 
+    handleOnClickLink = ({target}) => {
+        this.props.onRedirect(target.attributes.getNamedItem('parentId').value);
+    }
+
     render() {
         const {isChanging, id, cards, statuses, onRedirect} = this.props; 
         const {_id, status, title, description, children} = findCardById(id, cards);
@@ -32,13 +36,18 @@ export default class CardInfo extends React.Component {
             <div>                
                 {isChanging
                     ? <Fragment>
-                        {parent && <Link to={parent._id}>{parent.title}</Link>}
+                        {parent && <Link 
+                            parentId={parent._id} 
+                            onClick={this.handleOnClickLink}
+                        >
+                            {parent.title}
+                        </Link>}
                         <div class="card-info-heap-avatar">
                             <HeapAvatars size={46} id={_id} />
                         </div>
                         <div class="card-info-select">
                             <Select
-                                defaultValue={{value: status, label: status}}
+                                value={{value: status, label: status}}
                                 options={statusOptions}
                                 onChange={this.handleChangeStatus}
                             />
