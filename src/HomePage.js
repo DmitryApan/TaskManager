@@ -2,7 +2,7 @@ import React, {Fragment} from 'react';
 import {connect} from 'react-redux';
 import {DragDropContext} from 'react-beautiful-dnd';
 
-import {changeCardStatusForDrag, changeCardStatus, changeCardTitle, changeCardDescription} from './store/actionsCreators/cards'
+import {changeCardStatusForDrag, changeCardStatus, changeCardTitle, changeCardDescription} from './store/actionsCreators/cards';
 import Modal from './Modal';
 import CardInfo from './CardInfo';
 import Section from './Section';

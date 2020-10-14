@@ -1,6 +1,6 @@
 import {CARDS_REQUEST, CARDS_RECEIVE, CARDS_DATA_CHANGE} from '../actions/cards';
 import {backendCardCreate, backendCardDelete, backendCardChange} from '../../networkFunctions';
-import {findCardById} from '../../appFunctions';
+import {findCardById, findCardParentByIdChild} from '../../appFunctions';
 
 function changeDataCards(cards) {
     return {
@@ -38,6 +38,18 @@ export function addCard(card) {
             }));
         });
     }     
+}
+
+export function deleteCardFromChilds(id) {
+    return (dispatch, getState) => {
+        const parent = findCardParentByIdChild(id, getState().cards.data);
+
+        if (parent) {
+            const childs = parent.children.filter(item => item !== id);
+
+            dispatch(changeCardChildren(parent._id, childs));
+        }        
+    }    
 }
 
 export function deleteCard(id) {

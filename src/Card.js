@@ -1,13 +1,15 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
-import HeapAvatars from './components/HeapAvatars/HeapAvatars';
 import {connect} from 'react-redux';
-import {deleteCard} from './store/actionsCreators/cards';
+import {Link} from 'react-router-dom';
+
+import HeapAvatars from './components/HeapAvatars/HeapAvatars';
+import {deleteCard, deleteCardFromChilds} from './store/actionsCreators/cards';
 
 import './App.css';
 
 class Card extends React.Component {
 	handleDelete = (event) => {
+		this.props.deleteCardFromChilds(this.props._id);
 		this.props.deleteCard(this.props._id);  
 
 		event.stopPropagation();
@@ -56,8 +58,9 @@ class Card extends React.Component {
 	}    
 }
 
-const actionCreator = {
-    deleteCard
+const mapDispatchToProps = {
+	deleteCard,
+	deleteCardFromChilds
 };
 
-export default connect(null, actionCreator)(Card);
+export default connect(null, mapDispatchToProps)(Card);
