@@ -1,5 +1,4 @@
 import React, {Fragment, useCallback, useState, useMemo} from 'react';
-import cn from 'classnames';
 
 import styles from './TextEditor.less';
 
@@ -33,32 +32,30 @@ export default function TextEditor(props) {
         if (!text) {
             return placeholder;
         }
-        else {
-            return asterisk ? text.replace(/./g, "*") : text;         
-        }
+        
+        return asterisk ? text.replace(/./g, "*") : text;         
+        
     }, [text, placeholder, asterisk]);
-
-    const textStyle = cn([(!text) && styles.textPlaceholder]);
 
     return (
         <div className={styles.flexRow}>
             <div className={styles.textEditor}>
                 {isEditing
-                    ? <textarea onChange={handleChangeText}>
+                    ? (<textarea onChange={handleChangeText}>
                         {text}
-                    </textarea>
-                    : <div className={textStyle}>
+                    </textarea>)
+                    : (<div className={!text && styles.textPlaceholder}>
                         {showText}
-                    </div>
+                    </div>)
                 }
             </div>
             <div>
                 {isEditing
-                    ? <Fragment>
+                    ? (<Fragment>
                         <button onClick={handleSaveButton}>Save</button>
                         <button onClick={handleCancelButton}>Cancel</button>
-                    </Fragment>
-                    : <button onClick={handleChangeButton}>Edit</button>
+                    </Fragment>)
+                    : (<button onClick={handleChangeButton}>Edit</button>)
                 }
             </div>
         </div>

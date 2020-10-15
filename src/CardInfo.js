@@ -35,13 +35,15 @@ export default class CardInfo extends React.Component {
         return (
             <div>                
                 {isChanging
-                    ? <Fragment>
-                        {parent && <Link 
-                            parentId={parent._id} 
-                            onClick={this.handleOnClickLink}
-                        >
-                            {parent.title}
-                        </Link>}
+                    ? (<Fragment>
+                        {parent && (
+                            <Link 
+                                parentId={parent._id} 
+                                onClick={this.handleOnClickLink}
+                            >
+                                {parent.title}
+                            </Link>
+                        )}
                         <div class="card-info-heap-avatar">
                             <HeapAvatars size={46} id={_id} />
                         </div>
@@ -64,12 +66,12 @@ export default class CardInfo extends React.Component {
                             childrenCards={getCardsByArrayId(children, cards)}
                             onRedirect={onRedirect}
                         />
-                    </Fragment>
-                    : <div>
+                    </Fragment>) 
+                    : (<div>
                         <p>{`Status: ${status}`}</p>
                         <p>{`Title: ${title}`}</p>
                         <p>{description}</p>
-                    </div>
+                    </div>)
                 }                
             </div>
         )

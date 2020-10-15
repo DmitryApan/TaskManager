@@ -31,12 +31,10 @@ class HomePage extends React.Component {
         });
     }
 
-    handleModalInfo = (id) => {
+    handleModalInfo = (idCard) => {
         document.body.style.overflow = 'hidden';
         
-        this.setState({
-            idCard: id
-        });        
+        this.setState({idCard});        
     }
 
     handleCloseModal = () => {
@@ -121,7 +119,7 @@ class HomePage extends React.Component {
                     <Modal onCloseModal={this.handleCloseModal}>
                         {() => (
                             <CardInfo 
-                                isChanging={true} 
+                                isChanging 
                                 id={idCard} 
                                 cards={cards}
                                 statuses={statuses}
