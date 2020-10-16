@@ -33,29 +33,36 @@ export default function TextEditor(props) {
             return placeholder;
         }
         
-        return asterisk ? text.replace(/./g, "*") : text;         
-        
+        return asterisk ? text.replace(/./g, "*") : text;       
     }, [text, placeholder, asterisk]);
 
     return (
         <div className={styles.flexRow}>
             <div className={styles.textEditor}>
                 {isEditing
-                    ? (<textarea onChange={handleChangeText}>
-                        {text}
-                    </textarea>)
-                    : (<div className={!text && styles.textPlaceholder}>
-                        {showText}
-                    </div>)
+                    ? (
+                        <textarea onChange={handleChangeText}>
+                            {text}
+                        </textarea>
+                    )
+                    : (
+                        <div className={!text && styles.textPlaceholder}>
+                            {showText}
+                        </div>
+                    )
                 }
             </div>
             <div>
                 {isEditing
-                    ? (<Fragment>
-                        <button onClick={handleSaveButton}>Save</button>
-                        <button onClick={handleCancelButton}>Cancel</button>
-                    </Fragment>)
-                    : (<button onClick={handleChangeButton}>Edit</button>)
+                    ? (
+                        <Fragment>
+                            <button onClick={handleSaveButton}>Save</button>
+                            <button onClick={handleCancelButton}>Cancel</button>
+                        </Fragment>
+                    )
+                    : (
+                    <   button onClick={handleChangeButton}>Edit</button>
+                    )
                 }
             </div>
         </div>
