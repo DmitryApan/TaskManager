@@ -1,9 +1,7 @@
 import React, {Fragment} from 'react';
-import {connect} from 'react-redux';
 import Select from 'react-select';
 import {Link} from 'react-router-dom';
 
-import {changeCardDescription, changeCardStatus, changeCardTitle, changeCardChildren, addCard} from './store/actionsCreators/cards';
 import {findCardById, getCardsByArrayId, getParentCardByIdChildren} from './appFunctions';
 import TextEditor from './components/TextEditor/TextEditor';
 import HeapAvatars from './components/HeapAvatars/HeapAvatars';

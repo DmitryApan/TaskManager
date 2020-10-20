@@ -1,5 +1,4 @@
 import React from 'react';
-import {connect} from 'react-redux';
 import {Droppable, Draggable} from 'react-beautiful-dnd';
 
 import {sortCardsByTitle, findCardsByStatus} from './appFunctions';
