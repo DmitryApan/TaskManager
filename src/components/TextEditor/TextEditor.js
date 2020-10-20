@@ -1,76 +1,64 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useCallback, useState, useMemo} from 'react';
 
 import styles from './TextEditor.less';
 
-export default class TextEditor extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isEditing: false,
-            text: props.text
-        }
-    }
+export default function TextEditor(props) {
+ 
+    const {text, onChangeText, asterisk, placeholder = 'Please enter...'} = props;
 
-    handleChangeText = (event) => {
-        this.setState({
-            text: event.target.value
-        });
-    }
+    const [isEditing, setEditing] = useState(false);
+    const [textEdit, setText] = useState(text);
 
-    handleChangeButton = () => {
-        this.setState({
-            isEditing: true
-        });
-    }
+    const handleChangeText = useCallback(({target}) => {
+        setText(target.value);
+    }, [setText]);
 
-    handleCancelButton = () => {
-        this.setState({
-            isEditing: false,
-            text: this.props.text
-        });
-    }
+    const handleChangeButton = useCallback(() => {
+        setEditing(true);
+    }, [setEditing]);
+    
+    const handleCancelButton = useCallback(() => {
+        setText(text);        
+        setEditing(false);
+    }, [setText, text, setEditing]);
 
-    handleSaveButton = () => {
-        const {onChangeText} = this.props;
-        const {text} = this.state;
+    const handleSaveButton = useCallback(() => {
+        onChangeText(textEdit);
 
-        onChangeText(text);
-
-        this.setState({
-            isEditing: false
-        });
-    }
-
-    render() {
-        const {isEditing, text} = this.state;
-        let {asterisk, placeholder} = this.props;
+        setEditing(false);
+    }, [onChangeText, setEditing, textEdit]);
         
-        let showText = ((text === '') ? placeholder : text); 
-        showText = asterisk ? showText.replace(/./g, "*") : showText;
-        showText = (text === '') 
-            ? <div class='text-placeholder'>
-                {showText}
-            </div>
-            : showText;
+    const showText = useMemo(() => {
+        if (!text) {
+            return placeholder;
+        }
+        
+        return asterisk ? text.replace(/./g, "*") : text;       
+    }, [text, placeholder, asterisk]);
 
-        return (
-            <div class="flex-row">
-                <div class="text-editor">
-                    {isEditing
-                        ? <textarea onChange={this.handleChangeText}>{text}</textarea>
-                        : showText
-                    }
-                </div>
-                <div className={styles.testClass}>
-                    {isEditing
-                        ? <Fragment>
-                            <button onClick={this.handleSaveButton}>Save</button>
-                            <button onClick={this.handleCancelButton}>Cancel</button>
-                        </Fragment>
-                        : <button onClick={this.handleChangeButton}>Edit</button>
-                    }
-                </div>
+    return (
+        <div className={styles.flexRow}>
+            <div className={styles.textEditor}>
+                {isEditing ? (
+                    <textarea onChange={handleChangeText}>
+                        {text}
+                    </textarea>
+                ) : (
+                    <div className={!text && styles.textPlaceholder}>
+                        {showText}
+                    </div>
+                )}
             </div>
-        )
-    }
+            <div>
+                {isEditing ? (
+                    <Fragment>
+                        <button onClick={handleSaveButton}>Save</button>
+                        <button onClick={handleCancelButton}>Cancel</button>
+                    </Fragment>
+                ) : (
+                    <button onClick={handleChangeButton}>Edit</button>
+                )}
+            </div>
+        </div>
+    )
 }

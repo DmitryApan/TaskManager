@@ -17,10 +17,11 @@ export default function Header({text, amount, sortAscending, onClickSort, onClic
             <div onClick={onClickNewCard} class="section-header-newcard flex-center ">+</div>
             <div class="section-header-order flex-center">
                 <div onClick={onClickSort}>
-                    {sortAscending 
-                        ? <>&#9650;</>
-                        : <>&#9660;</>
-                    }
+                    {sortAscending ? (
+                        <>&#9650;</>
+                    ) : (
+                        <>&#9660;</>
+                    )}
                 </div>          
             </div> 
         </div>

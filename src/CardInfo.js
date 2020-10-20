@@ -3,16 +3,16 @@ import {connect} from 'react-redux';
 import Select from 'react-select';
 import {Link} from 'react-router-dom';
 
+import {changeCardDescription, changeCardStatus, changeCardTitle, changeCardChildren, addCard} from './store/actionsCreators/cards';
+import {findCardById, getCardsByArrayId, getParentCardByIdChildren} from './appFunctions';
 import TextEditor from './components/TextEditor/TextEditor';
 import HeapAvatars from './components/HeapAvatars/HeapAvatars';
 import ListChildrenCard from './components/ListChildrenCard/ListChildrenCard';
 import SelectorChilds from './components/SelectorChilds/SelectorChilds';
-import {findCardById, getCardsByArrayId, getParentCardByIdChildren} from './appFunctions';
-import {changeCardDescription, changeCardStatus, changeCardTitle, changeCardChildren, addCard} from './store/actionsCreators/cards';
 
 import './App.css';
 
-class CardInfo extends React.Component {
+export default class CardInfo extends React.Component {
 
     handleChangeDescription = (description) => {
         this.props.changeCardDescription(this.props.id, description);
@@ -24,6 +24,10 @@ class CardInfo extends React.Component {
 
     handleChangeStatus = ({value}) => {
         this.props.changeCardStatus(this.props.id, value);
+    }
+
+    handleOnClickLink = ({target}) => {
+        this.props.onRedirect(target.attributes.getNamedItem('parentId').value);
     }
 
     handleAddChilds = (arrayId) => {
@@ -38,66 +42,61 @@ class CardInfo extends React.Component {
     }
 
     render() {
-        let {isChanging, id, cards, statuses} = this.props;        
-        let {status, title, description, children} = findCardById(id, cards);
-        let parent = getParentCardByIdChildren(id, cards);
+        const {isChanging, id, cards, statuses, onRedirect} = this.props;      
+        const {_id, status, title, description, children} = findCardById(id, cards);
+        const parent = getParentCardByIdChildren(_id, cards);
         let statusOptions = statuses && statuses.map(value => ({value, label: value}));
 
         return (
             <div>
-                <div>
-                    {isChanging
-                        ? <Fragment>
-                            {parent && <Link to={parent._id}>{parent.title}</Link>}
-                            <div class="card-info-heap-avatar">
-                                <HeapAvatars size={46} id={id} />
-                            </div>
-                            <div class="card-info-select">
-                                <Select
-                                    defaultValue={{value: status, label: status}}
-                                    options={statusOptions}
-                                    onChange={this.handleChangeStatus}
-                                />
-                            </div>
-                            <TextEditor
-                                text={title}
-                                onChangeText={this.handleChangeTitle}
-                            />
-                            <TextEditor
-                                text={description}
-                                onChangeText={this.handleChangeDescription}
-                            />
-                            <ListChildrenCard childrenCards={getCardsByArrayId(children, cards)} />
-                            <SelectorChilds 
-                                cards={cards} 
-                                idParent={id} 
-                                addChilds={this.handleAddChilds}
-                                createNewCard={this.handleCreateNewCard}
-                            />
-                        </Fragment>
-                        : <div>
-                            <p>{`Status: ${status}`}</p>
-                            <p>{`Title: ${title}`}</p>
-                            <p>{description}</p>
+                {isChanging ? (
+                    <Fragment>
+                        {parent && (
+                            <Link 
+                                parentId={parent._id} 
+                                onClick={this.handleOnClickLink}
+                            >
+                                {parent.title}
+                            </Link>
+                        )}
+                        <div class="card-info-heap-avatar">
+                            <HeapAvatars size={46} id={_id} />
                         </div>
-                    }
-                </div>
+                        <div class="card-info-select">
+                            <Select
+                                value={{value: status, label: status}}
+                                options={statusOptions}
+                                onChange={this.handleChangeStatus}
+                            />
+                        </div>
+                        <TextEditor
+                            text={title}
+                            onChangeText={this.handleChangeTitle}
+                        />
+                        <TextEditor
+                            text={description}
+                            onChangeText={this.handleChangeDescription}
+                        />
+                        <ListChildrenCard 
+                            childrenCards={getCardsByArrayId(children, cards)}
+                            onRedirect={onRedirect}
+                        />
+
+                        <SelectorChilds 
+                            cards={cards} 
+                            idParent={_id} 
+                            addChilds={this.handleAddChilds}
+                            createNewCard={this.handleCreateNewCard}
+                        />
+                    </Fragment>
+                ) : (
+                    <div>
+                        <p>{`Status: ${status}`}</p>
+                        <p>{`Title: ${title}`}</p>
+                        <p>{description}</p>
+                    </div>
+                )}                
             </div>
         )
     }
 }
-
-const mapStateToProps = state => ({
-    cards: state.cards.data,
-    statuses: state.statuses.data
-});
-
-const mapDispatchToProps = {
-    changeCardStatus,
-    changeCardTitle,
-    changeCardDescription,
-    changeCardChildren,
-    addCard
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(CardInfo);
