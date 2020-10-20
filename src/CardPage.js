@@ -12,7 +12,7 @@ function CardPage(props) {
     const card = findCardById(id, cards);  
     
     return (        
-        card ? 
+        card ? (
             <div>
                 <CardInfo 
                     id={card._id}
@@ -20,7 +20,9 @@ function CardPage(props) {
                     statuses={statuses}
                 />                   
             </div>
-        : <Redirect to="/" />                           
+        ) : (
+             <Redirect to="/" />
+        )                           
     )    
 }
 

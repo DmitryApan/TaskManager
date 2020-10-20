@@ -49,56 +49,53 @@ export default class CardInfo extends React.Component {
 
         return (
             <div>
-                {isChanging
-                    ? (
-                        <Fragment>
-                            {parent && (
-                                <Link 
-                                    parentId={parent._id} 
-                                    onClick={this.handleOnClickLink}
-                                >
-                                    {parent.title}
-                                </Link>
-                            )}
-                            <div class="card-info-heap-avatar">
-                                <HeapAvatars size={46} id={_id} />
-                            </div>
-                            <div class="card-info-select">
-                                <Select
-                                    value={{value: status, label: status}}
-                                    options={statusOptions}
-                                    onChange={this.handleChangeStatus}
-                                />
-                            </div>
-                            <TextEditor
-                                text={title}
-                                onChangeText={this.handleChangeTitle}
-                            />
-                            <TextEditor
-                                text={description}
-                                onChangeText={this.handleChangeDescription}
-                            />
-                            <ListChildrenCard 
-                                childrenCards={getCardsByArrayId(children, cards)}
-                                onRedirect={onRedirect}
-                            />
-
-                            <SelectorChilds 
-                                cards={cards} 
-                                idParent={_id} 
-                                addChilds={this.handleAddChilds}
-                                createNewCard={this.handleCreateNewCard}
-                            />
-                        </Fragment>
-                    )
-                    : (
-                        <div>
-                            <p>{`Status: ${status}`}</p>
-                            <p>{`Title: ${title}`}</p>
-                            <p>{description}</p>
+                {isChanging ? (
+                    <Fragment>
+                        {parent && (
+                            <Link 
+                                parentId={parent._id} 
+                                onClick={this.handleOnClickLink}
+                            >
+                                {parent.title}
+                            </Link>
+                        )}
+                        <div class="card-info-heap-avatar">
+                            <HeapAvatars size={46} id={_id} />
                         </div>
-                    )                               
-                }                
+                        <div class="card-info-select">
+                            <Select
+                                value={{value: status, label: status}}
+                                options={statusOptions}
+                                onChange={this.handleChangeStatus}
+                            />
+                        </div>
+                        <TextEditor
+                            text={title}
+                            onChangeText={this.handleChangeTitle}
+                        />
+                        <TextEditor
+                            text={description}
+                            onChangeText={this.handleChangeDescription}
+                        />
+                        <ListChildrenCard 
+                            childrenCards={getCardsByArrayId(children, cards)}
+                            onRedirect={onRedirect}
+                        />
+
+                        <SelectorChilds 
+                            cards={cards} 
+                            idParent={_id} 
+                            addChilds={this.handleAddChilds}
+                            createNewCard={this.handleCreateNewCard}
+                        />
+                    </Fragment>
+                ) : (
+                    <div>
+                        <p>{`Status: ${status}`}</p>
+                        <p>{`Title: ${title}`}</p>
+                        <p>{description}</p>
+                    </div>
+                )}                
             </div>
         )
     }

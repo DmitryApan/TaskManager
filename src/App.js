@@ -25,8 +25,8 @@ class App extends React.Component {
         return (
             <Router>
                 <Switch>
-                    {isLogin 
-                        ? <Fragment>
+                    {isLogin ? (
+                        <Fragment>
                             <Route exact path="/">
                                 <HomePage />                                  
                             </Route>
@@ -37,7 +37,8 @@ class App extends React.Component {
                                 <CardPage />
                             </Route>
                         </Fragment>
-                        : <Fragment>
+                    ) : ( 
+                        <Fragment>
                             <Route exact path="/">
                                 <Redirect to="/login" />
                             </Route>
@@ -45,7 +46,7 @@ class App extends React.Component {
                                 <LoginPage />                        
                             </Route>
                         </Fragment> 
-                    }                             
+                    )}                             
                 </Switch>
             </Router>
         );

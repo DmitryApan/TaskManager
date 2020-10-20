@@ -39,31 +39,25 @@ export default function TextEditor(props) {
     return (
         <div className={styles.flexRow}>
             <div className={styles.textEditor}>
-                {isEditing
-                    ? (
-                        <textarea onChange={handleChangeText}>
-                            {text}
-                        </textarea>
-                    )
-                    : (
-                        <div className={!text && styles.textPlaceholder}>
-                            {showText}
-                        </div>
-                    )
-                }
+                {isEditing ? (
+                    <textarea onChange={handleChangeText}>
+                        {text}
+                    </textarea>
+                ) : (
+                    <div className={!text && styles.textPlaceholder}>
+                        {showText}
+                    </div>
+                )}
             </div>
             <div>
-                {isEditing
-                    ? (
-                        <Fragment>
-                            <button onClick={handleSaveButton}>Save</button>
-                            <button onClick={handleCancelButton}>Cancel</button>
-                        </Fragment>
-                    )
-                    : (
-                    <   button onClick={handleChangeButton}>Edit</button>
-                    )
-                }
+                {isEditing ? (
+                    <Fragment>
+                        <button onClick={handleSaveButton}>Save</button>
+                        <button onClick={handleCancelButton}>Cancel</button>
+                    </Fragment>
+                ) : (
+                    <button onClick={handleChangeButton}>Edit</button>
+                )}
             </div>
         </div>
     )

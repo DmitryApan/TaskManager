@@ -35,13 +35,13 @@ class Card extends React.Component {
 					<div onClick={this.handleDelete} class="button-x-small">&#xd7;</div>
 				</div>
 				<div class="section-card-title">{title}</div>
-				{imageSrc ? 
+				{imageSrc ? (
 					<img 
 						class="section-card-image" 
 						src={imageSrc} 
 						alt=""
-					/> : null
-				}
+					/>
+				 ) : null}
 				<div class="section-card-info flex-column">
 					<div class="section-card-info-text">{description}</div>
 					<div class="section-card-info-owners">                
