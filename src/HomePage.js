@@ -2,7 +2,14 @@ import React, {Fragment} from 'react';
 import {connect} from 'react-redux';
 import {DragDropContext} from 'react-beautiful-dnd';
 
-import {changeCardStatusForDrag, changeCardStatus, changeCardTitle, changeCardDescription, changeCardChildren} from './store/actionsCreators/cards';
+import {
+    changeCardStatusForDrag, 
+    changeCardStatus, 
+    changeCardTitle, 
+    changeCardDescription, 
+    changeCardChildren,
+    addCard
+} from './store/actionsCreators/cards';
 import Modal from './Modal';
 import CardInfo from './CardInfo';
 import Section from './Section';
@@ -74,7 +81,8 @@ class HomePage extends React.Component {
             changeCardChildren,
             changeCardStatus, 
             changeCardTitle, 
-            changeCardDescription
+            changeCardDescription,
+            addCard
         } = this.props; 
         const {_id, avatar, name} = userInfo;  
 
@@ -129,6 +137,7 @@ class HomePage extends React.Component {
                                 changeCardStatus={changeCardStatus}
                                 changeCardTitle={changeCardTitle}
                                 changeCardDescription={changeCardDescription}
+                                addCard={addCard}
                             />
                         )}
                     </Modal>
@@ -154,7 +163,8 @@ const mapDispatchToProps = {
     changeCardChildren,
     changeCardStatus,
     changeCardTitle,
-    changeCardDescription
+    changeCardDescription,
+    addCard
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
