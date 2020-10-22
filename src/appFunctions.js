@@ -93,6 +93,18 @@ export function getParentCardByIdChildren(id, cards) {
     return card;
 }
 
+export function getParentCardArrayByIdChildren(id, cards) {
+    let array = [];
+    let parent = findCardById(id, cards);
+    
+    while(parent) {
+        array = [parent, ...array];
+        parent = getParentCardByIdChildren(parent._id, cards);
+    }
+
+    return array;
+}
+
 export function getColorByStatus(status) {
     switch(status) {
         case 'Open':

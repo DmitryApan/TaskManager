@@ -1,12 +1,12 @@
 import React, {Fragment} from 'react';
 import Select from 'react-select';
-import {Link} from 'react-router-dom';
 
-import {findCardById, getCardsByArrayId, getParentCardByIdChildren} from './appFunctions';
+import {findCardById, getCardsByArrayId} from './appFunctions';
 import TextEditor from './components/TextEditor/TextEditor';
 import HeapAvatars from './components/HeapAvatars/HeapAvatars';
 import ListChildrenCard from './components/ListChildrenCard/ListChildrenCard';
 import SelectorChilds from './components/SelectorChilds/SelectorChilds';
+import Breadcrumb from './components/Breadcrumb/Breadcrumb';
 
 import './App.css';
 
@@ -42,21 +42,17 @@ export default class CardInfo extends React.Component {
     render() {
         const {isChanging, id, cards, statuses, onRedirect} = this.props;      
         const {_id, status, title, description, children} = findCardById(id, cards);
-        const parent = getParentCardByIdChildren(_id, cards);
-        let statusOptions = statuses && statuses.map(value => ({value, label: value}));
+        const statusOptions = statuses && statuses.map(value => ({value, label: value}));
 
         return (
             <div>
                 {isChanging ? (
                     <Fragment>
-                        {parent && (
-                            <Link 
-                                parentId={parent._id} 
-                                onClick={this.handleOnClickLink}
-                            >
-                                {parent.title}
-                            </Link>
-                        )}
+                        <Breadcrumb 
+                            cards={cards}
+                            cardId={_id}
+                            onClick={this.handleOnClickLink}
+                        />
                         <div class="card-info-heap-avatar">
                             <HeapAvatars size={46} id={_id} />
                         </div>
