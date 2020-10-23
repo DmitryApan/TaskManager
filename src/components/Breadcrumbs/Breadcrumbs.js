@@ -4,15 +4,15 @@ import {Breadcrumb} from 'antd';
 
 import {getParentCardArrayByIdChildren} from '../../appFunctions';
 
-export default function UserBreadcrumb(props) {
-
-    const {onClick, cardId, cards} = props;
+export default function UserBreadcrumb({onClick, cardId, cards}) {
     const parentArray = getParentCardArrayByIdChildren(cardId, cards);
 
     return (
         <Breadcrumb>
             {parentArray.map(parent => (
-                <Breadcrumb.Item>
+                <Breadcrumb.Item
+                    key={parent._id}
+                >
                     <Link 
                         parentId={parent._id} 
                         onClick={onClick}

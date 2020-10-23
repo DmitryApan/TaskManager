@@ -6,7 +6,7 @@ import TextEditor from './components/TextEditor/TextEditor';
 import HeapAvatars from './components/HeapAvatars/HeapAvatars';
 import ListChildrenCard from './components/ListChildrenCard/ListChildrenCard';
 import SelectorChilds from './components/SelectorChilds/SelectorChilds';
-import Breadcrumb from './components/Breadcrumb/Breadcrumb';
+import Breadcrumbs from './components/Breadcrumbs/Breadcrumbs';
 
 import './App.css';
 
@@ -48,7 +48,7 @@ export default class CardInfo extends React.Component {
             <div>
                 {isChanging ? (
                     <Fragment>
-                        <Breadcrumb 
+                        <Breadcrumbs 
                             cards={cards}
                             cardId={_id}
                             onClick={this.handleOnClickLink}
