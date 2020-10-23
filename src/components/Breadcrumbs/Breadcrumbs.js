@@ -4,7 +4,7 @@ import {Breadcrumb} from 'antd';
 
 import {getParentCardArrayByIdChildren} from '../../appFunctions';
 
-export default function UserBreadcrumb({onClick, cardId, cards}) {
+export default function Breadcrumbs({onClick, cardId, cards}) {
     const parentArray = getParentCardArrayByIdChildren(cardId, cards);
 
     return (
