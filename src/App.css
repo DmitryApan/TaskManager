@@ -18,9 +18,11 @@
   padding: 5px;
   border-radius: 2px;  
   width: 200px;
+  height: 100%;
 }
 
 .section-header {
+  height: 30px;
   align-items: center;
   margin: 5px;
   padding: 3px;
@@ -44,7 +46,6 @@
 }
 
 .section-header-newcard {
-  padding-left: 12px;
   padding-right: 5px;
   cursor: pointer;
   font-family: monospace;
@@ -53,7 +54,7 @@
 }
 
 .section-header-order {
-  font-size: 8px;
+  font-size: 12px;
   cursor: pointer;
 }
 
@@ -67,6 +68,7 @@
 .section-header-amount {
   width: 25px;
   height: 15px;
+  margin-right: 12px;
   border-radius: 12px;
   border: 1px solid grey;
   font-size: 8px;
@@ -76,6 +78,7 @@
 .section-cards {
   margin-top: 2px;
   overflow-y: auto;
+  height: 100%;
 }
 
 .section-card {
@@ -336,7 +339,7 @@ input::placeholder {
 }
 
 .card-info-select {
-  z-index: 5;
+  z-index: 100;
   position: relative;
 }
 

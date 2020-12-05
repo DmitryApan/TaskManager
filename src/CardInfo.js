@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react';
 import Select from 'react-select';
 
-import {findCardById, getCardsByArrayId} from './appFunctions';
+import {findCardById, getCardsByArrayId, getStatusNameAdditionOfSettings} from './appFunctions';
 import TextEditor from './components/TextEditor/TextEditor';
 import HeapAvatars from './components/HeapAvatars/HeapAvatars';
 import ListChildrenCard from './components/ListChildrenCard/ListChildrenCard';
@@ -42,7 +42,8 @@ export default class CardInfo extends React.Component {
     render() {
         const {isChanging, id, cards, statuses, onRedirect} = this.props;      
         const {_id, status, title, description, children} = findCardById(id, cards);
-        const statusOptions = statuses && statuses.map(value => ({value, label: value}));
+        const statusNameAdditionOfSettings = getStatusNameAdditionOfSettings(status, statuses);
+        const statusOptions = statuses.map(status => ({value: status.name, label: getStatusNameAdditionOfSettings(status.name, statuses)}));
 
         return (
             <div>
@@ -58,7 +59,7 @@ export default class CardInfo extends React.Component {
                         </div>
                         <div class="card-info-select">
                             <Select
-                                value={{value: status, label: status}}
+                                value={{value: status, label: statusNameAdditionOfSettings}}
                                 options={statusOptions}
                                 onChange={this.handleChangeStatus}
                             />
@@ -74,6 +75,7 @@ export default class CardInfo extends React.Component {
                         <ListChildrenCard 
                             childrenCards={getCardsByArrayId(children, cards)}
                             onRedirect={onRedirect}
+                            statuses={statuses}
                         />
 
                         <SelectorChilds 

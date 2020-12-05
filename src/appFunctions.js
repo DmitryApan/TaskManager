@@ -1,4 +1,5 @@
 export function getFunctionFindCard(key) {
+    
     return (value, cards) => {
         let card = null;
         
@@ -11,28 +12,60 @@ export function getFunctionFindCard(key) {
 }
 
 export function findCardById(id, cards) {
+    
     return getFunctionFindCard('_id')(id, cards);
 }
 
 export function findCardByTitle(title, cards) {
+    
     return getFunctionFindCard('title')(title, cards);
 }
 
 export function findCardsByStatus(status, cards) {
+    
     return cards[status] || [];
 }
 
+export function findCardsByDisabledStatuses(statuses, cards) {
+    
+    const cardsWithStatusDisabledOrDeleted = statuses.reduce((acc, status) => {
+
+        let cards = {...acc};
+
+        if (status.enabled) {
+            delete cards[status.name];
+        }
+
+        return cards;
+    }, cards);
+
+    return Object.values(cardsWithStatusDisabledOrDeleted).reduce((acc, cards) => {
+        
+        return [...acc, ...cards];
+    }, []);
+}
+
+export function getColorByStatus(statuses, name) {
+
+    const status = statuses.find(status => (status.name === name));
+
+    return status ? status.color : 'gray';
+}
+
 export function findUserById(id, usersApp) {
+    
     return usersApp.find(item => (item._id === id));
 }
 
 export function findPossiblyOwners(owners, usersApp) {
+    
     return usersApp.filter((user) => (
         !owners.find(idOwner => user._id === idOwner)
     ));
 }
 
 export function findCardParentByIdChild(idChild, cards) {
+    
     let card = null;
     
     Object.values(cards).find(array => (
@@ -43,6 +76,7 @@ export function findCardParentByIdChild(idChild, cards) {
 }
 
 export function findAvalibleChildsToAdd(id, cards) {
+    
     const generalArrayCards = Object.values(cards).reduce((prev, item) => [...prev, ...item]);
     
     return generalArrayCards.filter((card) => {
@@ -57,6 +91,7 @@ export function findAvalibleChildsToAdd(id, cards) {
 }
 
 export function sortCardsByTitle(cards, ascending) {
+    
     let cardsSort = cards.sort((a, b) => {
         let charA = a.title.toUpperCase();
         let charB = b.title.toUpperCase();
@@ -74,14 +109,17 @@ export function sortCardsByTitle(cards, ascending) {
 }
 
 export function getCardsByArrayId(arrayId, cards) {
+    
     return arrayId.map(id => findCardById(id, cards));
 }
 
 export function getCardsByArrayTitle(arrayTitle, cards) {
+    
     return arrayTitle.map(title => findCardByTitle(title, cards));
 }
 
 export function getParentCardByIdChildren(id, cards) {
+    
     let card = null;
 
     Object.values(cards).find(array => (
@@ -94,6 +132,7 @@ export function getParentCardByIdChildren(id, cards) {
 }
 
 export function getParentCardArrayByIdChildren(id, cards) {
+    
     let array = [];
     let parent = findCardById(id, cards);
     
@@ -105,18 +144,26 @@ export function getParentCardArrayByIdChildren(id, cards) {
     return array;
 }
 
-export function getColorByStatus(status) {
-    switch(status) {
-        case 'Open':
-            return 'red';
+export function filterStatusesByEnabled(statuses) {
+    
+    return statuses.filter(status => (status.enabled));
+}
 
-        case 'In Progress':
-            return 'yellow';
-        
-        case 'Closed': 
-            return 'green';
+export function getStatusNameAdditionOfSettings(name, statuses) {
 
-        default:
-            return 'grey';
+    const objectStatus = statuses.find(status => status.name === name);
+
+    if (objectStatus) {
+
+        if (!objectStatus.enabled) {
+
+            return `${name} (disabled)`
+        }
     }
+    else {
+
+        return `${name} (deleted)`;
+    }
+
+    return name;
 }
