@@ -1,5 +1,4 @@
 export function getFunctionFindCard(key) {
-    
     return (value, cards) => {
         let card = null;
         
@@ -12,23 +11,19 @@ export function getFunctionFindCard(key) {
 }
 
 export function findCardById(id, cards) {
-    
     return getFunctionFindCard('_id')(id, cards);
 }
 
 export function findCardByTitle(title, cards) {
-    
     return getFunctionFindCard('title')(title, cards);
 }
 
 export function findCardsByStatus(status, cards) {
-    
     return cards[status] || [];
 }
 
 export function findCardsByDisabledStatuses(statuses, cards) {
-    
-    const cardsWithStatusDisabledOrDeleted = statuses.reduce((acc, status) => {
+    return Object.values(statuses.reduce((acc, status) => {
 
         let cards = {...acc};
 
@@ -37,35 +32,26 @@ export function findCardsByDisabledStatuses(statuses, cards) {
         }
 
         return cards;
-    }, cards);
-
-    return Object.values(cardsWithStatusDisabledOrDeleted).reduce((acc, cards) => {
-        
-        return [...acc, ...cards];
-    }, []);
+    }, cards)).flat();
 }
 
 export function getColorByStatus(statuses, name) {
-
-    const status = statuses.find(status => (status.name === name));
+    const status = statuses.find(status => status.name === name);
 
     return status ? status.color : 'gray';
 }
 
 export function findUserById(id, usersApp) {
-    
     return usersApp.find(item => (item._id === id));
 }
 
 export function findPossiblyOwners(owners, usersApp) {
-    
     return usersApp.filter((user) => (
         !owners.find(idOwner => user._id === idOwner)
     ));
 }
 
 export function findCardParentByIdChild(idChild, cards) {
-    
     let card = null;
     
     Object.values(cards).find(array => (
@@ -76,7 +62,6 @@ export function findCardParentByIdChild(idChild, cards) {
 }
 
 export function findAvalibleChildsToAdd(id, cards) {
-    
     const generalArrayCards = Object.values(cards).reduce((prev, item) => [...prev, ...item]);
     
     return generalArrayCards.filter((card) => {
@@ -91,7 +76,6 @@ export function findAvalibleChildsToAdd(id, cards) {
 }
 
 export function sortCardsByTitle(cards, ascending) {
-    
     let cardsSort = cards.sort((a, b) => {
         let charA = a.title.toUpperCase();
         let charB = b.title.toUpperCase();
@@ -99,8 +83,7 @@ export function sortCardsByTitle(cards, ascending) {
         if ((ascending && (charA < charB)) 
         || (!ascending && (charA > charB))) {
             return 1;
-        }
-        else {
+        } else {
             return -1;
         }
     });
@@ -109,17 +92,14 @@ export function sortCardsByTitle(cards, ascending) {
 }
 
 export function getCardsByArrayId(arrayId, cards) {
-    
     return arrayId.map(id => findCardById(id, cards));
 }
 
 export function getCardsByArrayTitle(arrayTitle, cards) {
-    
     return arrayTitle.map(title => findCardByTitle(title, cards));
 }
 
 export function getParentCardByIdChildren(id, cards) {
-    
     let card = null;
 
     Object.values(cards).find(array => (
@@ -132,7 +112,6 @@ export function getParentCardByIdChildren(id, cards) {
 }
 
 export function getParentCardArrayByIdChildren(id, cards) {
-    
     let array = [];
     let parent = findCardById(id, cards);
     
@@ -145,25 +124,21 @@ export function getParentCardArrayByIdChildren(id, cards) {
 }
 
 export function filterStatusesByEnabled(statuses) {
-    
-    return statuses.filter(status => (status.enabled));
+    return statuses.filter(({enabled}) => enabled);
 }
 
 export function getStatusNameAdditionOfSettings(name, statuses) {
+    return statuses.find(status => status.name === name) ? name : `${name} (deleted)`;
+}    
 
-    const objectStatus = statuses.find(status => status.name === name);
+export function getStateStatus(name, statuses) {
+    return !statuses.find(status => status.name === name).enabled;
+}
 
-    if (objectStatus) {
+export function getExistStatus(name, statuses) {
+    return statuses.find(status => status.name === name) ? true : false;
+}
 
-        if (!objectStatus.enabled) {
-
-            return `${name} (disabled)`
-        }
-    }
-    else {
-
-        return `${name} (deleted)`;
-    }
-
-    return name;
+export function getRandomColor() {
+    return '#' + (Math.random().toString(16) + '000000').substring(2,8).toUpperCase();
 }

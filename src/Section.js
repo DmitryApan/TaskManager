@@ -24,7 +24,7 @@ class Section extends React.Component {
     }
 
     render() {
-        const {children, status, amount, createPanel, abilityAddCard} = this.props;
+        const {children, status, amount, createPanel, abilityAddCard, onCreateNewCard} = this.props;
         const {sortAscending} = this.state;
         
         return (
@@ -38,7 +38,12 @@ class Section extends React.Component {
                     onClickNewCard={this.onClickNewCard} 
                     onClickSort={this.onClickSort}                        
                 />
-                {(createPanel === status.name) && <CreatePanel status={status.name} />}
+                {(createPanel === status.name) && 
+                    <CreatePanel 
+                        onCreateNewCard={onCreateNewCard} 
+                        status={status.name} 
+                    />
+                }
                 <div class="section-cards">
                     {children(sortAscending)}
                 </div>                                      

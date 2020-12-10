@@ -1,5 +1,7 @@
 import React, {useCallback, useState} from 'react';
-import {Switch, Button, Input} from 'antd';
+import {Switch, Button, Input, message} from 'antd';
+
+import {getRandomColor, getExistStatus} from '../../appFunctions';
 
 import styles from './SettingsPanel.less';
 
@@ -16,14 +18,18 @@ export default function SettingsPanel({statuses, onDeleteStatus, onCreateStatus,
     }, [onEnabledStatus]);
 
     const handleCreateStatus = useCallback(() => {        
-        onCreateStatus({
-            name: statusName,
-            color: '#' + (Math.random().toString(16) + '000000').substring(2,8).toUpperCase(),
-            enabled: true
-        });  
-        
-        setStatusName('');
-    }, [onCreateStatus, statusName, setStatusName]);
+        if (getExistStatus(statusName, statuses) || statusName === 'Other') {
+            message.error(`Unable to add status! The ${statusName} status already exists.`);
+        } else {
+            onCreateStatus({
+                name: statusName,
+                color: getRandomColor(),
+                enabled: true
+            });  
+            
+            setStatusName('');            
+        }       
+    }, [getExistStatus, statusName, statuses, onCreateStatus, getRandomColor, setStatusName, message]);
 
     const handleChangeStatusName = useCallback(({target}) => {        
         setStatusName(target.value);
@@ -61,6 +67,7 @@ export default function SettingsPanel({statuses, onDeleteStatus, onCreateStatus,
                         onChange={handleChangeStatusName} 
                         size="small" 
                         value={statusName}
+                        danger                        
                     />
                 </div>    
                 <div className={styles.addButton}>

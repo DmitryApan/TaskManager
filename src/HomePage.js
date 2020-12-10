@@ -90,8 +90,12 @@ class HomePage extends React.Component {
         });
     }
 
-    handleEnabledStatus = (name, value) => {
-        console.log(name, value);
+    handleCreateNewCard = (card) => {
+        this.setState({
+            openCreatePanel: null
+        })
+
+        this.props.addCard(card);
     }
 
     render() {
@@ -123,6 +127,7 @@ class HomePage extends React.Component {
                             openCreatePanel={openCreatePanel}
                             onControlCreatePanel={this.handleControlCreatePanel}                 
                             onModalInfo={this.handleModalInfo}
+                            onCreateNewCard={this.handleCreateNewCard}
                         />                        
                     </div>
                     <div class="homepage-region-logout flex-column">
