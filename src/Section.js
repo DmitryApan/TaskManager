@@ -38,12 +38,12 @@ class Section extends React.Component {
                     onClickNewCard={this.onClickNewCard} 
                     onClickSort={this.onClickSort}                        
                 />
-                {(createPanel === status.name) && 
+                {createPanel === status.name && (
                     <CreatePanel 
                         onCreateNewCard={onCreateNewCard} 
                         status={status.name} 
                     />
-                }
+                )}
                 <div class="section-cards">
                     {children(sortAscending)}
                 </div>                                      

@@ -93,7 +93,7 @@ class HomePage extends React.Component {
     handleCreateNewCard = (card) => {
         this.setState({
             openCreatePanel: null
-        })
+        });
 
         this.props.addCard(card);
     }

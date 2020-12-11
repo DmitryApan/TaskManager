@@ -23,16 +23,15 @@ export function findCardsByStatus(status, cards) {
 }
 
 export function findCardsByDisabledStatuses(statuses, cards) {
-    return Object.values(statuses.reduce((acc, status) => {
-
-        let cards = {...acc};
-
+    const reducedCards = statuses.reduce((acc, status) => {
         if (status.enabled) {
-            delete cards[status.name];
+          delete acc[status.name];
         }
-
-        return cards;
-    }, cards)).flat();
+    
+        return acc;
+    }, { ...cards });
+    
+    return Object.values(reducedCards).flat()
 }
 
 export function getColorByStatus(statuses, name) {
@@ -132,11 +131,23 @@ export function getStatusNameAdditionOfSettings(name, statuses) {
 }    
 
 export function getStateStatus(name, statuses) {
-    return !statuses.find(status => status.name === name).enabled;
+    const status = statuses.find(status => status.name === name);
+    
+    if (status) {
+        return status.enabled;
+    }
+
+    return false;
 }
 
 export function getExistStatus(name, statuses) {
-    return statuses.find(status => status.name === name) ? true : false;
+    const status = statuses.find(status => status.name === name);
+
+    if (status) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 export function getRandomColor() {

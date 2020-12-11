@@ -59,12 +59,13 @@ export default class CardInfo extends React.Component {
                             <Select
                                 value={getStatusNameAdditionOfSettings(status, statuses)}
                                 onChange={this.handleChangeStatus}
+                                style={{ width: '100%' }}
                             >
                                 {statuses.map(status => (
                                     <Select.Option 
                                         key={status.name}
                                         value={status.name}
-                                        disabled={getStateStatus(status.name, statuses)}
+                                        disabled={!getStateStatus(status.name, statuses)}
                                     >
                                         {status.name}
                                     </Select.Option> 
