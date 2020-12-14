@@ -131,23 +131,11 @@ export function getStatusNameAdditionOfSettings(name, statuses) {
 }    
 
 export function getStateStatus(name, statuses) {
-    const status = statuses.find(status => status.name === name);
-    
-    if (status) {
-        return status.enabled;
-    }
-
-    return false;
+    return Boolean(statuses.find(status => status.name === name).enabled);
 }
 
 export function getExistStatus(name, statuses) {
-    const status = statuses.find(status => status.name === name);
-
-    if (status) {
-        return true;
-    } else {
-        return false;
-    }
+    return Boolean(statuses.find(status => status.name === name));
 }
 
 export function getRandomColor() {
