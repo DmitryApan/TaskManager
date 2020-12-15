@@ -1,8 +1,5 @@
 import React from 'react';
-import {Droppable, Draggable} from 'react-beautiful-dnd';
 
-import {sortCardsByTitle, findCardsByStatus} from './appFunctions';
-import Card from './Card';
 import Header from './Header';
 import CreatePanel from './CreatePanel';
 
@@ -11,15 +8,13 @@ import './App.css';
 class Section extends React.Component {
     
     state = {
-        sortAscending: false,
-        title: '',
-        description: ''
+        sortAscending: false
     }
 
     onClickNewCard = () => {
         let {onControlCreatePanel, status} = this.props;
 
-        onControlCreatePanel(status);
+        onControlCreatePanel(status.name);
     }
 
     onClickSort = () => {
@@ -29,43 +24,29 @@ class Section extends React.Component {
     }
 
     render() {
-        let {status, cards, onModalInfo, createPanel} = this.props;
-        let cardsByStatus = findCardsByStatus(status, cards);
+        const {children, status, amount, createPanel, abilityAddCard, onCreateNewCard} = this.props;
         const {sortAscending} = this.state;
-
+        
         return (
             <div class="section flex-column">
                 <Header 
-                        text={status}
-                        amount={cardsByStatus.length}
-                        sortAscending={sortAscending}
-                        onClickNewCard={this.onClickNewCard} 
-                        onClickSort={this.onClickSort}                        
+                    text={status.name}
+                    color={status.color}
+                    amount={amount}
+                    sortAscending={sortAscending}
+                    abilityAddCard = {abilityAddCard}
+                    onClickNewCard={this.onClickNewCard} 
+                    onClickSort={this.onClickSort}                        
                 />
-                {createPanel && <CreatePanel status={status} />}
-                <Droppable droppableId={status}>
-                    {(provided) => (
-                        <div class="section-cards" ref={provided.innerRef} >
-                            {cardsByStatus && sortCardsByTitle(cardsByStatus, sortAscending).map((card, index) => (
-                                <Draggable 
-                                    key={card._id}
-                                    draggableId={card._id} 
-                                    index={index}
-                                >
-                                    {(provided) => (
-                                        <div
-                                            ref={provided.innerRef}
-                                            {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
-                                        >                                            
-                                            <Card onModalInfo={onModalInfo} {...card} />
-                                        </div>
-                                    )}
-                                </Draggable>
-                            ))}
-                        </div>
-                    )}    
-                </Droppable>                      
+                {createPanel === status.name && (
+                    <CreatePanel 
+                        onCreateNewCard={onCreateNewCard} 
+                        status={status.name} 
+                    />
+                )}
+                <div class="section-cards">
+                    {children(sortAscending)}
+                </div>                                      
             </div>
         )
     }

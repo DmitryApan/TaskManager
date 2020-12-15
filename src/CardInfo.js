@@ -1,12 +1,12 @@
 import React, {Fragment} from 'react';
-import Select from 'react-select';
-import {Link} from 'react-router-dom';
+import {Select} from 'antd';
 
-import {findCardById, getCardsByArrayId, getParentCardByIdChildren} from './appFunctions';
+import {findCardById, getCardsByArrayId, getStatusNameAdditionOfSettings, getStateStatus} from './appFunctions';
 import TextEditor from './components/TextEditor/TextEditor';
 import HeapAvatars from './components/HeapAvatars/HeapAvatars';
 import ListChildrenCard from './components/ListChildrenCard/ListChildrenCard';
 import SelectorChilds from './components/SelectorChilds/SelectorChilds';
+import Breadcrumbs from './components/Breadcrumbs/Breadcrumbs';
 
 import './App.css';
 
@@ -20,7 +20,7 @@ export default class CardInfo extends React.Component {
         this.props.changeCardTitle(this.props.id, title);
     }
 
-    handleChangeStatus = ({value}) => {
+    handleChangeStatus = (value) => {
         this.props.changeCardStatus(this.props.id, value);
     }
 
@@ -42,30 +42,35 @@ export default class CardInfo extends React.Component {
     render() {
         const {isChanging, id, cards, statuses, onRedirect} = this.props;      
         const {_id, status, title, description, children} = findCardById(id, cards);
-        const parent = getParentCardByIdChildren(_id, cards);
-        let statusOptions = statuses && statuses.map(value => ({value, label: value}));
-
+        
         return (
             <div>
                 {isChanging ? (
                     <Fragment>
-                        {parent && (
-                            <Link 
-                                parentId={parent._id} 
-                                onClick={this.handleOnClickLink}
-                            >
-                                {parent.title}
-                            </Link>
-                        )}
+                        <Breadcrumbs 
+                            cards={cards}
+                            cardId={_id}
+                            onClick={this.handleOnClickLink}
+                        />
                         <div class="card-info-heap-avatar">
                             <HeapAvatars size={46} id={_id} />
                         </div>
                         <div class="card-info-select">
                             <Select
-                                value={{value: status, label: status}}
-                                options={statusOptions}
+                                value={getStatusNameAdditionOfSettings(status, statuses)}
                                 onChange={this.handleChangeStatus}
-                            />
+                                style={{ width: '100%' }}
+                            >
+                                {statuses.map(status => (
+                                    <Select.Option 
+                                        key={status.name}
+                                        value={status.name}
+                                        disabled={!getStateStatus(status.name, statuses)}
+                                    >
+                                        {status.name}
+                                    </Select.Option> 
+                                ))}
+                            </Select>
                         </div>
                         <TextEditor
                             text={title}
@@ -78,6 +83,7 @@ export default class CardInfo extends React.Component {
                         <ListChildrenCard 
                             childrenCards={getCardsByArrayId(children, cards)}
                             onRedirect={onRedirect}
+                            statuses={statuses}
                         />
 
                         <SelectorChilds 

@@ -8,11 +8,11 @@ import HeapAvatars from '../HeapAvatars/HeapAvatars';
 import styles from './ListChildrenCard.less';
 
 export default function ListChildrenCard(props) {
-    const {childrenCards, onRedirect} = props;
+    const {childrenCards, onRedirect, statuses} = props;
 
     const getStyleColorSquare = useCallback((status) => ({
-        backgroundColor: getColorByStatus(status)
-    }), [getColorByStatus])
+        backgroundColor: getColorByStatus(statuses, status)
+    }), [getColorByStatus, statuses])
 
     const handleOnClickLink = useCallback(({target}) => {
         onRedirect(target.attributes.getNamedItem('childId').value);
