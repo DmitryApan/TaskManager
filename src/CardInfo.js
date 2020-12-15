@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react';
-import Select from 'react-select';
+import {Select} from 'antd';
 
-import {findCardById, getCardsByArrayId} from './appFunctions';
+import {findCardById, getCardsByArrayId, getStatusNameAdditionOfSettings, getStateStatus} from './appFunctions';
 import TextEditor from './components/TextEditor/TextEditor';
 import HeapAvatars from './components/HeapAvatars/HeapAvatars';
 import ListChildrenCard from './components/ListChildrenCard/ListChildrenCard';
@@ -20,7 +20,7 @@ export default class CardInfo extends React.Component {
         this.props.changeCardTitle(this.props.id, title);
     }
 
-    handleChangeStatus = ({value}) => {
+    handleChangeStatus = (value) => {
         this.props.changeCardStatus(this.props.id, value);
     }
 
@@ -42,8 +42,7 @@ export default class CardInfo extends React.Component {
     render() {
         const {isChanging, id, cards, statuses, onRedirect} = this.props;      
         const {_id, status, title, description, children} = findCardById(id, cards);
-        const statusOptions = statuses && statuses.map(value => ({value, label: value}));
-
+        
         return (
             <div>
                 {isChanging ? (
@@ -58,10 +57,20 @@ export default class CardInfo extends React.Component {
                         </div>
                         <div class="card-info-select">
                             <Select
-                                value={{value: status, label: status}}
-                                options={statusOptions}
+                                value={getStatusNameAdditionOfSettings(status, statuses)}
                                 onChange={this.handleChangeStatus}
-                            />
+                                style={{ width: '100%' }}
+                            >
+                                {statuses.map(status => (
+                                    <Select.Option 
+                                        key={status.name}
+                                        value={status.name}
+                                        disabled={!getStateStatus(status.name, statuses)}
+                                    >
+                                        {status.name}
+                                    </Select.Option> 
+                                ))}
+                            </Select>
                         </div>
                         <TextEditor
                             text={title}
@@ -74,6 +83,7 @@ export default class CardInfo extends React.Component {
                         <ListChildrenCard 
                             childrenCards={getCardsByArrayId(children, cards)}
                             onRedirect={onRedirect}
+                            statuses={statuses}
                         />
 
                         <SelectorChilds 

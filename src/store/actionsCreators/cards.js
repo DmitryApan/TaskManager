@@ -150,12 +150,11 @@ export function addCardOwner(idCard, idOwner) {
 export function changeCardStatusForDrag({draggableId, destination, source}) {
     return dispatch => {
         const {droppableId: oldStatus} = source;
-        const {droppableId: newStatus} = destination;
 
-        if (destination && (newStatus !== oldStatus)) {
-            dispatch(changeCardLocal('status', draggableId, newStatus));
+        if (destination && (destination.droppableId !== oldStatus)) {
+            dispatch(changeCardLocal('status', draggableId, destination.droppableId));
 
-            backendCardChange(draggableId, {status: newStatus}).then((response) => {
+            backendCardChange(draggableId, {status: destination.droppableId}).then((response) => {
                 if (!response) {
                     dispatch(changeCardLocal('status', draggableId, oldStatus));
                 }     

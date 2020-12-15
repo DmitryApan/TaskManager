@@ -1,4 +1,4 @@
-import {urlCardData, urlCardCreate, urlCardSettings, urlSignUp, urlLogin, urlUserInfo, urlUsersInfo} from './Data';
+import {urlCardData, urlCardCreate, urlCardSettings, urlSignUp, urlLogin, urlUserInfo, urlUsersInfo, urlStatusesUpdate} from './Data';
 
 function serverRequest({url, method = 'GET', headers, body}) {    
     return fetch(url, {
@@ -18,6 +18,19 @@ function jsonRequest(response) {
 
 export function backendGetStatuses() {
     return serverRequest({url: urlCardSettings}).then((response) => {
+        return response.ok && jsonRequest(response);
+    });
+}
+
+export function backendChangeStatuses(body) {
+    return serverRequest({
+        url: urlStatusesUpdate,
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify({statuses: body})
+    }).then(response => {
         return response.ok && jsonRequest(response);
     });
 }

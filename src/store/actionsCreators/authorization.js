@@ -37,7 +37,7 @@ function asyncGetAppData() {
     return dispatch => {
         dispatch(statusesRequest());
 
-        backendGetStatuses().then((statuses) => {
+        backendGetStatuses().then(({statuses}) => {
             dispatch(statusesReceive(statuses));
             dispatch(cardsRequest());
 

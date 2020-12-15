@@ -22,6 +22,24 @@ export function findCardsByStatus(status, cards) {
     return cards[status] || [];
 }
 
+export function findCardsByDisabledStatuses(statuses, cards) {
+    const reducedCards = statuses.reduce((acc, status) => {
+        if (status.enabled) {
+          delete acc[status.name];
+        }
+    
+        return acc;
+    }, { ...cards });
+    
+    return Object.values(reducedCards).flat()
+}
+
+export function getColorByStatus(statuses, name) {
+    const status = statuses.find(status => status.name === name);
+
+    return status ? status.color : 'gray';
+}
+
 export function findUserById(id, usersApp) {
     return usersApp.find(item => (item._id === id));
 }
@@ -64,8 +82,7 @@ export function sortCardsByTitle(cards, ascending) {
         if ((ascending && (charA < charB)) 
         || (!ascending && (charA > charB))) {
             return 1;
-        }
-        else {
+        } else {
             return -1;
         }
     });
@@ -105,18 +122,22 @@ export function getParentCardArrayByIdChildren(id, cards) {
     return array;
 }
 
-export function getColorByStatus(status) {
-    switch(status) {
-        case 'Open':
-            return 'red';
+export function filterStatusesByEnabled(statuses) {
+    return statuses.filter(({enabled}) => enabled);
+}
 
-        case 'In Progress':
-            return 'yellow';
-        
-        case 'Closed': 
-            return 'green';
+export function getStatusNameAdditionOfSettings(name, statuses) {
+    return statuses.find(status => status.name === name) ? name : `${name} (deleted)`;
+}    
 
-        default:
-            return 'grey';
-    }
+export function getStateStatus(name, statuses) {
+    return !!statuses.find(status => status.name === name).enabled;
+}
+
+export function getExistStatus(name, statuses) {
+    return !!statuses.find(status => status.name === name);
+}
+
+export function getRandomColor() {
+    return '#' + (Math.random().toString(16) + '000000').substring(2,8).toUpperCase();
 }

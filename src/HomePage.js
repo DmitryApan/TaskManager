@@ -1,6 +1,5 @@
 import React, {Fragment} from 'react';
 import {connect} from 'react-redux';
-import {DragDropContext} from 'react-beautiful-dnd';
 
 import {
     changeCardStatusForDrag, 
@@ -10,20 +9,27 @@ import {
     changeCardChildren,
     addCard
 } from './store/actionsCreators/cards';
+import {
+    addStatus, 
+    deleteStatus, 
+    enableStatus
+} from './store/actionsCreators/statuses';
 import Modal from './Modal';
 import CardInfo from './CardInfo';
-import Section from './Section';
 import Panel from './Panel';
 import UserMenu from './UserMenu';
 import UserEditor from './UserEditor';
 import AreaAvatar from './components/AreaAvatar/AreaAvatar';
+import SettingsPanel from './components/SettingsPanel/SettingsPanel';
+import TableSections from './components/TableSections/TableSections';
 
 class HomePage extends React.Component {
     state = {
         idCard: null,
         userMenu: false,
         userEditor: false,
-        openCreatePanel: null
+        openCreatePanel: null,
+        settingsPanel: false
     }
     
     handleCloseUserMenu = () => {
@@ -59,9 +65,22 @@ class HomePage extends React.Component {
         });
     }
 
+    handleOpenSettings = () => {
+        this.setState({
+            userMenu: false,
+            settingsPanel: true
+        });
+    }
+
     handleCloseUserEditor = () => {
         this.setState({
             userEditor: false
+        });
+    }
+
+    handleCloseSettingsPanel = () => {
+        this.setState({
+            settingsPanel: false
         });
     }
 
@@ -71,8 +90,16 @@ class HomePage extends React.Component {
         });
     }
 
+    handleCreateNewCard = (card) => {
+        this.setState({
+            openCreatePanel: null
+        });
+
+        this.props.addCard(card);
+    }
+
     render() {
-        const {idCard, userMenu, userEditor, openCreatePanel} = this.state;
+        const {idCard, userMenu, userEditor, openCreatePanel, settingsPanel} = this.state;
         const {
             userInfo, 
             statuses, 
@@ -82,7 +109,10 @@ class HomePage extends React.Component {
             changeCardStatus, 
             changeCardTitle, 
             changeCardDescription,
-            addCard
+            addCard,
+            addStatus,
+            deleteStatus,
+            enableStatus
         } = this.props; 
         const {_id, avatar, name} = userInfo;  
 
@@ -90,17 +120,15 @@ class HomePage extends React.Component {
             <Fragment>
                 <div class="homepage-overlay flex-row">
                     <div class="flex-row">
-                        <DragDropContext onDragEnd={changeCardStatusForDrag}>
-                            {statuses && statuses.map(status => ( 
-                                <Section 
-                                    cards={cards}
-                                    status={status}
-                                    createPanel={(openCreatePanel === status)} 
-                                    onControlCreatePanel={this.handleControlCreatePanel}                 
-                                    onModalInfo={this.handleModalInfo}
-                                />
-                            ))}    
-                        </DragDropContext>
+                        <TableSections 
+                            onDragEnd={changeCardStatusForDrag}
+                            statuses={statuses}
+                            cards={cards}
+                            openCreatePanel={openCreatePanel}
+                            onControlCreatePanel={this.handleControlCreatePanel}                 
+                            onModalInfo={this.handleModalInfo}
+                            onCreateNewCard={this.handleCreateNewCard}
+                        />                        
                     </div>
                     <div class="homepage-region-logout flex-column">
                         <div class="flex-center">
@@ -119,7 +147,10 @@ class HomePage extends React.Component {
                         </div>
                         {userMenu && 
                             <Panel onClickOutside={this.handleCloseUserMenu}>
-                                <UserMenu onClickPreferences={this.handleOpenUserEditor} />
+                                <UserMenu 
+                                    onClickPreferences={this.handleOpenUserEditor} 
+                                    onClickSettings={this.handleOpenSettings}
+                                />
                             </Panel>
                         }
                     </div>
@@ -146,7 +177,19 @@ class HomePage extends React.Component {
                     <Modal onCloseModal={this.handleCloseUserEditor}>
                         {() => <UserEditor />}
                     </Modal>
-                }   
+                } 
+                {settingsPanel &&
+                    <Modal onCloseModal={this.handleCloseSettingsPanel}>
+                        {() => (
+                            <SettingsPanel 
+                                statuses={statuses}
+                                onDeleteStatus={deleteStatus}
+                                onCreateStatus={addStatus}
+                                onEnabledStatus={enableStatus}
+                            />
+                        )}
+                    </Modal>
+                }  
             </Fragment>
         )        
     }
@@ -164,7 +207,10 @@ const mapDispatchToProps = {
     changeCardStatus,
     changeCardTitle,
     changeCardDescription,
-    addCard
+    addCard,
+    addStatus,
+    deleteStatus,
+    enableStatus
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
