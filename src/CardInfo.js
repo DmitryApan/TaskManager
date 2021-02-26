@@ -52,10 +52,10 @@ export default class CardInfo extends React.Component {
                             cardId={_id}
                             onClick={this.handleOnClickLink}
                         />
-                        <div class="card-info-heap-avatar">
+                        <div className="card-info-heap-avatar">
                             <HeapAvatars size={46} id={_id} />
                         </div>
-                        <div class="card-info-select">
+                        <div className="card-info-select">
                             <Select
                                 value={getStatusNameAdditionOfSettings(status, statuses)}
                                 onChange={this.handleChangeStatus}

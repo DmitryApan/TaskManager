@@ -50,12 +50,14 @@
     "react": "^16.13.1",
     "react-app-polyfill": "^0.2.2",
     "react-beautiful-dnd": "^13.0.0",
+    "react-bootstrap": "^1.4.3",
     "react-dev-utils": "^8.0.0",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.1",
     "react-router-dom": "^5.2.0",
     "react-select": "^3.1.0",
     "react-sortable-hoc": "^1.11.0",
+    "react-transition-group": "^4.4.1",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "resolve": "1.10.0",
@@ -70,7 +72,7 @@
     "ws": "^7.4.1"
   },
   "scripts": {
-    "start": "node scripts/start.js",    
+    "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js"
   },

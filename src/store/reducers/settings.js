@@ -3,8 +3,7 @@ import {SETTINGS_REQUEST, SETTINGS_RECEIVE, SETTINGS_CHANGE} from '../actions/se
 export default function(state = {
     isFetching: false,
     data: {
-        statuses: [],
-        webSocket: {}
+        statuses: []
     }
 }, action) {
     switch(action.type) {

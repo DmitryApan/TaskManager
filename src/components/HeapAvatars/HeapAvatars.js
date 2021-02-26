@@ -1,5 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import {connect} from 'react-redux';
+
 import {findUserById, findCardById, findPossiblyOwners} from '../../appFunctions';
 import {deleteCardOwner, addCardOwner} from '../../store/actionsCreators/cards';
 import AreaAvatar from '../AreaAvatar/AreaAvatar';
@@ -23,11 +24,11 @@ function HeapAvatars(props) {
     let ownersForShow = owners.slice(0, isShowAllPosition ? owners.length : getNumShowAvatar);
 
     const handleMouseEnter = useCallback(() => {
-        setShowAllPosition(true);
+        mutable && setShowAllPosition(true);
     }, [setShowAllPosition]);
 
     const handleMouseLeave = useCallback(() => {
-        setShowAllPosition(false);
+        mutable && setShowAllPosition(false);
     }, [setShowAllPosition]);
 
     const handleOnClickAddUser = useCallback(() => {
@@ -54,16 +55,15 @@ function HeapAvatars(props) {
     return (
         <>
             <div className={styles.heap}
-                onMouseEnter={mutable && handleMouseEnter} 
-                onMouseLeave={mutable && handleMouseLeave}
+                onMouseEnter={handleMouseEnter} 
+                onMouseLeave={handleMouseLeave}
             >
                 {usersApp && ownersForShow.map((id, i) => {
                     let user = findUserById(id, usersApp);
                     
                     return (
-                        user && <div style={getStyleProperties(i)} >
-                            <AreaAvatar 
-                                key={user._id}
+                        user && <div style={getStyleProperties(i)} key={user._id}>
+                            <AreaAvatar                                 
                                 {...user}
                                 size={size}
                                 crossOnMouseEnter={mutable && isShowAllPosition}
@@ -98,14 +98,9 @@ function HeapAvatars(props) {
     )
 }
 
-const mapStateToProps = state => ({
-    cards: state.cards.data,
-    usersApp: state.usersApp.data
-});
-
 const actionCreators = {
     deleteCardOwner,
     addCardOwner
 };
 
-export default connect(mapStateToProps, actionCreators)(HeapAvatars);
+export default connect(null, actionCreators)(HeapAvatars);

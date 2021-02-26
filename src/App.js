@@ -10,7 +10,7 @@ import {
 import {urlWebSocket} from './Data';
 import {findUserById} from './appFunctions';
 import {authorization} from './store/actionsCreators/authorization';
-import {cardsReceive} from './store/actionsCreators/cards';
+import {cardsAnimation, cardsReceive} from './store/actionsCreators/cards';
 import {settingsReceive} from './store/actionsCreators/settings';
 import {usersAppReceive} from './store/actionsCreators/usersApp';
 import {userInfoReceive} from './store/actionsCreators/userInfo';
@@ -32,7 +32,8 @@ class App extends React.Component {
 
     messageWebSocket = ({data}) => {
         const {
-            cardsReceive, 
+            cardsAnimation,
+            cardsReceive,
             usersAppReceive, 
             settingsReceive, 
             userInfoReceive,
@@ -45,7 +46,9 @@ class App extends React.Component {
         let socketData = obj.data;
 
         if (field === 'CARDS') {
+            cardsAnimation(true);
             cardsReceive(socketData);
+            cardsAnimation(false);
         } else if (field === 'USERS') {
             const user = findUserById(userInfo._id, socketData);
 
@@ -108,12 +111,13 @@ class App extends React.Component {
 const mapStateToProps = state => ({
     isLogin: state.authorization.isLogin,
     userInfo: state.userInfo.data,
-    webSocket: state.settings.data.webSocket
+    webSocket: state.settings.data.webSocket,
 });
 
 const actionCreators = {
     authorization,
     cardsReceive,
+    cardsAnimation,
     settingsReceive,
     usersAppReceive,
     userInfoReceive

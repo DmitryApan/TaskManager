@@ -28,7 +28,7 @@ class Section extends React.Component {
         const {sortAscending} = this.state;
         
         return (
-            <div class="section flex-column">
+            <div className="section flex-column">
                 <Header 
                     text={status.name}
                     color={status.color}
@@ -44,7 +44,7 @@ class Section extends React.Component {
                         status={status.name} 
                     />
                 )}
-                <div class="section-cards">
+                <div className="section-cards">
                     {children(sortAscending)}
                 </div>                                      
             </div>

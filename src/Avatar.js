@@ -11,10 +11,10 @@ export default function Avatar({avatar, name, addUserType}) {
     }, [setIsErrorLoadImg]);
 
     if (avatar && !isErrorLoadImg) {
-        return <img class="avatar-image" src={avatar} alt="" onError={onErrorLoadImg} />
+        return <img className="avatar-image" src={avatar} alt="" onError={onErrorLoadImg} />
     }
     else if (initials) {
-        return <div id="user-initials" class="avatar-initials flex-center">
+        return <div id="user-initials" className="avatar-initials flex-center">
             {initials}
         </div>
     }

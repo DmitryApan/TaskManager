@@ -30,7 +30,7 @@ class HomePage extends React.Component {
         userMenu: false,
         userEditor: false,
         openCreatePanel: null,
-        settingsPanel: false
+        settingsPanel: false,
     }
     
     handleCloseUserMenu = () => {
@@ -99,6 +99,10 @@ class HomePage extends React.Component {
         this.props.addCard(card);
     }
 
+    handleChangeCardStatusForDrag = (data) => {
+        this.props.changeCardStatusForDrag(data);
+    }
+
     render() {
         const {idCard, userMenu, userEditor, openCreatePanel, settingsPanel} = this.state;
         const {
@@ -106,7 +110,6 @@ class HomePage extends React.Component {
             statuses, 
             webSocket,
             cards, 
-            changeCardStatusForDrag, 
             changeCardChildren,
             changeCardStatus, 
             changeCardTitle, 
@@ -115,30 +118,32 @@ class HomePage extends React.Component {
             addStatus,
             deleteStatus,
             enableStatus,
-            enableWebSocket
+            enableWebSocket,
+            animation
         } = this.props; 
         const {_id, avatar, name} = userInfo;  
 
         return (
             <Fragment>
-                <div class="homepage-overlay flex-row">
-                    <div class="flex-row">
+                <div className="homepage-overlay flex-row">
+                    <div className="flex-row">
                         <TableSections 
-                            onDragEnd={changeCardStatusForDrag}
+                            onDragEnd={this.handleChangeCardStatusForDrag}
                             statuses={statuses}
                             cards={cards}
                             openCreatePanel={openCreatePanel}
                             onControlCreatePanel={this.handleControlCreatePanel}                 
                             onModalInfo={this.handleModalInfo}
                             onCreateNewCard={this.handleCreateNewCard}
+                            animation={animation}
                         />                        
                     </div>
-                    <div class="homepage-region-logout flex-column">
-                        <div class="flex-center">
+                    <div className="homepage-region-logout flex-column">
+                        <div className="flex-center">
                             <div>
                                 {name}
                             </div>
-                            <div class="homepage-region-avatar">
+                            <div className="homepage-region-avatar">
                                 <AreaAvatar 
                                     onClickAvatar={this.handleOpenUserMenu}
                                     size={50}
@@ -204,7 +209,8 @@ const mapStateToProps = state => ({
     statuses: state.settings.data.statuses,
     webSocket: state.settings.data.webSocket,
     userInfo: state.userInfo.data,
-    cards: state.cards.data
+    cards: state.cards.data,
+    animation: state.cards.animation
 });
 
 const mapDispatchToProps = {
