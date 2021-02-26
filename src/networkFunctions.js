@@ -16,7 +16,7 @@ function jsonRequest(response) {
     });   
 }
 
-export function backendGetStatuses() {
+export function backendGetSettings() {
     return serverRequest({url: urlCardSettings}).then((response) => {
         return response.ok && jsonRequest(response);
     });
@@ -33,6 +33,19 @@ export function backendChangeStatuses(body) {
     }).then(response => {
         return response.ok && jsonRequest(response);
     });
+}
+
+export function backendChangeSettingsByKey(key, body) {
+    return serverRequest({
+        url: urlStatusesUpdate,
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify({[key]: body})
+    }).then(response => {
+        return response.ok && jsonRequest(response);
+    }); 
 }
 
 export function backendGetDataCards() {

@@ -1,27 +1,30 @@
-import {STATUSES_REQUEST, STATUSES_RECEIVE, STATUSES_CHANGE} from '../actions/statuses';
+import {SETTINGS_REQUEST, SETTINGS_RECEIVE, SETTINGS_CHANGE} from '../actions/settings';
 
 export default function(state = {
     isFetching: false,
-    data: []
+    data: {
+        statuses: [],
+        webSocket: {}
+    }
 }, action) {
     switch(action.type) {
-        case STATUSES_REQUEST:
+        case SETTINGS_REQUEST:
             return {
                 ...state,
                 isFetching: true
             };
 
-        case STATUSES_RECEIVE:
+        case SETTINGS_RECEIVE:
             return {
                 ...state,
                 isFetching: false,
-                data: action.statuses
+                data: action.settings
             };
 
-        case STATUSES_CHANGE:
+        case SETTINGS_CHANGE:
             return {
                 ...state,
-                data: action.statuses
+                data: action.settings
             }
 
         default: 

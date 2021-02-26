@@ -12,8 +12,9 @@ import {
 import {
     addStatus, 
     deleteStatus, 
-    enableStatus
-} from './store/actionsCreators/statuses';
+    enableStatus,
+    enableWebSocket
+} from './store/actionsCreators/settings';
 import Modal from './Modal';
 import CardInfo from './CardInfo';
 import Panel from './Panel';
@@ -103,6 +104,7 @@ class HomePage extends React.Component {
         const {
             userInfo, 
             statuses, 
+            webSocket,
             cards, 
             changeCardStatusForDrag, 
             changeCardChildren,
@@ -112,7 +114,8 @@ class HomePage extends React.Component {
             addCard,
             addStatus,
             deleteStatus,
-            enableStatus
+            enableStatus,
+            enableWebSocket
         } = this.props; 
         const {_id, avatar, name} = userInfo;  
 
@@ -183,9 +186,11 @@ class HomePage extends React.Component {
                         {() => (
                             <SettingsPanel 
                                 statuses={statuses}
+                                webSocket={webSocket}
                                 onDeleteStatus={deleteStatus}
                                 onCreateStatus={addStatus}
                                 onEnabledStatus={enableStatus}
+                                onEnableWebSocket={enableWebSocket}
                             />
                         )}
                     </Modal>
@@ -196,7 +201,8 @@ class HomePage extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    statuses: state.statuses.data,
+    statuses: state.settings.data.statuses,
+    webSocket: state.settings.data.webSocket,
     userInfo: state.userInfo.data,
     cards: state.cards.data
 });
@@ -210,7 +216,8 @@ const mapDispatchToProps = {
     addCard,
     addStatus,
     deleteStatus,
-    enableStatus
+    enableStatus,
+    enableWebSocket
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

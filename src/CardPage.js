@@ -28,7 +28,7 @@ function CardPage(props) {
 
 const mapStateToProps = (state) => ({
     cards: state.cards.data,
-    statuses: state.statuses.data
+    statuses: state.settings.data.statuses
 });
 
 export default connect(mapStateToProps)(CardPage);

@@ -8,12 +8,12 @@ import {
     backendSignIn, 
     backendSignUp, 
     backendGetUserInfo, 
-    backendGetStatuses,  
+    backendGetSettings,  
     backendGetDataCards,
     backendGetUsersAppData
 } from '../../networkFunctions';
 import {userInfoRequest, userInfoReceive} from '../actionsCreators/userInfo';
-import {statusesRequest, statusesReceive} from '../actionsCreators/statuses';
+import {settingsRequest, settingsReceive} from '../actionsCreators/settings';
 import {cardsRequest, cardsReceive} from '../actionsCreators/cards';
 import {usersAppRequest, usersAppReceive} from '../actionsCreators/usersApp';
 
@@ -35,10 +35,10 @@ function authorizationError(error) {
 
 function asyncGetAppData() {
     return dispatch => {
-        dispatch(statusesRequest());
+        dispatch(settingsRequest());
 
-        backendGetStatuses().then(({statuses}) => {
-            dispatch(statusesReceive(statuses));
+        backendGetSettings().then((settings) => {
+            dispatch(settingsReceive(settings));
             dispatch(cardsRequest());
 
             return backendGetDataCards();

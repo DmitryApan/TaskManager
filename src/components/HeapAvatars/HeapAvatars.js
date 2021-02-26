@@ -61,7 +61,7 @@ function HeapAvatars(props) {
                     let user = findUserById(id, usersApp);
                     
                     return (
-                        <div style={getStyleProperties(i)} >
+                        user && <div style={getStyleProperties(i)} >
                             <AreaAvatar 
                                 key={user._id}
                                 {...user}
