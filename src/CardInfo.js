@@ -40,9 +40,10 @@ export default class CardInfo extends React.Component {
     }
 
     render() {
-        const {isChanging, id, cards, statuses, onRedirect} = this.props;      
+        debugger;
+        const {isChanging, id, cards, usersApp, statuses, onRedirect} = this.props;      
         const {_id, status, title, description, children} = findCardById(id, cards);
-        
+        debugger;
         return (
             <div>
                 {isChanging ? (
@@ -53,7 +54,12 @@ export default class CardInfo extends React.Component {
                             onClick={this.handleOnClickLink}
                         />
                         <div className="card-info-heap-avatar">
-                            <HeapAvatars size={46} id={_id} />
+                            <HeapAvatars 
+                                size={46} 
+                                id={_id}
+                                cards={cards}
+                                usersApp={usersApp}
+                            />
                         </div>
                         <div className="card-info-select">
                             <Select
@@ -84,6 +90,8 @@ export default class CardInfo extends React.Component {
                             childrenCards={getCardsByArrayId(children, cards)}
                             onRedirect={onRedirect}
                             statuses={statuses}
+                            cards={cards}
+                            usersApp={usersApp}
                         />
 
                         <SelectorChilds 

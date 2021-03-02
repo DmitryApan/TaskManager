@@ -8,7 +8,7 @@ import Card from '../../Card';
 
 import './styles.css';
 
-export default function TableSections({statuses, cards, openCreatePanel, onDragEnd, onControlCreatePanel, onModalInfo, onCreateNewCard, animation}) {
+export default function TableSections({statuses, cards, usersApp, openCreatePanel, onDragEnd, onControlCreatePanel, onModalInfo, onCreateNewCard, animation}) {
     
     const cardsByStatus = useCallback((name) => (
         findCardsByStatus(name, cards)
@@ -36,7 +36,12 @@ export default function TableSections({statuses, cards, openCreatePanel, onDragE
                                                 {...provided.draggableProps}
                                                 {...provided.dragHandleProps}
                                             >
-                                                    <Card onModalInfo={onModalInfo} {...card} />
+                                                    <Card 
+                                                        {...card}
+                                                        onModalInfo={onModalInfo} 
+                                                        cards={cards}
+                                                        usersApp={usersApp}
+                                                    />
                                             </div>                                                    
                                         )}
                                     </Draggable>  
@@ -74,7 +79,12 @@ export default function TableSections({statuses, cards, openCreatePanel, onDragE
                                                             {...provided.draggableProps}
                                                             {...provided.dragHandleProps}
                                                         >   
-                                                            <Card onModalInfo={onModalInfo} {...card} cards={cards} />                       
+                                                            <Card 
+                                                                {...card}
+                                                                onModalInfo={onModalInfo} 
+                                                                cards={cards} 
+                                                                usersApp={usersApp}
+                                                            />                       
                                                         </div>
                                                     )} 
                                                 </Draggable>

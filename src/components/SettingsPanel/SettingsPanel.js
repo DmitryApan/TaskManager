@@ -44,7 +44,7 @@ export default function SettingsPanel({statuses, webSocket, onDeleteStatus, onCr
             <Divider orientation="left">Statuses settings</Divider>
             {statuses.map((status, index) => (
                 <div key={index} className={styles.row}>
-                    <div className={styles.swichName} >
+                    <div className={styles.switchName} >
                         <text>{status.name}</text>
                     </div>
                     <div className={styles.switchButton}>

@@ -26,7 +26,7 @@ class Card extends React.Component {
 	}
 
 	render() {
-		const {_id, imageSrc, title, description, cards} = this.props;
+		const {_id, imageSrc, title, description, cards, usersApp} = this.props;
 
 		return (			
 			<div onClick={this.handleModalInfo} className="section-card flex-column">
@@ -47,6 +47,7 @@ class Card extends React.Component {
 					<div className="section-card-info-owners">                
 						<HeapAvatars
 							cards={cards} 
+							usersApp={usersApp}
 							id={_id} 
 							size={28}
 							mutable={false} 

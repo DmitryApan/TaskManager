@@ -28,7 +28,7 @@ class App extends React.Component {
 
     state = {
         socket: new WebSocket(urlWebSocket)
-    }
+    };
 
     messageWebSocket = ({data}) => {
         const {
@@ -41,22 +41,20 @@ class App extends React.Component {
             webSocket
         } = this.props;
 
-        let obj = JSON.parse(data);
-        let field = obj.field;
-        let socketData = obj.data;
+        let {field, data: webSocketData} = JSON.parse(data);
 
         if (field === 'CARDS') {
             cardsAnimation(true);
-            cardsReceive(socketData);
+            cardsReceive(webSocketData);
             cardsAnimation(false);
         } else if (field === 'USERS') {
-            const user = findUserById(userInfo._id, socketData);
+            const user = findUserById(userInfo._id, webSocketData);
 
-            usersAppReceive(socketData);
+            usersAppReceive(data);
             userInfoReceive(user);
         } else if (field === 'SETTINGS') {
             settingsReceive({
-                ...socketData[0],
+                ...webSocketData[0],
                 webSocket
             });            
         }

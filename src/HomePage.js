@@ -110,6 +110,7 @@ class HomePage extends React.Component {
             statuses, 
             webSocket,
             cards, 
+            usersApp,
             changeCardChildren,
             changeCardStatus, 
             changeCardTitle, 
@@ -131,6 +132,7 @@ class HomePage extends React.Component {
                             onDragEnd={this.handleChangeCardStatusForDrag}
                             statuses={statuses}
                             cards={cards}
+                            usersApp={usersApp}
                             openCreatePanel={openCreatePanel}
                             onControlCreatePanel={this.handleControlCreatePanel}                 
                             onModalInfo={this.handleModalInfo}
@@ -170,6 +172,7 @@ class HomePage extends React.Component {
                                 isChanging 
                                 id={idCard} 
                                 cards={cards}
+                                usersApp={usersApp}
                                 statuses={statuses}
                                 onRedirect={this.handleModalInfo}
                                 changeCardChildren={changeCardChildren}
@@ -210,6 +213,7 @@ const mapStateToProps = state => ({
     webSocket: state.settings.data.webSocket,
     userInfo: state.userInfo.data,
     cards: state.cards.data,
+    usersApp: state.usersApp.data,
     animation: state.cards.animation
 });
 

@@ -1,7 +1,6 @@
 export function getFunctionFindCard(key) {
     return (value, cards) => {
         let card = null;
-        
         Object.values(cards).find(array => (
             card = array.find(item => item[key] === value)
         ));
