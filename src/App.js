@@ -50,7 +50,7 @@ class App extends React.Component {
         } else if (field === 'USERS') {
             const user = findUserById(userInfo._id, webSocketData);
 
-            usersAppReceive(data);
+            usersAppReceive(webSocketData);
             userInfoReceive(user);
         } else if (field === 'SETTINGS') {
             settingsReceive({

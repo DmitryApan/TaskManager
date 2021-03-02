@@ -40,10 +40,8 @@ export default class CardInfo extends React.Component {
     }
 
     render() {
-        debugger;
         const {isChanging, id, cards, usersApp, statuses, onRedirect} = this.props;      
         const {_id, status, title, description, children} = findCardById(id, cards);
-        debugger;
         return (
             <div>
                 {isChanging ? (
