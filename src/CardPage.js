@@ -6,7 +6,7 @@ import {findCardById} from './appFunctions';
 import CardInfo from './CardInfo';
 
 function CardPage(props) { 
-    const {cards, statuses} = props;
+    const {cards, usersApp, statuses} = props;
 
     const {id} = useParams();           
     const card = findCardById(id, cards);  
@@ -17,6 +17,7 @@ function CardPage(props) {
                 <CardInfo 
                     id={card._id}
                     cards={cards}
+                    usersApp={usersApp}
                     statuses={statuses}
                 />                   
             </div>
@@ -28,7 +29,8 @@ function CardPage(props) {
 
 const mapStateToProps = (state) => ({
     cards: state.cards.data,
-    statuses: state.statuses.data
+    usersApp: state.usersApp.data,
+    statuses: state.settings.data.statuses
 });
 
 export default connect(mapStateToProps)(CardPage);

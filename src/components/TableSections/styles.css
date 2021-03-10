@@ -1,0 +1,21 @@
+.item-enter {
+    opacity: 0;
+    overflow: hidden;
+}
+
+.item-enter-active {
+    opacity: 1;
+    transition: opacity 500ms ease-in;
+    overflow: hidden;
+}
+
+.item-exit {
+    opacity: 1;
+    overflow: hidden;
+}
+
+.item-exit-active {
+    opacity: 0;
+    transition: opacity 500ms ease-in;
+    overflow: hidden;
+}

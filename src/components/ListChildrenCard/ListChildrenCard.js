@@ -8,7 +8,7 @@ import HeapAvatars from '../HeapAvatars/HeapAvatars';
 import styles from './ListChildrenCard.less';
 
 export default function ListChildrenCard(props) {
-    const {childrenCards, onRedirect, statuses} = props;
+    const {childrenCards, onRedirect, statuses, cards, usersApp} = props;
 
     const getStyleColorSquare = useCallback((status) => ({
         backgroundColor: getColorByStatus(statuses, status)
@@ -38,6 +38,8 @@ export default function ListChildrenCard(props) {
                                 mutable={false}
                                 maxShowPosition={3}
                                 id={card._id}
+                                cards={cards}
+                                usersApp={usersApp}
                             />
                         </div>
                         <div>                           

@@ -1,4 +1,4 @@
-import {CARDS_REQUEST, CARDS_RECEIVE, CARDS_DATA_CHANGE} from '../actions/cards';
+import {CARDS_REQUEST, CARDS_RECEIVE, CARDS_DATA_CHANGE, CARDS_ANIMATION} from '../actions/cards';
 import {backendCardCreate, backendCardDelete, backendCardChange} from '../../networkFunctions';
 import {findCardById, findCardParentByIdChild} from '../../appFunctions';
 
@@ -22,6 +22,13 @@ export function cardsReceive(cards) {
             ...acc,
             [card.status]: [...(acc[card.status] || []), card]
         }), {})
+    }
+}
+
+export function cardsAnimation(animation) {
+    return {
+        type: CARDS_ANIMATION, 
+        animation
     }
 }
 

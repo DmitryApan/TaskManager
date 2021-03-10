@@ -29,7 +29,7 @@ export default function CreatePanel(props) {
     }, [onCreateNewCard, status, title, description, setTitle, setDescription]);
 
     return (
-        <div class="create-panel-body">
+        <div className="create-panel-body">
             <div>Creating new card...</div>
             <div>
                 <div>Title:</div>

@@ -17,9 +17,9 @@ class UserEditor extends React.Component {
         const {_id, name, avatar, password} = userInfo;
         
         return(
-            <div class="flex-column">
-                <div class="flex-center">
-                    <div class="user-avatar">
+            <div className="flex-column">
+                <div className="flex-center">
+                    <div className="user-avatar">
                         <AreaAvatar 
                             id={_id} 
                             name={name}

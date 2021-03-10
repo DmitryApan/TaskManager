@@ -38,27 +38,27 @@ function LoginPage(props) {
             {page !== 'login' && page !== 'register' && 
                 <Redirect to="/login" />
             }
-            <div class="login-overlay"> 
-                <div class="flex-center login-window" >
-                    <form onSubmit={handleOnSubmitLoginForm} class="flex-column">
-                        <div class="login-message-region">{error}</div>
+            <div className="login-overlay"> 
+                <div className="flex-center login-window" >
+                    <form onSubmit={handleOnSubmitLoginForm} className="flex-column">
+                        <div className="login-message-region">{error}</div>
                         <input 
                             onChange={handleChangeEmail} 
                             value={email} 
-                            class="login-textbox-email" 
+                            className="login-textbox-email" 
                             type="text" 
                             placeholder="Login" 
                         />
                         <input 
                             onChange={handleChangePassword} 
                             value={password} 
-                            class="login-textbox-password" 
+                            className="login-textbox-password" 
                             type="password" 
                             placeholder="Password" 
                         />
-                        <div class="login-region-submit">
-                            <button class="login-submit-button">{getButtonText()}</button>
-                            <Link class="login-link" to={getUrlLink()} >{getLinkText()}</Link>
+                        <div className="login-region-submit">
+                            <button className="login-submit-button">{getButtonText()}</button>
+                            <Link className="login-link" to={getUrlLink()} >{getLinkText()}</Link>
                         </div>
                     </form>
                 </div>

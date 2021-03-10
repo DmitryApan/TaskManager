@@ -26,26 +26,28 @@ class Card extends React.Component {
 	}
 
 	render() {
-		const {_id, imageSrc, title, description} = this.props;
+		const {_id, imageSrc, title, description, cards, usersApp} = this.props;
 
-		return (
-			<div onClick={this.handleModalInfo} class="section-card flex-column">
-				<div class="flex-row">
-					<Link onClick={this.handleOpenPage} class="button-arrow-small" to={_id}>&#187;</Link>          
-					<div onClick={this.handleDelete} class="button-x-small">&#xd7;</div>
+		return (			
+			<div onClick={this.handleModalInfo} className="section-card flex-column">
+				<div className="flex-row">
+					<Link onClick={this.handleOpenPage} className="button-arrow-small" to={_id}>&#187;</Link>          
+					<div onClick={this.handleDelete} className="button-x-small">&#xd7;</div>
 				</div>
-				<div class="section-card-title">{title}</div>
+				<div className="section-card-title">{title}</div>
 				{imageSrc ? (
 					<img 
-						class="section-card-image" 
+						className="section-card-image" 
 						src={imageSrc} 
 						alt=""
 					/>
 				 ) : null}
-				<div class="section-card-info flex-column">
-					<div class="section-card-info-text">{description}</div>
-					<div class="section-card-info-owners">                
-						<HeapAvatars 
+				<div className="section-card-info flex-column">
+					<div className="section-card-info-text">{description}</div>
+					<div className="section-card-info-owners">                
+						<HeapAvatars
+							cards={cards} 
+							usersApp={usersApp}
 							id={_id} 
 							size={28}
 							mutable={false} 
