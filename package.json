@@ -139,8 +139,5 @@
     "presets": [
       "react-app"
     ]
-  },
-  "devDependencies": {
-    "workbox-webpack-plugin": "^6.2.0-alpha.1"
   }
 }
