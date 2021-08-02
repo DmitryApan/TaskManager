@@ -1,7 +1,9 @@
 // let base = 'https://task-manager-by.herokuapp.com';
-let base = 'http://localhost:8888';
+// let base = 'http://localhost:8888';
+const base = 'https://taskmanagerserverapp.herokuapp.com';
 
-export let urlWebSocket = 'ws://localhost:8080';
+//export let urlWebSocket = 'ws://localhost:8080';
+export let urlWebSocket = 'ws://taskmanagerserverapp.herokuapp.com';
 export let urlCardData = `${base}/cards`;
 export let urlCardCreate = `${base}/card`;
 export let urlCardSettings = `${base}/settings`;
