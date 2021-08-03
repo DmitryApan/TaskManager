@@ -141,6 +141,6 @@
     ]
   },
   "devDependencies": {
-    "workbox-webpack-plugin": "^6.1.5"
+    "workbox-webpack-plugin": "3.6.3"
   }
 }
